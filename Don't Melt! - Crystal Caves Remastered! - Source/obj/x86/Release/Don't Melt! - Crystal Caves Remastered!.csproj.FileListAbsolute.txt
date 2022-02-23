@@ -1,0 +1,8 @@
+D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Release\DMCCR.exe.config
+D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Release\DMCCR.exe
+D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Release\MonoGame.Framework.dll
+D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Release\MonoGame.Framework.xml
+D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Release\Don't Melt! - Crystal Caves Remastered!.csproj.AssemblyReference.cache
+D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Release\Don't Melt! - Crystal Caves Remastered!.csproj.CoreCompileInputs.cache
+D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Release\Don't Melt! - Crystal Caves Remastered!.csproj.CopyComplete
+D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Release\DMCCR.exe
