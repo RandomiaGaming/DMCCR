@@ -16,70 +16,70 @@
         }
         public static Color SampleHueGradient(double t, byte brightness)
         {
-            t = MathHelper.LoopClamp(t, 0, 1);
-            if (t * 6 < 1)
+            t = t * 6.0;
+            t = MathHelper.LoopClamp(t, 0.0, 6.0);
+            if (t < 1)
             {
-                double localSample = MathHelper.InverseLerp(t, 0.0 / 6.0, 1.0 / 6.0);
-                return SampleGradient(localSample, new Color(255, brightness, brightness), new Color(255, 255, brightness));
+                return SampleGradient(t, new Color(255, brightness, brightness), new Color(255, 255, brightness));
             }
-            else if (t * 6 < 2)
+            else if (t < 2)
             {
-                double localSample = MathHelper.InverseLerp(t, 1.0 / 6.0, 2.0 / 6.0);
-                return SampleGradient(localSample, new Color(255, 255, brightness), new Color(brightness, 255, brightness));
+                t = t - 1.0;
+                return SampleGradient(t, new Color(255, 255, brightness), new Color(brightness, 255, brightness));
             }
-            else if (t * 6 < 3)
+            else if (t < 3)
             {
-                double localSample = MathHelper.InverseLerp(t, 2.0 / 6.0, 3.0 / 6.0);
-                return SampleGradient(localSample, new Color(brightness, 255, brightness), new Color(brightness, 255, 255));
+                t = t - 2.0;
+                return SampleGradient(t, new Color(brightness, 255, brightness), new Color(brightness, 255, 255));
             }
-            else if (t * 6 < 4)
+            else if (t < 4)
             {
-                double localSample = MathHelper.InverseLerp(t, 3.0 / 6.0, 4.0 / 6.0);
-                return SampleGradient(localSample, new Color(brightness, 255, 255), new Color(brightness, brightness, 255));
+                t = t - 3.0;
+                return SampleGradient(t, new Color(brightness, 255, 255), new Color(brightness, brightness, 255));
             }
-            else if (t * 6 < 5)
+            else if (t < 5)
             {
-                double localSample = MathHelper.InverseLerp(t, 4.0 / 6.0, 5.0 / 6.0);
-                return SampleGradient(localSample, new Color(brightness, brightness, 255), new Color(255, brightness, 255));
+                t = t - 4.0;
+                return SampleGradient(t, new Color(brightness, brightness, 255), new Color(255, brightness, 255));
             }
             else
             {
-                double localSample = MathHelper.InverseLerp(t, 5.0 / 6.0, 6.0 / 6.0);
-                return SampleGradient(localSample, new Color(255, brightness, 255), new Color(255, brightness, brightness));
+                t = t - 5.0;
+                return SampleGradient(t, new Color(255, brightness, 255), new Color(255, brightness, brightness));
             }
         }
         public static Color SampleHueGradient(double t)
         {
-            t = MathHelper.LoopClamp(t, 0, 1);
-            if (t * 6 < 1)
+            t = t * 6.0;
+            t = MathHelper.LoopClamp(t, 0.0, 6.0);
+            if (t < 1)
             {
-                double localSample = MathHelper.InverseLerp(t, 0.0 / 6.0, 1.0 / 6.0);
-                return SampleGradient(localSample, new Color(255, 0, 0), new Color(255, 255, 0));
+                return SampleGradient(t, new Color(255, byte.MinValue, byte.MinValue), new Color(255, 255, byte.MinValue));
             }
-            else if (t * 6 < 2)
+            else if (t < 2)
             {
-                double localSample = MathHelper.InverseLerp(t, 1.0 / 6.0, 2.0 / 6.0);
-                return SampleGradient(localSample, new Color(255, 255, 0), new Color(0, 255, 0));
+                t = t - 1.0;
+                return SampleGradient(t, new Color(255, 255, byte.MinValue), new Color(byte.MinValue, 255, byte.MinValue));
             }
-            else if (t * 6 < 3)
+            else if (t < 3)
             {
-                double localSample = MathHelper.InverseLerp(t, 2.0 / 6.0, 3.0 / 6.0);
-                return SampleGradient(localSample, new Color(0, 255, 0), new Color(0, 255, 255));
+                t = t - 2.0;
+                return SampleGradient(t, new Color(byte.MinValue, 255, byte.MinValue), new Color(byte.MinValue, 255, 255));
             }
-            else if (t * 6 < 4)
+            else if (t < 4)
             {
-                double localSample = MathHelper.InverseLerp(t, 3.0 / 6.0, 4.0 / 6.0);
-                return SampleGradient(localSample, new Color(0, 255, 255), new Color(0, 0, 255));
+                t = t - 3.0;
+                return SampleGradient(t, new Color(byte.MinValue, 255, 255), new Color(byte.MinValue, byte.MinValue, 255));
             }
-            else if (t * 6 < 5)
+            else if (t < 5)
             {
-                double localSample = MathHelper.InverseLerp(t, 4.0 / 6.0, 5.0 / 6.0);
-                return SampleGradient(localSample, new Color(0, 0, 255), new Color(255, 0, 255));
+                t = t - 4.0;
+                return SampleGradient(t, new Color(byte.MinValue, byte.MinValue, 255), new Color(255, byte.MinValue, 255));
             }
             else
             {
-                double localSample = MathHelper.InverseLerp(t, 5.0 / 6.0, 6.0 / 6.0);
-                return SampleGradient(localSample, new Color(255, 0, 255), new Color(255, 0, 0));
+                t = t - 5.0;
+                return SampleGradient(t, new Color(255, byte.MinValue, 255), new Color(255, byte.MinValue, byte.MinValue));
             }
         }
         public static Color SampleGradient(double t, Color a, Color b)
@@ -88,7 +88,8 @@
             double _r = MathHelper.Lerp(t, a.R, b.R);
             double _g = MathHelper.Lerp(t, a.G, b.G);
             double _b = MathHelper.Lerp(t, a.B, b.B);
-            return new Color((byte)_r, (byte)_g, (byte)_b);
+            double _a = MathHelper.Lerp(t, a.A, b.A);
+            return new Color((byte)_r, (byte)_g, (byte)_b, (byte)_a);
         }
     }
 }

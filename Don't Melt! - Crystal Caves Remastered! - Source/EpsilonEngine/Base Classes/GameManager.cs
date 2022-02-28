@@ -7,9 +7,13 @@ namespace EpsilonEngine
         #region Public Variables
         public Game Game { get; private set; } = null;
 
-        public bool IsDestroyed { get; private set; } = false;
+        public bool MarkedForDestruction { get; private set; } = false;
+        public bool Destroyed { get; private set; } = false;
+
         public bool OverridesUpdate { get; private set; } = false;
-        public bool OverridesRender { get; private set; } = false;
+        public int UpdatePriority { get; private set; } = 0;
+        public bool OverridesDraw { get; private set; } = false;
+        public int DrawPriority { get; private set; } = 0;
         #endregion
         #region Constructors
         public GameManager(Game game, int updatePriority, int drawPriority)
@@ -35,13 +39,35 @@ namespace EpsilonEngine
             MethodInfo drawMethod = thisType.GetMethod("Draw", BindingFlags.NonPublic | BindingFlags.Instance);
             if (drawMethod.DeclaringType != typeof(GameManager))
             {
-                OverridesRender = true;
+                OverridesDraw = true;
                 Game.DrawPump.RegisterPumpEventUnsafe(Draw, drawPriority);
             }
+
+            game.InitializationPump.RegisterPumpEventUnsafe(Initialize);
         }
         #endregion
         #region Public Methods
-        public void Destroy()
+        public void MarkForDestruction()
+        {
+            if (MarkedForDestruction)
+            {
+                throw new Exception("gameManager has already been marked for destruction.");
+            }
+
+            if (Destroyed)
+            {
+                throw new Exception("gameManager has already been destroyed.");
+            }
+
+            Game.OnDestroyPump.RegisterPumpEventUnsafe(OnDestroy);
+
+            Game.DestructionPump.RegisterPumpEventUnsafe(Destroy);
+
+            MarkedForDestruction = true;
+        }
+        #endregion
+        #region Private Methods
+        private void Destroy()
         {
             Game.RemoveGameManager(this);
 
@@ -50,17 +76,27 @@ namespace EpsilonEngine
                 Game.UpdatePump.UnregisterPumpEventUnsafe(Update);
             }
 
-            if (OverridesRender)
+            if (OverridesDraw)
             {
                 Game.DrawPump.UnregisterPumpEventUnsafe(Draw);
             }
 
             Game = null;
 
-            IsDestroyed = true;
+            Destroyed = true;
+        }
+        #endregion
+        #region Override Methods
+        public override string ToString()
+        {
+            return $"EpsilonEngine.GameManager()";
         }
         #endregion
         #region Overridable Methods
+        protected virtual void Initialize()
+        {
+
+        }
         protected virtual void Update()
         {
 
@@ -69,11 +105,9 @@ namespace EpsilonEngine
         {
 
         }
-        #endregion
-        #region Override Methods
-        public override string ToString()
+        protected virtual void OnDestroy()
         {
-            return $"EpsilonEngine.GameManager()";
+
         }
         #endregion
     }

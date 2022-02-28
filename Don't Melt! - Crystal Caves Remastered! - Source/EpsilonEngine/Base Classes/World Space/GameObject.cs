@@ -129,7 +129,7 @@ namespace EpsilonEngine
                 throw new Exception("texture cannot be null.");
             }
 
-            DrawTextureLocalSpaceUnsafe(texture.XNABase, position.X, position.Y, color.R, color.B, color.B, color.A);
+            DrawTextureLocalSpaceUnsafe(texture._XNABase, position.X, position.Y, color.R, color.B, color.B, color.A);
         }
        
         public void Destroy()
@@ -258,7 +258,7 @@ namespace EpsilonEngine
 
             if (!_componentValidateQued)
             {
-                Game.SingleRunPump.RegisterPumpEventUnsafe(ValidateComponentCache);
+                Game.InitializationPump.RegisterPumpEventUnsafe(ValidateComponentCache);
                 _componentValidateQued = true;
             }
         }
@@ -268,7 +268,7 @@ namespace EpsilonEngine
 
             if (!_componentValidateQued)
             {
-                Game.SingleRunPump.RegisterPumpEventUnsafe(ValidateComponentCache);
+                Game.InitializationPump.RegisterPumpEventUnsafe(ValidateComponentCache);
                 _componentValidateQued = true;
             }
         }

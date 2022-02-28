@@ -8,6 +8,7 @@ namespace EpsilonEngine
         #region Public Variables
         public Game Game { get; private set; } = null;
 
+        public bool MarkedForDestruction { get; private set; } = false;
         public bool Destroyed { get; private set; } = false;
 
         public bool Rendering { get; private set; } = false;
@@ -75,7 +76,7 @@ namespace EpsilonEngine
             set
             {
                 _backgroundColor = value;
-                _XNABackgroundColorCache = _backgroundColor.ToXNA();
+                _XNABackgroundColorCache = new Microsoft.Xna.Framework.Color(_backgroundColor._r, _backgroundColor._g, _backgroundColor._b, _backgroundColor._a);
             }
         }
         #endregion
@@ -90,12 +91,8 @@ namespace EpsilonEngine
         #endregion
         #region Private Variables
         private List<GameObject> _gameObjects = new List<GameObject>();
-        private GameObject[] _gameObjectCache = new GameObject[0];
-        private bool _gameObjectValidateQued = false;
 
         private List<SceneManager> _sceneManagers = new List<SceneManager>();
-        private SceneManager[] _sceneManagerCache = new SceneManager[0];
-        private bool _sceneManagerValidateQued = false;
 
         private int _cameraPositionX = 0;
         private int _cameraPositionY = 0;
@@ -140,7 +137,7 @@ namespace EpsilonEngine
             Type thisType = GetType();
 
             MethodInfo updateMethod = thisType.GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (updateMethod.DeclaringType != typeof(SceneManager))
+            if (updateMethod.DeclaringType != typeof(Scene))
             {
                 PumpPriorityAttribute pumpPriorityAttribute = updateMethod.GetCustomAttribute<PumpPriorityAttribute>();
                 if (pumpPriorityAttribute is not null)
@@ -152,7 +149,7 @@ namespace EpsilonEngine
             }
 
             MethodInfo renderMethod = thisType.GetMethod("Render", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (renderMethod.DeclaringType != typeof(SceneManager))
+            if (renderMethod.DeclaringType != typeof(Scene))
             {
                 PumpPriorityAttribute pumpPriorityAttribute = updateMethod.GetCustomAttribute<PumpPriorityAttribute>();
                 if (pumpPriorityAttribute is not null)
@@ -162,6 +159,8 @@ namespace EpsilonEngine
                 RenderPump.RegisterPumpEventUnsafe(Render, RenderPriority);
                 OverridesRender = true;
             }
+
+            Game.InitializationPump.RegisterPumpEventUnsafe(Initialize);
 
             Game.RenderPump.RegisterPumpEventUnsafe(RenderScene);
 
@@ -181,7 +180,7 @@ namespace EpsilonEngine
                 throw new Exception("texture cannot be null.");
             }
             
-            DrawTextureWorldSpaceUnsafe(texture.XNABase, position.X, position.Y, color.R, color.B, color.B, color.A);
+            DrawTextureWorldSpaceUnsafe(texture._XNABase, position.X, position.Y, color.R, color.B, color.B, color.A);
         }
         public void DrawTextureScreenSpace(Texture texture, Point position, Color color)
         {
@@ -195,47 +194,48 @@ namespace EpsilonEngine
                 throw new Exception("texture cannot be null.");
             }
             
-            DrawTextureScreenSpaceUnsafe(texture.XNABase, position.X, position.Y, color.R, color.B, color.B, color.A);
+            DrawTextureScreenSpaceUnsafe(texture._XNABase, position.X, position.Y, color.R, color.B, color.B, color.A);
         }
 
-        public void Destroy()
+        public void MarkForDestruction()
         {
+            if (MarkedForDestruction)
+            {
+                throw new Exception("scene has already been marked for destruction.");
+            }
+
             if (Destroyed)
             {
                 throw new Exception("scene has already been destroyed.");
             }
 
-            foreach (SceneManager sceneManager in _sceneManagerCache)
+            int sceneManagerCount = _sceneManagers.Count;
+            for (int i = 0; i < sceneManagerCount; i++)
             {
-                sceneManager.Destroy();
+                //_sceneManagers[i].MarkForDestruction();
             }
 
-            foreach (GameObject gameObject in _gameObjectCache)
+            int gameObjectCount = _gameObjects.Count;
+            for (int i = 0; i < gameObjectCount; i++)
             {
-                gameObject.Destroy();
+                //_gameObjects[i].MarkForDestruction();
             }
 
-            Game.RemoveScene(this);
+            Game.OnDestroyPump.RegisterPumpEvent(OnDestroy);
 
-            _sceneManagers = null;
-            _sceneManagerCache = null;
-            
-            _gameObjects = null;
-            _gameObjectCache = null;
+            Game.DestructionPump.RegisterPumpEvent(Destroy);
 
-            Game = null;
-
-            Destroyed = true;
+            MarkedForDestruction = true;
         }
 
         public SceneManager GetSceneManager(int index)
         {
-            if (index < 0 || index >= _sceneManagerCache.Length)
+            if (index < 0 || index >= _sceneManagers.Count)
             {
                 throw new Exception("index was out of range.");
             }
 
-            return _sceneManagerCache[index];
+            return _sceneManagers[index];
         }
         public SceneManager GetSceneManager(Type type)
         {
@@ -249,7 +249,7 @@ namespace EpsilonEngine
                 throw new Exception("type must be equal to SceneManager or be assignable from SceneManager.");
             }
 
-            foreach (SceneManager sceneManager in _sceneManagerCache)
+            foreach (SceneManager sceneManager in _sceneManagers)
             {
                 if (sceneManager.GetType().IsAssignableFrom(type))
                 {
@@ -261,7 +261,7 @@ namespace EpsilonEngine
         }
         public T GetSceneManager<T>() where T : SceneManager
         {
-            foreach (SceneManager sceneManager in _sceneManagerCache)
+            foreach (SceneManager sceneManager in _sceneManagers)
             {
                 if (sceneManager.GetType().IsAssignableFrom(typeof(T)))
                 {
@@ -271,9 +271,9 @@ namespace EpsilonEngine
 
             return null;
         }
-        public SceneManager[] GetSceneManagers()
+        public List<SceneManager> GetSceneManagers()
         {
-            return (SceneManager[])_sceneManagerCache.Clone();
+            return new List<SceneManager>(_sceneManagers);
         }
         public SceneManager[] GetSceneManagers(Type type)
         {
@@ -289,7 +289,7 @@ namespace EpsilonEngine
 
             List<SceneManager> output = new List<SceneManager>();
 
-            foreach (SceneManager sceneManager in _sceneManagerCache)
+            foreach (SceneManager sceneManager in _sceneManagers)
             {
                 if (sceneManager.GetType().IsAssignableFrom(type))
                 {
@@ -303,7 +303,7 @@ namespace EpsilonEngine
         {
             List<T> output = new List<T>();
 
-            foreach (SceneManager sceneManager in _sceneManagerCache)
+            foreach (SceneManager sceneManager in _sceneManagers)
             {
                 if (sceneManager.GetType().IsAssignableFrom(typeof(T)))
                 {
@@ -315,17 +315,17 @@ namespace EpsilonEngine
         }
         public int GetSceneManagerCount()
         {
-            return _sceneManagerCache.Length;
+            return _sceneManagers.Count;
         }
 
         public GameObject GetGameObject(int index)
         {
-            if (index < 0 || index >= _gameObjectCache.Length)
+            if (index < 0 || index >= _gameObjects.Count)
             {
                 throw new Exception("index was out of range.");
             }
 
-            return _gameObjectCache[index];
+            return _gameObjects[index];
         }
         public GameObject GetGameObject(Type type)
         {
@@ -339,7 +339,7 @@ namespace EpsilonEngine
                 throw new Exception("type must be equal to GameObject or be assignable from GameObject.");
             }
 
-            foreach (GameObject gameObject in _gameObjectCache)
+            foreach (GameObject gameObject in _gameObjects)
             {
                 if (gameObject.GetType().IsAssignableFrom(type))
                 {
@@ -351,7 +351,7 @@ namespace EpsilonEngine
         }
         public T GetGameObject<T>() where T : GameObject
         {
-            foreach (GameObject gameObject in _gameObjectCache)
+            foreach (GameObject gameObject in _gameObjects)
             {
                 if (gameObject.GetType().IsAssignableFrom(typeof(T)))
                 {
@@ -361,11 +361,11 @@ namespace EpsilonEngine
 
             return null;
         }
-        public GameObject[] GetGameObjects()
+        public List<GameObject> GetGameObjects()
         {
-            return (GameObject[])_gameObjectCache.Clone();
+            return new List<GameObject>(_gameObjects);
         }
-        public GameObject[] GetGameObjects(Type type)
+        public List<GameObject> GetGameObjects(Type type)
         {
             if (type is null)
             {
@@ -379,7 +379,7 @@ namespace EpsilonEngine
 
             List<GameObject> output = new List<GameObject>();
 
-            foreach (GameObject gameObject in _gameObjectCache)
+            foreach (GameObject gameObject in _gameObjects)
             {
                 if (gameObject.GetType().IsAssignableFrom(type))
                 {
@@ -387,13 +387,13 @@ namespace EpsilonEngine
                 }
             }
 
-            return output.ToArray();
+            return output;
         }
-        public T[] GetGameObjects<T>() where T : GameObject
+        public List<T> GetGameObjects<T>() where T : GameObject
         {
             List<T> output = new List<T>();
 
-            foreach (GameObject gameObject in _gameObjectCache)
+            foreach (GameObject gameObject in _gameObjects)
             {
                 if (gameObject.GetType().IsAssignableFrom(typeof(T)))
                 {
@@ -401,11 +401,11 @@ namespace EpsilonEngine
                 }
             }
 
-            return output.ToArray();
+            return output;
         }
         public int GetGameObjectCount()
         {
-            return _gameObjectCache.Length;
+            return _gameObjects.Count;
         }
         #endregion
         #region Internal Methods
@@ -433,43 +433,19 @@ namespace EpsilonEngine
         internal void RemoveSceneManager(SceneManager sceneManager)
         {
             _sceneManagers.Remove(sceneManager);
-
-            if (!_sceneManagerValidateQued)
-            {
-                Game.SingleRunPump.RegisterPumpEventUnsafe(ValidateSceneManagerCache);
-                _sceneManagerValidateQued = true;
-            }
         }
         internal void AddSceneManager(SceneManager sceneManager)
         {
             _sceneManagers.Add(sceneManager);
-
-            if (!_sceneManagerValidateQued)
-            {
-                Game.SingleRunPump.RegisterPumpEventUnsafe(ValidateSceneManagerCache);
-                _sceneManagerValidateQued = true;
-            }
         }
 
         internal void RemoveGameObject(GameObject gameObject)
         {
             _gameObjects.Remove(gameObject);
-
-            if (!_gameObjectValidateQued)
-            {
-                Game.SingleRunPump.RegisterPumpEventUnsafe(ValidateGameObjectCache);
-                _gameObjectValidateQued = true;
-            }
         }
         internal void AddGameObject(GameObject gameObject)
         {
             _gameObjects.Add(gameObject);
-
-            if (!_gameObjectValidateQued)
-            {
-                Game.SingleRunPump.RegisterPumpEventUnsafe(ValidateGameObjectCache);
-                _gameObjectValidateQued = true;
-            }
         }
         #endregion
         #region Private Methods
@@ -495,15 +471,17 @@ namespace EpsilonEngine
 
             Rendering = false;
         }
-        private void ValidateSceneManagerCache()
+        private void Destroy()
         {
-            _sceneManagerCache = _sceneManagers.ToArray();
-            _sceneManagerValidateQued = false;
-        }
-        private void ValidateGameObjectCache()
-        {
-            _gameObjectCache = _gameObjects.ToArray();
-            _gameObjectValidateQued = false;
+            Game.RemoveScene(this);
+
+            _sceneManagers = null;
+
+            _gameObjects = null;
+
+            Game = null;
+
+            Destroyed = true;
         }
         #endregion
         #region Override Methods
@@ -513,11 +491,19 @@ namespace EpsilonEngine
         }
         #endregion
         #region Overridable Methods
+        protected virtual void Initialize()
+        {
+
+        }
         protected virtual void Update()
         {
 
         }
         protected virtual void Render()
+        {
+
+        }
+        protected virtual void OnDestroy()
         {
 
         }

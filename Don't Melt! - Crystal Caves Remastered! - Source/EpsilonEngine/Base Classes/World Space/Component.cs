@@ -56,6 +56,39 @@ namespace EpsilonEngine
                 OverridesRender = true;
             }
         }
+        public Component(GameObject gameObject, int updatePriority, int renderPriority)
+        {
+            if (gameObject is null)
+            {
+                throw new Exception("gameObject cannot be null.");
+            }
+
+            GameObject = gameObject;
+            Scene = GameObject.Scene;
+            Game = Scene.Game;
+
+            GameObject.AddComponent(this);
+
+            Type thisType = GetType();
+
+            UpdatePriority = updatePriority;
+
+            MethodInfo updateMethod = thisType.GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (updateMethod.DeclaringType != typeof(Component))
+            {
+                Game.UpdatePump.RegisterPumpEventUnsafe(Update, UpdatePriority);
+                OverridesUpdate = true;
+            }
+
+            RenderPriority = renderPriority;
+
+            MethodInfo renderMethod = thisType.GetMethod("Render", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (renderMethod.DeclaringType != typeof(Component))
+            {
+                Scene.RenderPump.RegisterPumpEventUnsafe(Render, RenderPriority);
+                OverridesRender = true;
+            }
+        }
         #endregion
         #region Public Methods
         public void Destroy()

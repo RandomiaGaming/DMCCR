@@ -1,7 +1,7 @@
 ﻿using System;
 namespace EpsilonEngine
 {
-    public static class Profiler
+    internal static class Profiler
     {
         #region Private Variables
         private static long _updateStart = 0;
@@ -9,9 +9,6 @@ namespace EpsilonEngine
 
         private static long _renderStart = 0;
         private static long _renderEnd = 0;
-
-        private static long _drawStart = 0;
-        private static long _drawEnd = 0;
 
         private static long _lastPrintTime = 0;
 
@@ -23,35 +20,26 @@ namespace EpsilonEngine
             _stopWatch.Restart();
         }
         #endregion
-        #region Public Methods
-        public static void UpdateStart()
+        #region Internal Methods
+        internal static void UpdateStart()
         {
             _updateStart = _stopWatch.ElapsedTicks;
         }
-        public static void UpdateEnd()
+        internal static void UpdateEnd()
         {
             _updateEnd = _stopWatch.ElapsedTicks;
         }
 
-        public static void RenderStart()
+        internal static void RenderStart()
         {
             _renderStart = _stopWatch.ElapsedTicks;
         }
-        public static void RenderEnd()
+        internal static void RenderEnd()
         {
             _renderEnd = _stopWatch.ElapsedTicks;
         }
 
-        public static void DrawStart()
-        {
-            _drawStart = _stopWatch.ElapsedTicks;
-        }
-        public static void DrawEnd()
-        {
-            _drawEnd = _stopWatch.ElapsedTicks;
-        }
-
-        public static void Print()
+        internal static void Print()
         {
             long currentTime = _stopWatch.ElapsedTicks;
 
@@ -59,17 +47,15 @@ namespace EpsilonEngine
 
             long renderTime = _renderEnd - _renderStart;
 
-            long drawTime = _drawEnd - _drawStart;
-
             long frameTime = currentTime - _lastPrintTime;
 
             if (frameTime <= 0)
             {
-                Console.WriteLine($"Debug Profiler - Infinity FPS - {frameTime} Tick Frame - {frameTime - updateTime - renderTime - drawTime} Tick MonoGame Update - {updateTime} Tick Update - {renderTime} Tick Render - {drawTime} Tick Draw.");
+                Console.WriteLine($"Debug Profiler - Infinity FPS - {frameTime} Tick Frame - {frameTime - updateTime - renderTime} Tick MonoGame Update - {updateTime} Tick Update - {renderTime} Tick Render.");
                 return;
             }
 
-            Console.WriteLine($"Debug Profiler - {10000000 / frameTime} FPS - {frameTime} Tick Frame - {frameTime - updateTime - renderTime - drawTime} Tick MonoGame Update - {updateTime} Tick Update - {renderTime} Tick Render - {drawTime} Tick Draw.");
+            Console.WriteLine($"Debug Profiler - {10000000 / frameTime} FPS - {frameTime} Tick Frame - {frameTime - updateTime - renderTime} Tick MonoGame Update - {updateTime} Tick Update - {renderTime} Tick Render.");
 
             _lastPrintTime = _stopWatch.ElapsedTicks;
         }

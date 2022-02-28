@@ -1,5 +1,4 @@
 ﻿using EpsilonEngine;
-using System;
 using System.Reflection;
 namespace DMCCR
 {
@@ -11,7 +10,7 @@ namespace DMCCR
         private Texture _playerTextureRight = null;
         private Texture _playerTextureLeft = null;
 
-        public FacingDirection FacingDirection = FacingDirection.Right;
+        public FacingDirection FacingDirection = FacingDirection.Left;
 
         public const float JumpForce = 15f * 16f / 60f;
         public const float WallJumpForce = 15f * 16f / 60f;
@@ -22,7 +21,7 @@ namespace DMCCR
             _playerTextureRight = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.PlayerRight.png"));
             _playerTextureLeft = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.PlayerLeft.png"));
 
-            _textureRenderer = new TextureRenderer(this);
+            _textureRenderer = new TextureRenderer(this, -1);
 
             _textureRenderer.Texture = _playerTextureRight;
 
@@ -40,6 +39,8 @@ namespace DMCCR
         private bool _leftMouseButtonPressedLastFrame = false;
         private bool _rightMouseButtonPressedLastFrame = false;
         private Point _reusablePoint = new Point(0, 0);
+
+        private double GradientProgress = 0.0f;
         private void CameraUpdate()
         {
             _reusablePoint.X = PositionX + 6 - (Scene.RenderWidth / 2);
@@ -48,6 +49,13 @@ namespace DMCCR
         }
         protected override void Update()
         {
+            Game.BackgroundColor = ColorHelper.SampleHueGradient(GradientProgress, 150);
+            GradientProgress += 1.0 / (20.0 * 200.0);
+            if(GradientProgress > 1.0f)
+            {
+                GradientProgress = 0.0f;
+            }
+
             Microsoft.Xna.Framework.Input.MouseState mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
 
             bool leftMouseButtonPressed = mouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed;
@@ -161,13 +169,15 @@ namespace DMCCR
         {
             return $"DMCCR.Player()";
         }
+        private bool killed = false;
         public void Kill()
         {
-            PositionX = -1036;
-            PositionY = -78 - 48;
-            FacingDirection = FacingDirection.Right;
-            VelocityX = 0;
-            VelocityY = 0;
+            if (killed)
+            {
+                return;
+            }
+            killed = true;
+            new StagePlayer((DMCCR)Game);
         }
     }
 }

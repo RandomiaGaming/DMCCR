@@ -339,7 +339,7 @@ namespace EpsilonEngine
         }
         internal void RemoveCanvasBehavior(CanvasBehavior canvasBehavior)
         {
-            Game.SingleRunPump.RegisterPumpEventUnsafe(ClearCache);
+            Game.InitializationPump.RegisterPumpEventUnsafe(ClearCache);
 
             _canvasBehaviors.Remove(canvasBehavior);
 
@@ -347,7 +347,7 @@ namespace EpsilonEngine
         }
         internal void AddCanvasBehavior(CanvasBehavior canvasBehavior)
         {
-            Game.SingleRunPump.RegisterPumpEventUnsafe(ClearCache);
+            Game.InitializationPump.RegisterPumpEventUnsafe(ClearCache);
 
             _canvasBehaviors.Add(canvasBehavior);
 
@@ -355,7 +355,7 @@ namespace EpsilonEngine
         }
         internal void RemoveElement(Element element)
         {
-            Game.SingleRunPump.RegisterPumpEventUnsafe(ClearCache);
+            Game.InitializationPump.RegisterPumpEventUnsafe(ClearCache);
 
             _elements.Remove(element);
 
@@ -363,7 +363,7 @@ namespace EpsilonEngine
         }
         internal void AddElement(Element element)
         {
-            Game.SingleRunPump.RegisterPumpEventUnsafe(ClearCache);
+            Game.InitializationPump.RegisterPumpEventUnsafe(ClearCache);
 
             _elements.Add(element);
 

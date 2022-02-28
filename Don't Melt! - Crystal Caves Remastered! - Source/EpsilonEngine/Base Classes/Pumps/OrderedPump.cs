@@ -4,6 +4,15 @@ namespace EpsilonEngine
 {
     public sealed class OrderedPump
     {
+        #region Public Variables
+        public int EventCount
+        {
+            get
+            {
+                return _pumpEvents.Count;
+            }
+        }
+        #endregion
         #region Private Variables
         private List<PumpEvent> _pumpEvents = new List<PumpEvent>();
         private List<int> _invokeOrder = new List<int>();
@@ -117,7 +126,7 @@ namespace EpsilonEngine
         #region Override Methods
         public override string ToString()
         {
-            return $"EpsilonEngine.OrderedPump()";
+            return $"EpsilonEngine.OrderedPump({EventCount})";
         }
         #endregion
     }

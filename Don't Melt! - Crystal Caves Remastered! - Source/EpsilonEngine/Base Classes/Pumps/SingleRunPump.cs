@@ -4,6 +4,15 @@ namespace EpsilonEngine
 {
     public sealed class SingleRunPump
     {
+        #region Public Variables
+        public int EventCount
+        {
+            get
+            {
+                return _pumpEvents.Count;
+            }
+        }
+        #endregion
         #region Private Variables
         private List<PumpEvent> _pumpEvents = new List<PumpEvent>();
         private bool _pumpEventsClear = true;
@@ -54,7 +63,7 @@ namespace EpsilonEngine
         #region Override Methods
         public override string ToString()
         {
-            return $"EpsilonEngine.SingleRunPump()";
+            return $"EpsilonEngine.SingleRunPump({EventCount})";
         }
         #endregion
     }

@@ -11,8 +11,8 @@ namespace EpsilonEngine
         public List<PhysicsObject> _collisionsLeft = new List<PhysicsObject>();
         public List<PhysicsObject> _overlaps = new List<PhysicsObject>();
 
-        private UnsafeRectangle[] _localColliderShapes = new UnsafeRectangle[0];
-        private UnsafeRectangle[] _worldColliderShapes = new UnsafeRectangle[0];
+        private Rectangle[] _localColliderShapes = new Rectangle[0];
+        private Rectangle[] _worldColliderShapes = new Rectangle[0];
         #endregion
         #region Properties
         public PhysicsScene PhysicsScene { get; private set; } = null;
@@ -247,8 +247,8 @@ namespace EpsilonEngine
 
             int shapesLength = colliderShape.Length;
 
-            _localColliderShapes = new UnsafeRectangle[shapesLength];
-            _worldColliderShapes = new UnsafeRectangle[shapesLength];
+            _localColliderShapes = new Rectangle[shapesLength];
+            _worldColliderShapes = new Rectangle[shapesLength];
 
             LocalColliderBoundsMinX = int.MaxValue;
             LocalColliderBoundsMinY = int.MaxValue;
@@ -260,8 +260,8 @@ namespace EpsilonEngine
             {
                 Rectangle safeLocalShape = colliderShape[i];
 
-                _localColliderShapes[i] = new UnsafeRectangle(safeLocalShape.MinX, safeLocalShape.MinY, safeLocalShape.MaxX, safeLocalShape.MaxY);
-                _worldColliderShapes[i] = new UnsafeRectangle(safeLocalShape.MinX + PositionX, safeLocalShape.MinY + PositionY, safeLocalShape.MaxX + PositionX, safeLocalShape.MaxY + PositionY);
+                _localColliderShapes[i] = new Rectangle(safeLocalShape.MinX, safeLocalShape.MinY, safeLocalShape.MaxX, safeLocalShape.MaxY);
+                _worldColliderShapes[i] = new Rectangle(safeLocalShape.MinX + PositionX, safeLocalShape.MinY + PositionY, safeLocalShape.MaxX + PositionX, safeLocalShape.MaxY + PositionY);
 
                 if (safeLocalShape.MinX < LocalColliderBoundsMinX)
                 {
@@ -439,9 +439,9 @@ namespace EpsilonEngine
                         }
                         else if (collisionPhysicsObject.ColliderBoundsMinY > ColliderBoundsMaxY)
                         {
-                            foreach (UnsafeRectangle thisColliderShape in _worldColliderShapes)
+                            foreach (Rectangle thisColliderShape in _worldColliderShapes)
                             {
-                                foreach (UnsafeRectangle otherColliderShape in collisionPhysicsObject._worldColliderShapes)
+                                foreach (Rectangle otherColliderShape in collisionPhysicsObject._worldColliderShapes)
                                 {
 
                                 }
@@ -685,12 +685,19 @@ namespace EpsilonEngine
             int localColliderShapesLength = _localColliderShapes.Length;
             for (int i = 0; i < localColliderShapesLength; i++)
             {
-                UnsafeRectangle localShape = _localColliderShapes[i];
-                UnsafeRectangle worldShape = _worldColliderShapes[i];
-                worldShape.MinX = PositionX + localShape.MinX;
-                worldShape.MinY = PositionY + localShape.MinY;
-                worldShape.MaxX = PositionX + localShape.MaxX;
-                worldShape.MaxY = PositionY + localShape.MaxY;
+                Rectangle localShape = _localColliderShapes[i];
+                Rectangle worldShape = _worldColliderShapes[i];
+                worldShape._minX = PositionX + localShape.MinX;
+                worldShape._minY = PositionY + localShape.MinY;
+                worldShape._maxX = PositionX + localShape.MaxX;
+                worldShape._maxY = PositionY + localShape.MaxY;
+
+                worldShape._width = worldShape._maxX - worldShape._minX + 1;
+                worldShape._height = worldShape._maxY - worldShape._minY + 1;
+
+                worldShape._size._x = worldShape._width;
+                worldShape._size._y = worldShape._height;
+
             }
             ColliderBoundsMinX = PositionX + LocalColliderBoundsMinX;
             ColliderBoundsMinY = PositionY + LocalColliderBoundsMinY;

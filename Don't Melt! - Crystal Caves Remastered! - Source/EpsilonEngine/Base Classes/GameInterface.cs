@@ -65,7 +65,7 @@ namespace EpsilonEngine
         }
         protected sealed override void OnExiting(object sender, EventArgs args)
         {
-            Game.Exit();
+            Game.MarkForDestruction();
         }
         #endregion
     }

@@ -3,69 +3,100 @@ namespace EpsilonEngine
 {
     public struct Color
     {
-        #region Constants
-        public static readonly Color White = new Color(255, 255, 255, 255);
-        public static readonly Color Black = new Color(0, 0, 0, 255);
+        #region Public Constants
+        public static readonly Color White = new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue, byte.MaxValue);
+        public static readonly Color Black = new Color(byte.MinValue, byte.MinValue, byte.MinValue, byte.MaxValue);
 
-        public static readonly Color Transparent = new Color(0, 0, 0, 0);
-        public static readonly Color TransparentWhite = new Color(255, 255, 255, 0);
-        public static readonly Color TransparentBlack = new Color(0, 0, 0, 0);
+        public static readonly Color Transparent = new Color(byte.MinValue, byte.MinValue, byte.MinValue, byte.MinValue);
+        public static readonly Color TransparentWhite = new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue, byte.MinValue);
+        public static readonly Color TransparentBlack = new Color(byte.MinValue, byte.MinValue, byte.MinValue, byte.MinValue);
 
-        public static readonly Color Red = new Color(255, 0, 0, 255);
-        public static readonly Color Yellow = new Color(255, 255, 0, 255);
-        public static readonly Color Green = new Color(0, 255, 0, 255);
-        public static readonly Color Aqua = new Color(0, 255, 255, 255);
-        public static readonly Color Blue = new Color(0, 0, 255, 255);
-        public static readonly Color Pink = new Color(255, 0, 255, 255);
+        public static readonly Color Red = new Color(byte.MaxValue, byte.MinValue, byte.MinValue, byte.MaxValue);
+        public static readonly Color Yellow = new Color(byte.MaxValue, byte.MaxValue, byte.MinValue, byte.MaxValue);
+        public static readonly Color Green = new Color(byte.MinValue, byte.MaxValue, byte.MinValue, byte.MaxValue);
+        public static readonly Color Aqua = new Color(byte.MinValue, byte.MaxValue, byte.MaxValue, byte.MaxValue);
+        public static readonly Color Blue = new Color(byte.MinValue, byte.MinValue, byte.MaxValue, byte.MaxValue);
+        public static readonly Color Pink = new Color(byte.MaxValue, byte.MinValue, byte.MaxValue, byte.MaxValue);
 
-        public static readonly Color SoftRed = new Color(255, 150, 150, 255);
-        public static readonly Color SoftYellow = new Color(255, 255, 150, 255);
-        public static readonly Color SoftGreen = new Color(150, 255, 150, 255);
-        public static readonly Color SoftAqua = new Color(150, 255, 255, 255);
-        public static readonly Color SoftBlue = new Color(150, 150, 255, 255);
-        public static readonly Color SoftPink = new Color(255, 150, 255, 255);
+        public static readonly Color SoftRed = new Color(byte.MaxValue, 150, 150, byte.MaxValue);
+        public static readonly Color SoftYellow = new Color(byte.MaxValue, byte.MaxValue, 150, byte.MaxValue);
+        public static readonly Color SoftGreen = new Color(150, byte.MaxValue, 150, byte.MaxValue);
+        public static readonly Color SoftAqua = new Color(150, byte.MaxValue, byte.MaxValue, byte.MaxValue);
+        public static readonly Color SoftBlue = new Color(150, 150, byte.MaxValue, byte.MaxValue);
+        public static readonly Color SoftPink = new Color(byte.MaxValue, 150, byte.MaxValue, byte.MaxValue);
         #endregion
-        #region Properties
-        public byte R { get; private set; }
-        public byte G { get; private set; }
-        public byte B { get; private set; }
-        public byte A { get; private set; }
+        #region Public Variables
+        public byte R
+        {
+            get
+            {
+                return _r;
+            }
+            set
+            {
+                _r = value;
+            }
+        }
+        public byte G
+        {
+            get
+            {
+                return _g;
+            }
+            set
+            {
+                _g = value;
+            }
+        }
+        public byte B
+        {
+            get
+            {
+                return _b;
+            }
+            set
+            {
+                _b = value;
+            }
+        }
+        public byte A
+        {
+            get
+            {
+                return _a;
+            }
+            set
+            {
+                _a = value;
+            }
+        }
         #endregion
-        #region Constructors
+        #region Internal Variables
+        internal byte _r;
+        internal byte _g;
+        internal byte _b;
+        internal byte _a;
+        #endregion
+        #region Public Constructors
         public Color(byte r, byte g, byte b, byte a)
         {
-            R = r;
-            G = g;
-            B = b;
-            A = a;
+            _r = r;
+            _g = g;
+            _b = b;
+            _a = a;
         }
         public Color(byte r, byte g, byte b)
         {
-            R = r;
-            G = g;
-            B = b;
-            A = byte.MaxValue;
-        }
-        public Color(uint source)
-        {
-            byte[] sourceBytes = BitConverter.GetBytes(source);
-            R = sourceBytes[0];
-            G = sourceBytes[1];
-            B = sourceBytes[2];
-            A = sourceBytes[3];
-        }
-        public Color(Microsoft.Xna.Framework.Color source)
-        {
-            R = source.R;
-            G = source.G;
-            B = source.B;
-            A = source.A;
+            _r = r;
+            _g = g;
+            _b = b;
+            _a = byte.MaxValue;
         }
         #endregion
-        #region Overrides
+        #region Public Overrides
         public override string ToString()
         {
-            return $"EpsilonEngine.Color({R}, {G}, {B}, {A})";
+            return $"EpsilonEngine.Color({_r}, {_g}, {_b}, {_a})";
         }
         public override bool Equals(object obj)
         {
@@ -75,57 +106,30 @@ namespace EpsilonEngine
             }
             else
             {
-                return this == (Color)obj;
+                Color a = (Color)obj;
+                return _r == a._r && _g == a._g && _b == a._b && _a == a._a;
             }
         }
-        public override int GetHashCode()
+        #endregion
+        #region Public Operators
+        public static bool operator ==(Color a, Color b)
         {
-            return BitConverter.ToInt32(new byte[4] { R, G, B, A }, 0);
-        }
-        public static bool operator ==(Color A, Color b)
-        {
-            return (A.R == b.R) && (A.G == b.G) && (A.B == b.B) && (A.A == b.A);
+            return a._r == b._r && a._g == b._g && a._b == b._b && a._a == b._a;
         }
         public static bool operator !=(Color a, Color b)
         {
-            return !(a == b);
+            return a._r != b._r || a._g != b._g || a._b != b._b || a._a != b._a;
         }
         #endregion
-        #region Methods
-        public static Color Invert(Color source)
-        {
-            source.R = (byte)(byte.MaxValue - source.R);
-            source.G = (byte)(byte.MaxValue - source.G);
-            source.B = (byte)(byte.MaxValue - source.B);
-            return source;
-        }
-        public Color Invert()
-        {
-            return Invert(this);
-        }
+        #region Public Static Methods
         public static uint Pack(Color source)
         {
-            return BitConverter.ToUInt32(new byte[4] { source.R, source.G, source.B, source.A }, 0);
-        }
-        public uint Pack()
-        {
-            return Pack(this);
+            return BitConverter.ToUInt32(new byte[4] { source._r, source._g, source._b, source._a }, 0);
         }
         public static Color Unpack(uint source)
         {
-            return new Color(source);
-        }
-        public static Microsoft.Xna.Framework.Color ToXNA(Color source)
-        {
-            return new Microsoft.Xna.Framework.Color(source.R, source.G, source.B, source.A);
-        }
-        public Microsoft.Xna.Framework.Color ToXNA()
-        {
-            return ToXNA(this);
-        }
-        public static Color FromXNA(Microsoft.Xna.Framework.Color source)
-        {
-            return new Color(source);
+            byte[] sourceBytes = BitConverter.GetBytes(source);
+            return new Color(sourceBytes[0], sourceBytes[1], sourceBytes[2], sourceBytes[3]);
         }
         #endregion
     }

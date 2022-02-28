@@ -5,7 +5,7 @@ namespace DMCCR
     {
         public DMCCR()
         {
-            BackgroundColor = new Color(194, 194, 194, 0);
+            BackgroundColor = new Color(255, 0, 0, 0);
             new StagePlayer(this);
         }
         public override string ToString()

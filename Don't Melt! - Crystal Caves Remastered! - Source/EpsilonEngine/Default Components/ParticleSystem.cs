@@ -94,11 +94,11 @@ namespace EpsilonEngine
                 Particle particle = _particles[i];
                 if (UseWorldSpace)
                 {
-                    Scene.DrawTextureWorldSpaceUnsafe(_particleTexture.XNABase, particle.positionX, particle.positionY, particle.color.R, particle.color.G, particle.color.B, particle.color.A);
+                    Scene.DrawTextureWorldSpaceUnsafe(_particleTexture._XNABase, particle.positionX, particle.positionY, particle.color.R, particle.color.G, particle.color.B, particle.color.A);
                 }
                 else
                 {
-                    GameObject.DrawTextureLocalSpaceUnsafe(_particleTexture.XNABase, particle.positionX, particle.positionY, particle.color.R, particle.color.G, particle.color.B, particle.color.A);
+                    GameObject.DrawTextureLocalSpaceUnsafe(_particleTexture._XNABase, particle.positionX, particle.positionY, particle.color.R, particle.color.G, particle.color.B, particle.color.A);
                 }
             }
         }

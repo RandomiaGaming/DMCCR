@@ -392,7 +392,7 @@ namespace EpsilonEngine
         }
         internal void RemoveChild(Element child)
         {
-            Game.SingleRunPump.RegisterPumpEventUnsafe(ClearCache);
+            Game.InitializationPump.RegisterPumpEventUnsafe(ClearCache);
 
             _children.Remove(child);
 
@@ -400,7 +400,7 @@ namespace EpsilonEngine
         }
         internal void AddChild(Element child)
         {
-            Game.SingleRunPump.RegisterPumpEventUnsafe(ClearCache);
+            Game.InitializationPump.RegisterPumpEventUnsafe(ClearCache);
 
             _children.Add(child);
 

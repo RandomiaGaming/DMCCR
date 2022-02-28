@@ -8,7 +8,6 @@ namespace DMCCR
     {
         public const int ViewPortWidth = 256 * 3;
         public const int ViewPortHeight = 144 * 3;
-        private Texture groundTexture;
         public StagePlayer(DMCCR dontmelt) : base(dontmelt, ViewPortWidth, ViewPortHeight, 0)
         {
             Stream levelDataStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Stages.Normal.txt");
@@ -24,11 +23,15 @@ namespace DMCCR
 
             PhysicsLayer noJumpPhysicsLayer = new PhysicsLayer(this);
 
+            PhysicsLayer airPhysicsLayer = new PhysicsLayer(this);
+
             Texture groundTexture = new Texture(dontmelt, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.Ground.png"));
 
             Texture lavaTexture = new Texture(dontmelt, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.Lava.png"));
 
             Texture noJumpTexture = new Texture(dontmelt, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.NoJump.png"));
+
+            Texture airTexture = new Texture(dontmelt, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.Air.png"));
 
             Tile groundTile = new Tile()
             {
@@ -51,6 +54,13 @@ namespace DMCCR
                 Color = Color.White,
             };
 
+            Tile airTile = new Tile()
+            {
+                Texture = airTexture,
+                colliderShape = new Rectangle[1] { new Rectangle(0, 0, 16, 16) },
+                Color = Color.White,
+            };
+
             Player player = new Player(this, playerPhysicsLayer, new PhysicsLayer[] { playerPhysicsLayer, groundPhysicsLayer, lavaPhysicsLayer, noJumpPhysicsLayer })
             {
                 PositionX = -1036,
@@ -62,6 +72,8 @@ namespace DMCCR
             Tilemap lavaTilemap = new Tilemap(this, groundPhysicsLayer, true);
             
             Tilemap noJumpTilemap = new Tilemap(this, groundPhysicsLayer, true);
+
+            Tilemap airTilemap = new Tilemap(this, airPhysicsLayer, true);
 
             string[] objects = levelData.Split('\n');
 
@@ -120,12 +132,22 @@ namespace DMCCR
                             PositionY = 16 * y,
                         };
                     }
+                    else if (ds == "Air")
+                    {
+                        airTilemap.SetTile(airTile, new Point(16 * x, 16 * y));
+                        new NoJump(this, airPhysicsLayer)
+                        {
+                            PositionX = 16 * x,
+                            PositionY = 16 * y,
+                        };
+                    }
                 }
             }
 
             groundTilemap.Apply();
             lavaTilemap.Apply();
             noJumpTilemap.Apply();
+            airTilemap.Apply();
         }
         public override string ToString()
         {

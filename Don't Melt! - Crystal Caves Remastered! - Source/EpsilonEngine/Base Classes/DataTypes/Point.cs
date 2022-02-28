@@ -2,7 +2,7 @@ namespace EpsilonEngine
 {
     public struct Point
     {
-        #region Constants
+        #region Public Constants
         public static readonly Point Zero = new Point(0, 0);
         public static readonly Point One = new Point(1, 1);
         public static readonly Point NegativeOne = new Point(-1, -1);
@@ -17,31 +17,50 @@ namespace EpsilonEngine
         public static readonly Point DownRight = new Point(1, -1);
         public static readonly Point DownLeft = new Point(-1, -1);
         #endregion
-        #region Properties
-        public int X { get; set; }
-        public int Y { get; set; }
+        #region Public Varialbes
+        public int X
+        {
+            get
+            {
+                return _x;
+            }
+            set
+            {
+                _x = value;
+            }
+        }
+        public int Y
+        {
+            get
+            {
+                return _y;
+            }
+            set
+            {
+                _y = value;
+            }
+        }
         #endregion
-        #region Constructors
+        #region Internal Variables
+        internal int _x;
+        internal int _y;
+        #endregion
+        #region Public Constructors
         public Point(int x, int y)
         {
-            X = x;
-            Y = y;
+            _x = x;
+            _y = y;
         }
         public Point(Vector source)
         {
-            X = (int)source.X;
-            Y = (int)source.Y;
-        }
-        public Point(Microsoft.Xna.Framework.Point source)
-        {
-            X = source.X;
-            Y = source.Y;
+            _x = (int)source.X;
+            _y = (int)source.Y;
         }
         #endregion
-        #region Overrides
+        #region Public Overrides
         public override string ToString()
         {
-            return $"EpsilonEngine.Point({X}, {Y})";
+            return $"EpsilonEngine.Point({_x}, {_y})";
         }
         public override bool Equals(object obj)
         {
@@ -51,92 +70,77 @@ namespace EpsilonEngine
             }
             else
             {
-                return this == (Point)obj;
+                Point a = (Point)obj;
+                return _x == a._x && _y == a._y;
             }
         }
+        #endregion
+        #region Public Operators
         public static bool operator ==(Point a, Point b)
         {
-            return (a.X == b.X) && (a.Y == b.Y);
+            return a._x == b._x && a._y == b._y;
         }
         public static bool operator !=(Point a, Point b)
         {
-            return !(a == b);
+            return a._x != b._x || a._y != b._y;
         }
         public static Point operator +(Point a, Point b)
         {
-            a.X += b.X;
-            a.Y += b.Y;
+            a._x += b._x;
+            a._y += b._y;
             return a;
         }
         public static Point operator -(Point a, Point b)
         {
-            a.X -= b.X;
-            a.Y -= b.Y;
+            a._x -= b._x;
+            a._y -= b._y;
             return a;
         }
         public static Point operator *(Point a, Point b)
         {
-            a.X *= b.X;
-            a.Y *= b.Y;
+            a._x *= b._x;
+            a._y *= b._y;
             return a;
         }
         public static Point operator /(Point a, Point b)
         {
-            a.X /= b.X;
-            a.Y /= b.Y;
+            a._x /= b._x;
+            a._y /= b._y;
             return a;
         }
         public static Point operator +(Point a, int b)
         {
-            a.X += b;
-            a.Y += b;
+            a._x += b;
+            a._y += b;
             return a;
         }
         public static Point operator -(Point a, int b)
         {
-            a.X -= b;
-            a.Y -= b;
+            a._x -= b;
+            a._y -= b;
             return a;
         }
         public static Point operator *(Point a, int b)
         {
-            a.X *= b;
-            a.Y *= b;
+            a._x *= b;
+            a._y *= b;
             return a;
         }
         public static Point operator /(Point a, int b)
         {
-            a.X /= b;
-            a.Y /= b;
-            return a;
-        }
-        public static Point operator +(Point a)
-        {
+            a._x /= b;
+            a._y /= b;
             return a;
         }
         public static Point operator -(Point a)
         {
-            a.X *= -1;
-            a.Y *= -1;
+            a._x = -a._x;
+            a._y = -a._y;
             return a;
         }
-        public static explicit operator Point(Vector source)
+        public static explicit operator Vector(Point source)
         {
-            return new Point(source);
-        }
-        #endregion
-        #region Methods
-        public static Microsoft.Xna.Framework.Point ToXNA(Point source)
-        {
-            return new Microsoft.Xna.Framework.Point(source.X, source.Y);
-        }
-        public Microsoft.Xna.Framework.Point ToXNA()
-        {
-            return ToXNA(this);
-        }
-        public Point FromXNA(Microsoft.Xna.Framework.Point source)
-        {
-            return new Point(source);
+            return new Vector(source._x, source._y);
         }
         #endregion
     }

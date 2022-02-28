@@ -2,46 +2,65 @@ namespace EpsilonEngine
 {
     public struct Vector
     {
-        #region Constants
-        public static readonly Vector Zero = new Vector(0, 0);
-        public static readonly Vector One = new Vector(1, 1);
-        public static readonly Vector NegativeOne = new Vector(-1, -1);
+        #region Public Constants
+        public static readonly Vector Zero = new Vector(0.0f, 0.0f);
+        public static readonly Vector One = new Vector(1.0f, 1.0f);
+        public static readonly Vector NegativeOne = new Vector(-1.0f, -1.0f);
 
-        public static readonly Vector Up = new Vector(0, 1);
-        public static readonly Vector Down = new Vector(0, -1);
-        public static readonly Vector Right = new Vector(1, 0);
-        public static readonly Vector Left = new Vector(-1, 0);
+        public static readonly Vector Up = new Vector(0.0f, 1.0f);
+        public static readonly Vector Down = new Vector(0.0f, -1.0f);
+        public static readonly Vector Right = new Vector(1.0f, 0.0f);
+        public static readonly Vector Left = new Vector(-1.0f, 0.0f);
 
-        public static readonly Vector UpRight = new Vector(1, 1);
-        public static readonly Vector UpLeft = new Vector(-1, 1);
-        public static readonly Vector DownRight = new Vector(1, -1);
-        public static readonly Vector DownLeft = new Vector(-1, -1);
+        public static readonly Vector UpRight = new Vector(1.0f, 1.0f);
+        public static readonly Vector UpLeft = new Vector(-1.0f, 1.0f);
+        public static readonly Vector DownRight = new Vector(1.0f, -1.0f);
+        public static readonly Vector DownLeft = new Vector(-1.0f, -1.0f);
         #endregion
-        #region Properties
-        public float X { get; private set; }
-        public float Y { get; private set; }
+        #region Public Varialbes
+        public float X
+        {
+            get
+            {
+                return _x;
+            }
+            set
+            {
+                _x = value;
+            }
+        }
+        public float Y
+        {
+            get
+            {
+                return _y;
+            }
+            set
+            {
+                _y = value;
+            }
+        }
         #endregion
-        #region Constructors
+        #region Internal Variables
+        internal float _x;
+        internal float _y;
+        #endregion
+        #region Public Constructors
         public Vector(float x, float y)
         {
-            X = x;
-            Y = y;
+            _x = x;
+            _y = y;
         }
         public Vector(Point source)
         {
-            X = source.X;
-            Y = source.Y;
-        }
-        public Vector(Microsoft.Xna.Framework.Vector2 source)
-        {
-            X = source.X;
-            Y = source.Y;
+            _x = source.X;
+            _y = source.Y;
         }
         #endregion
-        #region Overrides
+        #region Public Overrides
         public override string ToString()
         {
-            return $"EpsilonEngine.Vector({X}, {Y})";
+            return $"EpsilonEngine.Vector({_x}, {_y})";
         }
         public override bool Equals(object obj)
         {
@@ -51,92 +70,77 @@ namespace EpsilonEngine
             }
             else
             {
-                return this == (Vector)obj;
+                Vector a = (Vector)obj;
+                return _x == a._x && _y == a._y;
             }
         }
+        #endregion
+        #region Public Operators
         public static bool operator ==(Vector a, Vector b)
         {
-            return (a.X == b.X) && (a.Y == b.Y);
+            return a._x == b._x && a._y == b._y;
         }
         public static bool operator !=(Vector a, Vector b)
         {
-            return (a.X != b.X) || (a.Y != b.Y);
+            return a._x != b._x || a._y != b._y;
         }
         public static Vector operator +(Vector a, Vector b)
         {
-            a.X += b.X;
-            a.Y += b.Y;
+            a._x += b._x;
+            a._y += b._y;
             return a;
         }
         public static Vector operator -(Vector a, Vector b)
         {
-            a.X -= b.X;
-            a.Y -= b.Y;
+            a._x -= b._x;
+            a._y -= b._y;
             return a;
         }
         public static Vector operator *(Vector a, Vector b)
         {
-            a.X *= b.X;
-            a.Y *= b.Y;
+            a._x *= b._x;
+            a._y *= b._y;
             return a;
         }
         public static Vector operator /(Vector a, Vector b)
         {
-            a.X /= b.X;
-            a.Y /= b.Y;
+            a._x /= b._x;
+            a._y /= b._y;
             return a;
         }
         public static Vector operator +(Vector a, int b)
         {
-            a.X += b;
-            a.Y += b;
+            a._x += b;
+            a._y += b;
             return a;
         }
         public static Vector operator -(Vector a, int b)
         {
-            a.X -= b;
-            a.Y -= b;
+            a._x -= b;
+            a._y -= b;
             return a;
         }
         public static Vector operator *(Vector a, int b)
         {
-            a.X *= b;
-            a.Y *= b;
+            a._x *= b;
+            a._y *= b;
             return a;
         }
         public static Vector operator /(Vector a, int b)
         {
-            a.X /= b;
-            a.Y /= b;
-            return a;
-        }
-        public static Vector operator +(Vector a)
-        {
+            a._x /= b;
+            a._y /= b;
             return a;
         }
         public static Vector operator -(Vector a)
         {
-            a.X *= -1;
-            a.Y *= -1;
+            a._x = -a._x;
+            a._y = -a._y;
             return a;
         }
         public static explicit operator Vector(Point source)
         {
-            return new Vector(source);
-        }
-        #endregion
-        #region Methods
-        public static Microsoft.Xna.Framework.Vector2 ToXNA(Vector source)
-        {
-            return new Microsoft.Xna.Framework.Vector2(source.X, source.Y);
-        }
-        public Microsoft.Xna.Framework.Vector2 ToXNA()
-        {
-            return ToXNA(this);
-        }
-        public Vector FromXNA(Microsoft.Xna.Framework.Vector2 source)
-        {
-            return new Vector(source);
+            return new Vector(source._x, source._y);
         }
         #endregion
     }

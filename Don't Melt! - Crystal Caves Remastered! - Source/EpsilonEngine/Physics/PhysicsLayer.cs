@@ -187,7 +187,7 @@ namespace EpsilonEngine
         }
         internal void RemovePhysicsObject(PhysicsObject physicsObject)
         {
-            Game.SingleRunPump.RegisterPumpEventUnsafe(ClearCache);
+            Game.InitializationPump.RegisterPumpEventUnsafe(ClearCache);
 
             _physicsObjects.Remove(physicsObject);
 
@@ -195,7 +195,7 @@ namespace EpsilonEngine
         }
         internal void AddPhysicsObject(PhysicsObject physicsObject)
         {
-            Game.SingleRunPump.RegisterPumpEventUnsafe(ClearCache);
+            Game.InitializationPump.RegisterPumpEventUnsafe(ClearCache);
 
             _physicsObjects.Add(physicsObject);
 

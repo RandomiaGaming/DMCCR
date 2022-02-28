@@ -98,7 +98,7 @@ namespace EpsilonEngine
                 {
                     _XNAPositionCache.X = tileData.Position.X - TilemapBoundsMinX;
                     _XNAPositionCache.Y = renderTarget2D.Height - tileData.Position.Y + TilemapBoundsMinY - tileData.Tile.Texture.Height;
-                    spriteBatch.Draw(tileData.Tile.Texture.XNABase, _XNAPositionCache, tileData.Tile.Color.ToXNA());
+                    spriteBatch.Draw(tileData.Tile.Texture._XNABase, _XNAPositionCache, new Microsoft.Xna.Framework.Color(tileData.Tile.Color._r, tileData.Tile.Color._g, tileData.Tile.Color._b, tileData.Tile.Color._a));
                 }
             }
 

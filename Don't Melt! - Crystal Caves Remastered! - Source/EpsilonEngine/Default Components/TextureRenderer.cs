@@ -91,7 +91,7 @@
                 _XNAColorCache = new Microsoft.Xna.Framework.Color(_colorR, _colorG, _colorB, _colorA);
             }
         }
-        public TextureRenderer(GameObject gameObject) : base(gameObject)
+        public TextureRenderer(GameObject gameObject, int renderPriority) : base(gameObject, 0, renderPriority)
         {
 
         }
@@ -107,7 +107,7 @@
                 }
                 _XNAPositionCache.X = positionX;
                 _XNAPositionCache.Y = positionY;
-                Scene.XNASpriteBatch.Draw(Texture.XNABase, _XNAPositionCache, _XNAColorCache);
+                Scene.XNASpriteBatch.Draw(Texture._XNABase, _XNAPositionCache, _XNAColorCache);
             }
         }
         public override string ToString()
