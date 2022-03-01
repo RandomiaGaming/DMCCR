@@ -75,6 +75,28 @@ namespace EpsilonEngine
                 _targetFPS = value;
             }
         }
+
+        public bool IsFullScreen
+        {
+            get
+            {
+                return _isFullScreen;
+            }
+            set
+            {
+                if(value != _isFullScreen)
+                {
+                    _isFullScreen = value;
+
+                    GameInterface.XNAGraphicsDeviceManager.IsFullScreen = value;
+
+                    GameInterface.XNAGraphicsDeviceManager.PreferredBackBufferWidth = GameInterface.XNAGraphicsDevice.Adapter.CurrentDisplayMode.Width;
+                    GameInterface.XNAGraphicsDeviceManager.PreferredBackBufferHeight = GameInterface.XNAGraphicsDevice.Adapter.CurrentDisplayMode.Height;
+
+                    GameInterface.XNAGraphicsDeviceManager.ApplyChanges();
+                }
+            }
+        }
         #endregion
         #region Internal Variables
         internal GameInterface GameInterface = null;
@@ -105,6 +127,8 @@ namespace EpsilonEngine
         private Microsoft.Xna.Framework.Rectangle _XNAViewportRectCache = new Microsoft.Xna.Framework.Rectangle(0, 0, 1, 1);
 
         private float _targetFPS = float.PositiveInfinity;
+
+        private bool _isFullScreen = false;
         #endregion
         #region Constructors
         public Game()
@@ -540,7 +564,7 @@ namespace EpsilonEngine
         }
         internal void ResizeCallback()
         {
-            if (GameInterface.XNAGraphicsDeviceManager.IsFullScreen)
+            if (_isFullScreen)
             {
                 ViewportWidth = (ushort)GameInterface.XNAGraphicsDevice.Adapter.CurrentDisplayMode.Width;
                 ViewportHeight = (ushort)GameInterface.XNAGraphicsDevice.Adapter.CurrentDisplayMode.Height;

@@ -1,6 +1,6 @@
-﻿using System;
+﻿//Approved 2/28/2022
+using System;
 using System.IO;
-
 namespace EpsilonEngine
 {
     public sealed class Texture
@@ -10,51 +10,29 @@ namespace EpsilonEngine
         public const int MaxHeight = 46340;
         #endregion
         #region Public Variables
-        public Game Game
-        {
-            get
-            {
-                return _game;
-            }
-        }
-        
-        public int Width
-        {
-            get
-            {
-                return _width;
-            }
-        }
-        public int Height
-        {
-            get
-            {
-                return _height;
-            }
-        }
+        public Game Game { get; private set; }
+
+        public int Width { get; private set; }
+        public int Height { get; private set; }
         #endregion
         #region Internal Variables
-        internal Game _game = null;
-
-        internal int _width = 0;
-        internal int _height = 0;
-        internal int _heightMinusOne = 0;
-        internal int _dataLength = 0;
-
         internal Microsoft.Xna.Framework.Graphics.Texture2D _XNABase = null;
-        internal Microsoft.Xna.Framework.Rectangle _XNADrawRectangle = new Microsoft.Xna.Framework.Rectangle();
-        internal Microsoft.Xna.Framework.Color[] _XNAColorData = null;
-
-        internal Color[] _colorData = null;
         #endregion
-        #region Constructors
+        #region Private Variables
+        private int _heightMinusOne;
+        private int _dataLength;
+
+        private Microsoft.Xna.Framework.Color[] _XNAColorData;
+        private Color[] _colorData;
+        #endregion
+        #region Public Constructors
         public Texture(Game game, int width, int height)
         {
             if (game is null)
             {
                 throw new Exception("game cannot be null.");
             }
-            _game = game;
+            Game = game;
 
             if (width <= 0)
             {
@@ -64,7 +42,7 @@ namespace EpsilonEngine
             {
                 throw new Exception("width must be less than MaxWidth.");
             }
-            _width = width;
+            Width = width;
 
             if (height <= 0)
             {
@@ -74,15 +52,13 @@ namespace EpsilonEngine
             {
                 throw new Exception("height must be less than MaxHeight.");
             }
-            _height = height;
+            Height = height;
 
-            _heightMinusOne = _height - 1;
+            _heightMinusOne = Height - 1;
 
-            _XNADrawRectangle = new Microsoft.Xna.Framework.Rectangle(0, 0, _width, _height);
+            _XNABase = new Microsoft.Xna.Framework.Graphics.Texture2D(Game.GameInterface.GraphicsDevice, Width, Height);
 
-            _XNABase = new Microsoft.Xna.Framework.Graphics.Texture2D(_game.GameInterface.GraphicsDevice, _width, _height);
-
-            _dataLength = _width * _height;
+            _dataLength = Width * Height;
 
             _XNAColorData = new Microsoft.Xna.Framework.Color[_dataLength];
 
@@ -94,7 +70,7 @@ namespace EpsilonEngine
             {
                 throw new Exception("game cannot be null.");
             }
-            _game = game;
+            Game = game;
 
             if (width <= 0)
             {
@@ -104,7 +80,7 @@ namespace EpsilonEngine
             {
                 throw new Exception("width must be less than MaxWidth.");
             }
-            _width = width;
+            Width = width;
 
             if (height <= 0)
             {
@@ -114,21 +90,19 @@ namespace EpsilonEngine
             {
                 throw new Exception("height must be less than MaxHeight.");
             }
-            _height = height;
+            Height = height;
 
-            _heightMinusOne = _height - 1;
+            _heightMinusOne = Height - 1;
 
-            _XNADrawRectangle = new Microsoft.Xna.Framework.Rectangle(0, 0, _width, _height);
+            _XNABase = new Microsoft.Xna.Framework.Graphics.Texture2D(Game.GameInterface.GraphicsDevice, Width, Height);
 
-            _XNABase = new Microsoft.Xna.Framework.Graphics.Texture2D(_game.GameInterface.GraphicsDevice, _width, _height);
+            _dataLength = Width * Height;
 
-            _dataLength = _width * _height;
-
-            if(data is null)
+            if (data is null)
             {
                 throw new Exception("data cannot be null.");
             }
-            if(data.Length != _dataLength)
+            if (data.Length != _dataLength)
             {
                 throw new Exception("data.Length must be equal to width times height.");
             }
@@ -151,9 +125,9 @@ namespace EpsilonEngine
             {
                 throw new Exception("game cannot be null.");
             }
-            _game = game;
+            Game = game;
 
-            if(sourceFilePath is null)
+            if (sourceFilePath is null)
             {
                 throw new Exception("sourceFilePath cannot be null.");
             }
@@ -164,39 +138,37 @@ namespace EpsilonEngine
 
             try
             {
-                _XNABase = Microsoft.Xna.Framework.Graphics.Texture2D.FromFile(_game.GameInterface.GraphicsDevice, sourceFilePath);
+                _XNABase = Microsoft.Xna.Framework.Graphics.Texture2D.FromFile(Game.GameInterface.GraphicsDevice, sourceFilePath);
             }
             catch
             {
                 throw new Exception("texture could not be loaded from filePath.");
             }
 
-            _width = _XNABase.Width;
-            _height = _XNABase.Height;
+            Width = _XNABase.Width;
+            Height = _XNABase.Height;
 
-            if (_width <= 0)
+            if (Width <= 0)
             {
                 throw new Exception("width must be greater than 0.");
             }
-            if (_width > MaxWidth)
+            if (Width > MaxWidth)
             {
                 throw new Exception("width must be less than MaxWidth.");
             }
 
-            if (_height <= 0)
+            if (Height <= 0)
             {
                 throw new Exception("height must be greater than 0.");
             }
-            if (_height > MaxHeight)
+            if (Height > MaxHeight)
             {
                 throw new Exception("height must be less than MaxHeight.");
             }
 
-            _heightMinusOne = _height - 1;
+            _heightMinusOne = Height - 1;
 
-            _XNADrawRectangle = new Microsoft.Xna.Framework.Rectangle(0, 0, _width, _height);
-
-            _dataLength = _width * _height;
+            _dataLength = Width * Height;
 
             _XNAColorData = new Microsoft.Xna.Framework.Color[_dataLength];
 
@@ -207,13 +179,8 @@ namespace EpsilonEngine
             for (int i = 0; i < _dataLength; i++)
             {
                 Microsoft.Xna.Framework.Color color = _XNAColorData[i];
-                _colorData[i]._r = color.R;
-                _colorData[i]._g = color.G;
-                _colorData[i]._b = color.B;
-                _colorData[i]._a = color.A;
+                _colorData[i] = new Color(color.R, color.G, color.B, color.A);
             }
-
-            _XNABase.SetData(_XNAColorData);
         }
         public Texture(Game game, Stream sourceStream)
         {
@@ -221,7 +188,7 @@ namespace EpsilonEngine
             {
                 throw new Exception("game cannot be null.");
             }
-            _game = game;
+            Game = game;
 
             if (sourceStream is null)
             {
@@ -234,39 +201,37 @@ namespace EpsilonEngine
 
             try
             {
-                _XNABase = Microsoft.Xna.Framework.Graphics.Texture2D.FromStream(_game.GameInterface.GraphicsDevice, sourceStream);
+                _XNABase = Microsoft.Xna.Framework.Graphics.Texture2D.FromStream(Game.GameInterface.GraphicsDevice, sourceStream);
             }
             catch
             {
                 throw new Exception("texture could not be loaded from filePath.");
             }
 
-            _width = _XNABase.Width;
-            _height = _XNABase.Height;
+            Width = _XNABase.Width;
+            Height = _XNABase.Height;
 
-            if (_width <= 0)
+            if (Width <= 0)
             {
                 throw new Exception("width must be greater than 0.");
             }
-            if (_width > MaxWidth)
+            if (Width > MaxWidth)
             {
                 throw new Exception("width must be less than MaxWidth.");
             }
 
-            if (_height <= 0)
+            if (Height <= 0)
             {
                 throw new Exception("height must be greater than 0.");
             }
-            if (_height > MaxHeight)
+            if (Height > MaxHeight)
             {
                 throw new Exception("height must be less than MaxHeight.");
             }
 
-            _heightMinusOne = _height - 1;
+            _heightMinusOne = Height - 1;
 
-            _XNADrawRectangle = new Microsoft.Xna.Framework.Rectangle(0, 0, _width, _height);
-
-            _dataLength = _width * _height;
+            _dataLength = Width * Height;
 
             _XNAColorData = new Microsoft.Xna.Framework.Color[_dataLength];
 
@@ -277,13 +242,8 @@ namespace EpsilonEngine
             for (int i = 0; i < _dataLength; i++)
             {
                 Microsoft.Xna.Framework.Color color = _XNAColorData[i];
-                _colorData[i]._r = color.R;
-                _colorData[i]._g = color.G;
-                _colorData[i]._b = color.B;
-                _colorData[i]._a = color.A;
+                _colorData[i] = new Color(color.R, color.G, color.B, color.A);
             }
-
-            _XNABase.SetData(_XNAColorData);
         }
         #endregion
         #region Public Overrides
@@ -299,7 +259,7 @@ namespace EpsilonEngine
             {
                 throw new Exception("x must be greater than or equal to 0.");
             }
-            if (x >= _width)
+            if (x >= Width)
             {
                 throw new Exception("x must be less than width.");
             }
@@ -308,12 +268,12 @@ namespace EpsilonEngine
             {
                 throw new Exception("y must be greater than or equal to 0.");
             }
-            if (y >= _height)
+            if (y >= Height)
             {
                 throw new Exception("y must be less than height.");
             }
 
-            int targetIndex = ((_heightMinusOne - y) * _width) + x;
+            int targetIndex = ((_heightMinusOne - y) * Width) + x;
 
             _colorData[targetIndex] = color;
 
@@ -325,7 +285,7 @@ namespace EpsilonEngine
             {
                 throw new Exception("x must be greater than or equal to 0.");
             }
-            if (x >= _width)
+            if (x >= Width)
             {
                 throw new Exception("x must be less than width.");
             }
@@ -334,12 +294,12 @@ namespace EpsilonEngine
             {
                 throw new Exception("y must be greater than or equal to 0.");
             }
-            if (y >= _height)
+            if (y >= Height)
             {
                 throw new Exception("y must be less than height.");
             }
 
-            return _colorData[((_heightMinusOne - y) * _width) + x];
+            return _colorData[((_heightMinusOne - y) * Width) + x];
         }
         public void SetData(Color[] data)
         {
@@ -353,8 +313,6 @@ namespace EpsilonEngine
             }
 
             _colorData = (Color[])data.Clone();
-
-            _XNAColorData = new Microsoft.Xna.Framework.Color[_dataLength];
 
             for (int i = 0; i < _dataLength; i++)
             {

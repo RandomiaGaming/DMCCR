@@ -18,7 +18,7 @@ namespace EpsilonEngine
             XNAGraphicsDeviceManager = new Microsoft.Xna.Framework.GraphicsDeviceManager(this);
             XNAGraphicsDeviceManager.GraphicsProfile = Microsoft.Xna.Framework.Graphics.GraphicsProfile.Reach;
             XNAGraphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
-            XNAGraphicsDeviceManager.HardwareModeSwitch = true;
+            XNAGraphicsDeviceManager.HardwareModeSwitch = false;
             XNAGraphicsDeviceManager.IsFullScreen = false;
             XNAGraphicsDeviceManager.PreferHalfPixelOffset = false;
             XNAGraphicsDeviceManager.PreferredBackBufferFormat = Microsoft.Xna.Framework.Graphics.SurfaceFormat.Color;
@@ -65,7 +65,8 @@ namespace EpsilonEngine
         }
         protected sealed override void OnExiting(object sender, EventArgs args)
         {
-            Game.MarkForDestruction();
+            //Game.MarkForDestruction();
+           System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
         #endregion
     }

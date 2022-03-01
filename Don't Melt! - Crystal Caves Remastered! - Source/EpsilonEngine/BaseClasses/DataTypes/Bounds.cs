@@ -4,7 +4,7 @@ namespace EpsilonEngine
     public struct Bounds
     {
         #region Public Constants
-        public static readonly Bounds Zero = new Bounds(0.0f, 0.0f, 0.0f, 0.0f);
+        public static readonly Bounds Zero = new Bounds();
         public static readonly Bounds One = new Bounds(0.0f, 0.0f, 1.0f, 1.0f);
         public static readonly Bounds NegativeOne = new Bounds(-1.0f, -1.0f, 0.0f, 0.0f);
 
@@ -265,7 +265,7 @@ namespace EpsilonEngine
         #region Public Methods
         public bool Incapsulates(Vector a)
         {
-            return a._x >= _minX && a._x <= _maxX && a._y >= _minY && a._y <= _maxY;
+            return a.X >= _minX && a.X <= _maxX && a.Y >= _minY && a.Y <= _maxY;
         }
         public bool Incapsulates(Bounds a)
         {

@@ -5,6 +5,8 @@ namespace DMCCR
     public enum FacingDirection { Right, Left };
     public sealed class Player : PhysicsObject
     {
+        private StagePlayer stagePlayer;
+
         private TextureRenderer _textureRenderer = null;
 
         private Texture _playerTextureRight = null;
@@ -18,10 +20,12 @@ namespace DMCCR
         public const float GravityForce = 9.8f * 16f * 1.5f / 60f / 60f;
         public Player(StagePlayer stagePlayer, PhysicsLayer physicsLayer, PhysicsLayer[] collsionPhysicsLayers) : base(stagePlayer, physicsLayer, false)
         {
+            this.stagePlayer = stagePlayer;
+
             _playerTextureRight = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.PlayerRight.png"));
             _playerTextureLeft = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.PlayerLeft.png"));
 
-            _textureRenderer = new TextureRenderer(this, -1);
+            _textureRenderer = new TextureRenderer(this, -5);
 
             _textureRenderer.Texture = _playerTextureRight;
 
@@ -172,12 +176,8 @@ namespace DMCCR
         private bool killed = false;
         public void Kill()
         {
-            if (killed)
-            {
-                return;
-            }
-            killed = true;
-            new StagePlayer((DMCCR)Game);
+            Velocity = Vector.Zero;
+            Position = stagePlayer.CheckPointPos;
         }
     }
 }

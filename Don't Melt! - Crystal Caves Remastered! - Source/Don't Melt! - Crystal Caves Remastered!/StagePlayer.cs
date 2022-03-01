@@ -8,14 +8,19 @@ namespace DMCCR
     {
         public const int ViewPortWidth = 256 * 3;
         public const int ViewPortHeight = 144 * 3;
+
+        public Point CheckPointPos = new Point(-1036, -126);
+
         public StagePlayer(DMCCR dontmelt) : base(dontmelt, ViewPortWidth, ViewPortHeight, 0)
         {
-            Stream levelDataStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Stages.Normal.txt");
+            Stream levelDataStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Stages.Expert.txt");
             byte[] levelDataBytes = new byte[levelDataStream.Length];
             levelDataStream.Read(levelDataBytes, 0, (int)levelDataStream.Length);
             string levelData = Encoding.ASCII.GetString(levelDataBytes);
 
             PhysicsLayer playerPhysicsLayer = new PhysicsLayer(this);
+
+            PhysicsLayer checkPointPhysicsLayer = new PhysicsLayer(this);
 
             PhysicsLayer groundPhysicsLayer = new PhysicsLayer(this);
 
@@ -61,16 +66,13 @@ namespace DMCCR
                 Color = Color.White,
             };
 
-            Player player = new Player(this, playerPhysicsLayer, new PhysicsLayer[] { playerPhysicsLayer, groundPhysicsLayer, lavaPhysicsLayer, noJumpPhysicsLayer })
-            {
-                PositionX = -1036,
-                PositionY = -126,
-            };
+            Player player = new Player(this, playerPhysicsLayer, new PhysicsLayer[] { playerPhysicsLayer, groundPhysicsLayer, lavaPhysicsLayer, noJumpPhysicsLayer });
+            player.Position = CheckPointPos;
 
             Tilemap groundTilemap = new Tilemap(this, groundPhysicsLayer, true);
 
             Tilemap lavaTilemap = new Tilemap(this, groundPhysicsLayer, true);
-            
+
             Tilemap noJumpTilemap = new Tilemap(this, groundPhysicsLayer, true);
 
             Tilemap airTilemap = new Tilemap(this, airPhysicsLayer, true);
@@ -136,6 +138,14 @@ namespace DMCCR
                     {
                         airTilemap.SetTile(airTile, new Point(16 * x, 16 * y));
                         new NoJump(this, airPhysicsLayer)
+                        {
+                            PositionX = 16 * x,
+                            PositionY = 16 * y,
+                        };
+                    }
+                    else if (ds == "CheckPoint")
+                    {
+                        new Checkpoint(this, checkPointPhysicsLayer, new PhysicsLayer[] { playerPhysicsLayer })
                         {
                             PositionX = 16 * x,
                             PositionY = 16 * y,

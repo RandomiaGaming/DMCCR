@@ -692,11 +692,11 @@ namespace EpsilonEngine
                 worldShape._maxX = PositionX + localShape.MaxX;
                 worldShape._maxY = PositionY + localShape.MaxY;
 
-                worldShape._width = worldShape._maxX - worldShape._minX + 1;
-                worldShape._height = worldShape._maxY - worldShape._minY + 1;
+                worldShape.Width = worldShape._maxX - worldShape._minX + 1;
+                worldShape.Height = worldShape._maxY - worldShape._minY + 1;
 
-                worldShape._size._x = worldShape._width;
-                worldShape._size._y = worldShape._height;
+                worldShape.Size._x = worldShape.Width;
+                worldShape.Size._y = worldShape.Height;
 
             }
             ColliderBoundsMinX = PositionX + LocalColliderBoundsMinX;
@@ -774,6 +774,31 @@ namespace EpsilonEngine
             if (LogCollisionsLeft)
             {
                 CheckCollisionsLeft();
+            }
+            if (LogOverlaps)
+            {
+                CheckOverlaps();
+            }
+        }
+
+        private void CheckOverlaps()
+        {
+            _overlaps = new List<PhysicsObject>();
+
+            if (CollisionPhysicsLayers is null || (PhaseThroughUp && PhaseThroughDown && PhaseThroughLeft && PhaseThroughRight))
+            {
+                return;
+            }
+
+            foreach (PhysicsLayer collisionPhysicsLayer in CollisionPhysicsLayers)
+            {
+                foreach (PhysicsObject collisionPhysicsObject in collisionPhysicsLayer._physicsObjectCache)
+                {
+                    if (collisionPhysicsObject != this && (collisionPhysicsObject.SolidDown || collisionPhysicsObject.SolidUp || collisionPhysicsObject.SolidLeft || collisionPhysicsObject.SolidRight) && collisionPhysicsObject.ColliderBounds.Overlaps(ColliderBounds))
+                    {
+                        _overlaps.Add(collisionPhysicsObject);
+                    }
+                }
             }
         }
         private void CheckCollisionsUp()

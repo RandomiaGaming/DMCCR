@@ -1,10 +1,11 @@
+//Approved 2/28/2022
 using System;
 namespace EpsilonEngine
 {
     public struct Rectangle
     {
         #region Public Constants
-        public static readonly Rectangle Zero = new Rectangle(0, 0, 0, 0);
+        public static readonly Rectangle Zero = new Rectangle();
         public static readonly Rectangle One = new Rectangle(0, 0, 1, 1);
         public static readonly Rectangle NegativeOne = new Rectangle(-1, -1, 0, 0);
 
@@ -31,9 +32,9 @@ namespace EpsilonEngine
 
                 _min.X = _minX;
 
-                _width = _maxX - _minX + 1;
+                Width = _maxX - _minX + 1;
 
-                _size.X = _width;
+                Size = new Point(Width, Height);
             }
         }
         public int MinY
@@ -53,9 +54,9 @@ namespace EpsilonEngine
 
                 _min.Y = _minY;
 
-                _height = _maxY - _minY + 1;
+                Height = _maxY - _minY + 1;
 
-                _size.Y = _height;
+                Size = new Point(Width, Height);
             }
         }
         public int MaxX
@@ -75,9 +76,9 @@ namespace EpsilonEngine
 
                 _max.X = _maxX;
 
-                _width = _maxX - _minX + 1;
+                Width = _maxX - _minX + 1;
 
-                _size.X = _width;
+                Size = new Point(Width, Height);
             }
         }
         public int MaxY
@@ -97,9 +98,9 @@ namespace EpsilonEngine
 
                 _max.Y = _maxY;
 
-                _height = _maxY - _minY + 1;
+                Height = _maxY - _minY + 1;
 
-                _size.Y = _height;
+                Size = new Point(Width, Height);
             }
         }
         public Point Min
@@ -118,14 +119,12 @@ namespace EpsilonEngine
                 _minX = value.X;
                 _minY = value.Y;
 
-                _min.X = _minX;
-                _min.Y = _minY;
+                _min = value;
 
-                _width = _maxX - _minX + 1;
-                _height = _maxY - _minY + 1;
+                Width = _maxX - _minX + 1;
+                Height = _maxY - _minY + 1;
 
-                _size.X = _width;
-                _size.Y = _height;
+                Size = new Point(Width, Height);
             }
         }
         public Point Max
@@ -144,62 +143,39 @@ namespace EpsilonEngine
                 _maxX = value.X;
                 _maxY = value.Y;
 
-                _max.X = _minX;
-                _max.Y = _minY;
+                _max = value;
 
-                _width = _maxX - _minX + 1;
-                _height = _maxY - _minY + 1;
+                Width = _maxX - _minX + 1;
+                Height = _maxY - _minY + 1;
 
-                _size.X = _width;
-                _size.Y = _height;
+                Size = new Point(Width, Height);
             }
         }
-        public int Width
-        {
-            get
-            {
-                return _width;
-            }
-        }
-        public int Height
-        {
-            get
-            {
-                return _height;
-            }
-        }
-        public Point Size
-        {
-            get
-            {
-                return _size;
-            }
-        }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+        public Point Size { get; private set; }
         #endregion
-        #region Internal Variables
-        internal int _minX;
-        internal int _minY;
-        internal int _maxX;
-        internal int _maxY;
-        internal Point _min;
-        internal Point _max;
-        internal int _width;
-        internal int _height;
-        internal Point _size;
+        #region Private Variables
+        private int _minX;
+        private int _minY;
+        private int _maxX;
+        private int _maxY;
+        private Point _min;
+        private Point _max;
         #endregion
         #region Public Constructors
         public Rectangle(int minX, int minY, int maxX, int maxY)
         {
             if (minX > maxX)
             {
-                throw new Exception("MaxX must be greater than MinX.");
+                throw new Exception("maxX must be greater than minX.");
             }
             _minX = minX;
             _maxX = maxX;
 
             if (minY > maxY)
             {
-                throw new Exception("MaxY must be greater than MinY.");
+                throw new Exception("maxY must be greater than minY.");
             }
             _minY = minY;
             _maxY = maxY;
@@ -207,31 +183,31 @@ namespace EpsilonEngine
             _min = new Point(_minX, _minY);
             _max = new Point(_maxX, _maxY);
 
-            _width = _maxX - _minX + 1;
-            _height = _maxY - _minY + 1;
+            Width = _maxX - _minX + 1;
+            Height = _maxY - _minY + 1;
 
-            _size = new Point(_width, _height);
+            Size = new Point(Width, Height);
         }
         public Rectangle(Point min, Point max)
         {
             if (min.X > max.X || min.Y > max.Y)
             {
-                throw new Exception("Max must be greater or equal to than Min.");
+                throw new Exception("max must be greater or equal to than min.");
             }
 
-            _minX = min.X;
-            _minY = min.Y;
+            _min = min;
+            _max = max;
 
-            _maxX = max.X;
-            _maxY = max.Y;
+            _minX = _min.X;
+            _minY = _min.Y;
 
-            _min = new Point(_minX, _minY);
-            _max = new Point(_maxX, _maxY);
+            _maxX = _max.X;
+            _maxY = _max.Y;
 
-            _width = _maxX - _minX + 1;
-            _height = _maxY - _minY + 1;
+            Width = _maxX - _minX + 1;
+            Height = _maxY - _minY + 1;
 
-            _size = new Point(_width, _height);
+            Size = new Point(Width, Height);
         }
         #endregion
         #region Public Overrides
@@ -265,15 +241,15 @@ namespace EpsilonEngine
         #region Public Methods
         public bool Incapsulates(Point a)
         {
-            return a._x >= _minX && a._x <= _maxX && a._y >= _minY && a._y <= _maxY;
+            return a._x >= _minX && a._y >= _minY && a._x <= _maxX && a._y <= _maxY;
         }
         public bool Incapsulates(Rectangle a)
         {
-            return a._maxY <= _maxY && a._minY >= _minY && a._maxX <= _maxX && a._minX >= _minX;
+            return a._minX >= _minX && a._minY >= _minY && a._maxX <= _maxX && a._maxY <= _maxY;
         }
         public bool Overlaps(Rectangle a)
         {
-            return _maxX >= a._minX && _minX <= a._maxX && _maxY >= a._minY && _minY <= a._maxY;
+            return a._minX <= _maxX && a._minY <= _maxY && a._maxX >= _minX && a._maxY >= _minY;
         }
         #endregion
     }
