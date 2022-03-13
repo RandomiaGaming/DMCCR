@@ -1,9 +1,11 @@
-﻿using System;
+﻿//Approved 3/1/2022
 namespace EpsilonEngine
 {
     internal static class Profiler
     {
         #region Private Variables
+        private static long _initializeStart = 0;
+
         private static long _updateStart = 0;
         private static long _updateEnd = 0;
 
@@ -21,6 +23,17 @@ namespace EpsilonEngine
         }
         #endregion
         #region Internal Methods
+        internal static void InitializeStart()
+        {
+            _initializeStart = _stopWatch.ElapsedTicks;
+        }
+        internal static void InitializeEnd()
+        {
+            long initializeEnd = _stopWatch.ElapsedTicks;
+            long initializeTime = initializeEnd - _initializeStart;
+            System.Console.WriteLine($"Debug Profiler - {initializeTime} Tick Initialization which is {initializeTime / 10000000.0} seconds.");
+        }
+
         internal static void UpdateStart()
         {
             _updateStart = _stopWatch.ElapsedTicks;
@@ -51,11 +64,11 @@ namespace EpsilonEngine
 
             if (frameTime <= 0)
             {
-                Console.WriteLine($"Debug Profiler - Infinity FPS - {frameTime} Tick Frame - {frameTime - updateTime - renderTime} Tick MonoGame Update - {updateTime} Tick Update - {renderTime} Tick Render.");
+                System.Console.WriteLine($"Debug Profiler - Infinity FPS - {frameTime} Tick Frame - {frameTime - updateTime - renderTime} Tick MonoGame Update - {updateTime} Tick Update - {renderTime} Tick Render.");
                 return;
             }
 
-            Console.WriteLine($"Debug Profiler - {10000000 / frameTime} FPS - {frameTime} Tick Frame - {frameTime - updateTime - renderTime} Tick MonoGame Update - {updateTime} Tick Update - {renderTime} Tick Render.");
+            System.Console.WriteLine($"Debug Profiler - {10000000 / frameTime} FPS - {frameTime} Tick Frame - {frameTime - updateTime - renderTime} Tick MonoGame Update - {updateTime} Tick Update - {renderTime} Tick Render.");
 
             _lastPrintTime = _stopWatch.ElapsedTicks;
         }

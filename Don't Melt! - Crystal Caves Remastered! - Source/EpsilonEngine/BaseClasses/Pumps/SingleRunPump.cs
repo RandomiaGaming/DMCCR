@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//Approved 3/1/2022
 namespace EpsilonEngine
 {
     public sealed class SingleRunPump
@@ -14,14 +13,13 @@ namespace EpsilonEngine
         }
         #endregion
         #region Private Variables
-        private List<PumpEvent> _pumpEvents = new List<PumpEvent>();
-        private bool _pumpEventsClear = true;
+        private System.Collections.Generic.List<PumpEvent> _pumpEvents = new System.Collections.Generic.List<PumpEvent>();
         private bool _pumpEmpty = true;
         #endregion
         #region Public Methods
         public void Invoke()
         {
-            if (_pumpEventsClear)
+            if (_pumpEmpty)
             {
                 return;
             }
@@ -38,7 +36,7 @@ namespace EpsilonEngine
         {
             if (pumpEvent is null)
             {
-                throw new Exception("pumpEvent cannot be null.");
+                throw new System.Exception("pumpEvent cannot be null.");
             }
 
             int pumpEventsCount = _pumpEvents.Count;
@@ -46,21 +44,22 @@ namespace EpsilonEngine
             {
                 if (pumpEvent == _pumpEvents[i])
                 {
-                    throw new Exception("pumpEvent has already been added to this pump.");
+                    throw new System.Exception("pumpEvent has already been added to this pump.");
                 }
             }
 
-            RegisterPumpEventUnsafe(pumpEvent);
+            _pumpEvents.Add(pumpEvent);
+            _pumpEmpty = false;
         }
         #endregion
         #region Internal Methods
         public void RegisterPumpEventUnsafe(PumpEvent pumpEvent)
         {
             _pumpEvents.Add(pumpEvent);
-            _pumpEventsClear = false;
+            _pumpEmpty = false;
         }
         #endregion
-        #region Override Methods
+        #region Public Overrides
         public override string ToString()
         {
             return $"EpsilonEngine.SingleRunPump({EventCount})";

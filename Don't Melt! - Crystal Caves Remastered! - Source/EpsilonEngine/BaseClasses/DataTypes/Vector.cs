@@ -1,4 +1,4 @@
-//Approved 2/28/2022
+//Approved 3/1/2022
 namespace EpsilonEngine
 {
     public struct Vector
@@ -27,11 +27,6 @@ namespace EpsilonEngine
         {
             X = x;
             Y = y;
-        }
-        public Vector(Point source)
-        {
-            X = source.X;
-            Y = source.Y;
         }
         #endregion
         #region Public Overrides
@@ -117,7 +112,7 @@ namespace EpsilonEngine
         }
         public static explicit operator Vector(Point source)
         {
-            return new Vector(source._x, source._y);
+            return new Vector(source.X, source.Y);
         }
         #endregion
     }

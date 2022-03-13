@@ -1,19 +1,19 @@
-﻿using System;
-using System.Reflection;
-using System.Collections.Generic;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public class Game
     {
         #region Public Variables
         public bool Running { get; private set; } = false;
-        public bool MarkedForDestruction { get; private set; } = false;
-        public bool Destroyed { get; private set; } = false;
+        public bool MarkedForExit { get; private set; } = false;
+        public bool Exited { get; private set; } = false;
 
-        public bool Drawing { get; private set; } = false;
+        public bool Rendering { get; private set; } = false;
 
-        public bool OverridesUpdate { get; private set; } = false;
-        public bool OverridesDraw { get; private set; } = false;
+        public bool KillProcessOnExit = true;
+        public bool DestroyChildrenOnExit = false;
+
+        public readonly bool OverridesUpdate = false;
+        public readonly bool OverridesDraw = false;
 
         public Color BackgroundColor
         {
@@ -23,26 +23,19 @@ namespace EpsilonEngine
             }
             set
             {
-                _backgroundColor._r = value._r;
-                _backgroundColor._g = value._g;
-                _backgroundColor._b = value._b;
-                _backgroundColor._a = value._a;
+                _backgroundColor = value;
 
-                _XNABackgroundColorCache.R = value._r;
-                _XNABackgroundColorCache.G = value._g;
-                _XNABackgroundColorCache.B = value._b;
-                _XNABackgroundColorCache.A = value._a;
+                _XNABackgroundColorCache = new Microsoft.Xna.Framework.Color(value.R, value.G, value.B, value.A);
             }
         }
 
-        public ushort ViewportWidth { get; private set; } = 1920;
-        public ushort ViewportHeight { get; private set; } = 1080;
-        public Rectangle ViewportRect { get; private set; } = new Rectangle(0, 0, 0, 0);
-        public float AspectRatio { get; private set; } = 16f / 9f;
+        public int ViewportWidth { get; private set; } = 1920;
+        public int ViewportHeight { get; private set; } = 1080;
+        public float AspectRatio { get; private set; } = 1.66666663f;
 
-        public float CurrentFPS { get; private set; } = 0f;
-        public TimeSpan TimeSinceStart { get; private set; } = new TimeSpan(0);
-        public TimeSpan DeltaTime { get; private set; } = new TimeSpan(0);
+        public float CurrentFPS { get; private set; }
+        public System.TimeSpan TimeSinceStart { get; private set; }
+        public System.TimeSpan DeltaTime { get; private set; }
 
         public float TargetFPS
         {
@@ -54,11 +47,11 @@ namespace EpsilonEngine
             {
                 if (value <= 0)
                 {
-                    throw new Exception("TargetFPS must be greater than 0.");
+                    throw new System.Exception("TargetFPS must be greater than 0.");
                 }
                 if (value == float.NaN)
                 {
-                    throw new Exception("TargetFPS must be a real number or infinity.");
+                    throw new System.Exception("TargetFPS must be a real number or infinity.");
                 }
                 if (value == float.PositiveInfinity)
                 {
@@ -68,10 +61,10 @@ namespace EpsilonEngine
                 }
                 if (value > 1000000.0f)
                 {
-                    throw new Exception("TargetFPS must less than 1000000 unless TargetFPS is infinity.");
+                    throw new System.Exception("TargetFPS must less than 1000000 unless TargetFPS is infinity.");
                 }
                 GameInterface.IsFixedTimeStep = true;
-                GameInterface.TargetElapsedTime = new TimeSpan((long)(10000000.0f / value));
+                GameInterface.TargetElapsedTime = new System.TimeSpan((long)(10000000.0f / value));
                 _targetFPS = value;
             }
         }
@@ -84,17 +77,18 @@ namespace EpsilonEngine
             }
             set
             {
-                if(value != _isFullScreen)
+                if (value == _isFullScreen)
                 {
-                    _isFullScreen = value;
-
-                    GameInterface.XNAGraphicsDeviceManager.IsFullScreen = value;
-
-                    GameInterface.XNAGraphicsDeviceManager.PreferredBackBufferWidth = GameInterface.XNAGraphicsDevice.Adapter.CurrentDisplayMode.Width;
-                    GameInterface.XNAGraphicsDeviceManager.PreferredBackBufferHeight = GameInterface.XNAGraphicsDevice.Adapter.CurrentDisplayMode.Height;
-
-                    GameInterface.XNAGraphicsDeviceManager.ApplyChanges();
+                    return;
                 }
+                _isFullScreen = value;
+                GameInterface.XNAGraphicsDeviceManager.IsFullScreen = value;
+
+
+                GameInterface.XNAGraphicsDeviceManager.PreferredBackBufferWidth = GameInterface.XNAGraphicsDevice.Adapter.CurrentDisplayMode.Width;
+                GameInterface.XNAGraphicsDeviceManager.PreferredBackBufferHeight = GameInterface.XNAGraphicsDevice.Adapter.CurrentDisplayMode.Height;
+
+                GameInterface.XNAGraphicsDeviceManager.ApplyChanges();
             }
         }
         #endregion
@@ -115,37 +109,47 @@ namespace EpsilonEngine
         internal Microsoft.Xna.Framework.Graphics.SpriteBatch XNASpriteBatch = null;
         #endregion
         #region Private Variables
-        private List<GameManager> _gameManagers = new List<GameManager>();
+        private System.Collections.Generic.List<GameManager> _gameManagers = new System.Collections.Generic.List<GameManager>();
 
-        private List<Canvas> _canvases = new List<Canvas>();
+        private System.Collections.Generic.List<Canvas> _canvases = new System.Collections.Generic.List<Canvas>();
 
-        private List<Scene> _scenes = new List<Scene>();
+        private System.Collections.Generic.List<Scene> _scenes = new System.Collections.Generic.List<Scene>();
 
-        private Microsoft.Xna.Framework.Color _XNABackgroundColorCache = new Microsoft.Xna.Framework.Color(byte.MinValue, byte.MinValue, byte.MinValue, byte.MaxValue);
-        private Color _backgroundColor = new Color(byte.MinValue, byte.MinValue, byte.MinValue, byte.MinValue);
+        private Microsoft.Xna.Framework.Color _XNABackgroundColorCache;
+        private Color _backgroundColor;
 
-        private Microsoft.Xna.Framework.Rectangle _XNAViewportRectCache = new Microsoft.Xna.Framework.Rectangle(0, 0, 1, 1);
+        private Microsoft.Xna.Framework.Rectangle _XNAViewportRect;
 
         private float _targetFPS = float.PositiveInfinity;
 
         private bool _isFullScreen = false;
+
+        private bool _gameCreatedAlready = false;
         #endregion
         #region Constructors
         public Game()
         {
+            if (_gameCreatedAlready)
+            {
+                throw new System.Exception("cannot create more than one game on a single process.");
+            }
+            _gameCreatedAlready = true;
+
+            Profiler.InitializeStart();
+
             GameInterface = new GameInterface(this);
 
-            Type thisType = GetType();
+            System.Type thisType = GetType();
 
             if (thisType.Assembly != typeof(Modloader).Assembly)
             {
                 Modloader.Load(thisType.Assembly);
             }
 
-            MethodInfo updateMethod = thisType.GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance);
+            System.Reflection.MethodInfo updateMethod = thisType.GetMethod("Update", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             if (updateMethod.DeclaringType != typeof(Game))
             {
-                PumpPriorityAttribute pumpPriorityAttribute = updateMethod.GetCustomAttribute<PumpPriorityAttribute>();
+                PumpPriorityAttribute pumpPriorityAttribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute<PumpPriorityAttribute>(updateMethod);
                 if (pumpPriorityAttribute is null)
                 {
                     UpdatePump.RegisterPumpEventUnsafe(Update, 0);
@@ -157,10 +161,10 @@ namespace EpsilonEngine
                 OverridesUpdate = true;
             }
 
-            MethodInfo drawMethod = thisType.GetMethod("Draw", BindingFlags.NonPublic | BindingFlags.Instance);
+            System.Reflection.MethodInfo drawMethod = thisType.GetMethod("Draw", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             if (drawMethod.DeclaringType != typeof(Game))
             {
-                PumpPriorityAttribute pumpPriorityAttribute = drawMethod.GetCustomAttribute<PumpPriorityAttribute>();
+                PumpPriorityAttribute pumpPriorityAttribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute<PumpPriorityAttribute>(drawMethod);
                 if (pumpPriorityAttribute is null)
                 {
                     DrawPump.RegisterPumpEventUnsafe(Draw, 0);
@@ -184,23 +188,23 @@ namespace EpsilonEngine
         {
             if (Running)
             {
-                throw new Exception("game is already running.");
+                throw new System.Exception("game is already running.");
             }
 
             Running = true;
 
             GameInterface.Run();
         }
-        public void MarkForDestruction()
+        public void MarkForExit()
         {
-            if (MarkedForDestruction)
+            if (MarkedForExit)
             {
-                throw new Exception("game has already been marked for destruction.");
+                throw new System.Exception("game has already been marked for destruction.");
             }
 
-            if (Destroyed)
+            if (Exited)
             {
-                throw new Exception("game has already been destroyed.");
+                throw new System.Exception("game has already been destroyed.");
             }
 
             int gameManagerCount = _gameManagers.Count;
@@ -225,28 +229,28 @@ namespace EpsilonEngine
 
             DestructionPump.RegisterPumpEvent(Destroy);
 
-            MarkedForDestruction = true;
+            MarkedForExit = true;
         }
 
         public GameManager GetGameManager(int index)
         {
             if (index < 0 || index >= _gameManagers.Count)
             {
-                throw new Exception("index was out of range.");
+                throw new System.Exception("index was out of range.");
             }
 
             return _gameManagers[index];
         }
-        public GameManager GetGameManager(Type type)
+        public GameManager GetGameManager(System.Type type)
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(GameManager)))
             {
-                throw new Exception("type must be equal to GameManager or be assignable from GameManager.");
+                throw new System.Exception("type must be equal to GameManager or be assignable from GameManager.");
             }
 
             foreach (GameManager gameManager in _gameManagers)
@@ -271,23 +275,23 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<GameManager> GetGameManagers()
+        public System.Collections.Generic.List<GameManager> GetGameManagers()
         {
-            return new List<GameManager>(_gameManagers);
+            return new System.Collections.Generic.List<GameManager>(_gameManagers);
         }
-        public List<GameManager> GetGameManagers(Type type)
+        public System.Collections.Generic.List<GameManager> GetGameManagers(System.Type type)
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(GameManager)))
             {
-                throw new Exception("type must be equal to GameManager or be assignable from GameManager.");
+                throw new System.Exception("type must be equal to GameManager or be assignable from GameManager.");
             }
 
-            List<GameManager> output = new List<GameManager>();
+            System.Collections.Generic.List<GameManager> output = new System.Collections.Generic.List<GameManager>();
 
             foreach (GameManager gameManager in _gameManagers)
             {
@@ -299,9 +303,9 @@ namespace EpsilonEngine
 
             return output;
         }
-        public List<T> GetGameManagers<T>() where T : GameManager
+        public System.Collections.Generic.List<T> GetGameManagers<T>() where T : GameManager
         {
-            List<T> output = new List<T>();
+            System.Collections.Generic.List<T> output = new System.Collections.Generic.List<T>();
 
             foreach (GameManager gameManager in _gameManagers)
             {
@@ -322,21 +326,21 @@ namespace EpsilonEngine
         {
             if (index < 0 || index >= _canvases.Count)
             {
-                throw new Exception("index was out of range.");
+                throw new System.Exception("index was out of range.");
             }
 
             return _canvases[index];
         }
-        public Canvas GetCanvas(Type type)
+        public Canvas GetCanvas(System.Type type)
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(Canvas)))
             {
-                throw new Exception("type must be equal to Canvas or be assignable from Canvas.");
+                throw new System.Exception("type must be equal to Canvas or be assignable from Canvas.");
             }
 
             foreach (Canvas canvas in _canvases)
@@ -361,23 +365,23 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<Canvas> GetCanvases()
+        public System.Collections.Generic.List<Canvas> GetCanvases()
         {
-            return new List<Canvas>(_canvases);
+            return new System.Collections.Generic.List<Canvas>(_canvases);
         }
-        public List<Canvas> GetCanvases(Type type)
+        public System.Collections.Generic.List<Canvas> GetCanvases(System.Type type)
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(Canvas)))
             {
-                throw new Exception("type must be equal to Canvas or be assignable from Canvas.");
+                throw new System.Exception("type must be equal to Canvas or be assignable from Canvas.");
             }
 
-            List<Canvas> output = new List<Canvas>();
+            System.Collections.Generic.List<Canvas> output = new System.Collections.Generic.List<Canvas>();
 
             foreach (Canvas canvas in _canvases)
             {
@@ -389,9 +393,9 @@ namespace EpsilonEngine
 
             return output;
         }
-        public List<T> GetCanvases<T>() where T : Canvas
+        public System.Collections.Generic.List<T> GetCanvases<T>() where T : Canvas
         {
-            List<T> output = new List<T>();
+            System.Collections.Generic.List<T> output = new System.Collections.Generic.List<T>();
 
             foreach (Canvas canvas in _canvases)
             {
@@ -412,21 +416,21 @@ namespace EpsilonEngine
         {
             if (index < 0 || index >= _scenes.Count)
             {
-                throw new Exception("index was out of range.");
+                throw new System.Exception("index was out of range.");
             }
 
             return _scenes[index];
         }
-        public Scene GetScene(Type type)
+        public Scene GetScene(System.Type type)
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(Scene)))
             {
-                throw new Exception("type must be equal to Scene or be assignable from Scene.");
+                throw new System.Exception("type must be equal to Scene or be assignable from Scene.");
             }
 
             foreach (Scene scene in _scenes)
@@ -451,23 +455,23 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<Scene> GetScenes()
+        public System.Collections.Generic.List<Scene> GetScenes()
         {
-            return new List<Scene>(_scenes);
+            return new System.Collections.Generic.List<Scene>(_scenes);
         }
-        public List<Scene> GetScenes(Type type)
+        public System.Collections.Generic.List<Scene> GetScenes(System.Type type)
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(Scene)))
             {
-                throw new Exception("type must be equal to Scene or be assignable from Scene.");
+                throw new System.Exception("type must be equal to Scene or be assignable from Scene.");
             }
 
-            List<Scene> output = new List<Scene>();
+            System.Collections.Generic.List<Scene> output = new System.Collections.Generic.List<Scene>();
 
             foreach (Scene scene in _scenes)
             {
@@ -479,9 +483,9 @@ namespace EpsilonEngine
 
             return output;
         }
-        public List<T> GetScenes<T>() where T : Scene
+        public System.Collections.Generic.List<T> GetScenes<T>() where T : Scene
         {
-            List<T> output = new List<T>();
+            System.Collections.Generic.List<T> output = new System.Collections.Generic.List<T>();
 
             foreach (Scene scene in _scenes)
             {
@@ -500,20 +504,21 @@ namespace EpsilonEngine
 
         public void DrawTexture(Texture texture)
         {
-            if (!Drawing)
+            if (!Rendering)
             {
-                throw new Exception("cannot draw texture because game is not drawing.");
+                throw new System.Exception("cannot draw texture because game is not drawing.");
             }
 
             if (texture is null)
             {
-                throw new Exception("texture cannot be null.");
+                throw new System.Exception("texture cannot be null.");
             }
 
             DrawTextureUnsafe(texture._XNABase);
         }
         #endregion
         #region Internal Methods
+        private bool _profilerInitialized = false;
         internal void UpdateCallback()
         {
             if (Modloader.ProfilerEnabled)
@@ -529,7 +534,6 @@ namespace EpsilonEngine
 
             UpdatePump.Invoke();
 
-
             if (Modloader.ProfilerEnabled)
             {
                 Profiler.UpdateEnd();
@@ -539,7 +543,7 @@ namespace EpsilonEngine
 
             RenderPump.Invoke();
 
-            Drawing = true;
+            Rendering = true;
 
             GameInterface.XNAGraphicsDevice.Clear(_XNABackgroundColorCache);
 
@@ -549,7 +553,7 @@ namespace EpsilonEngine
 
             XNASpriteBatch.End();
 
-            Drawing = false;
+            Rendering = false;
 
             OnDestroyPump.Invoke();
 
@@ -561,29 +565,40 @@ namespace EpsilonEngine
 
                 Profiler.Print();
             }
+
+            if (!_profilerInitialized)
+            {
+                Profiler.InitializeEnd();
+                _profilerInitialized = true;
+            }
         }
         internal void ResizeCallback()
         {
             if (_isFullScreen)
             {
-                ViewportWidth = (ushort)GameInterface.XNAGraphicsDevice.Adapter.CurrentDisplayMode.Width;
-                ViewportHeight = (ushort)GameInterface.XNAGraphicsDevice.Adapter.CurrentDisplayMode.Height;
+                ViewportWidth = GameInterface.XNAGraphicsDevice.Adapter.CurrentDisplayMode.Width;
+                ViewportHeight = GameInterface.XNAGraphicsDevice.Adapter.CurrentDisplayMode.Height;
             }
             else
             {
-                ViewportWidth = (ushort)GameInterface.XNAGraphicsDevice.Viewport.Width;
-                ViewportHeight = (ushort)GameInterface.XNAGraphicsDevice.Viewport.Height;
+                ViewportWidth = GameInterface.XNAGraphicsDevice.Viewport.Width;
+                ViewportHeight = GameInterface.XNAGraphicsDevice.Viewport.Height;
             }
 
             AspectRatio = ViewportWidth / (float)ViewportHeight;
 
-            ViewportRect = new Rectangle(0, 0, ViewportWidth - 1, ViewportHeight - 1);
-
-            _XNAViewportRectCache = new Microsoft.Xna.Framework.Rectangle(0, 0, ViewportWidth, ViewportHeight);
+            _XNAViewportRect = new Microsoft.Xna.Framework.Rectangle(0, 0, ViewportWidth, ViewportHeight);
 
             foreach (Canvas canvas in _canvases)
             {
                 canvas.OnScreenResize();
+            }
+        }
+        internal void ExitCallback()
+        {
+            if (KillProcessOnExit)
+            {
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
         }
 
@@ -616,7 +631,7 @@ namespace EpsilonEngine
 
         internal void DrawTextureUnsafe(Microsoft.Xna.Framework.Graphics.Texture2D texture)
         {
-            XNASpriteBatch.Draw(texture, _XNAViewportRectCache, Microsoft.Xna.Framework.Color.White);
+            XNASpriteBatch.Draw(texture, _XNAViewportRect, Microsoft.Xna.Framework.Color.White);
         }
         #endregion
         #region Private Methods
@@ -635,7 +650,7 @@ namespace EpsilonEngine
 
             Running = false;
 
-            Destroyed = true;
+            Exited = true;
         }
         #endregion
         #region Override Methods

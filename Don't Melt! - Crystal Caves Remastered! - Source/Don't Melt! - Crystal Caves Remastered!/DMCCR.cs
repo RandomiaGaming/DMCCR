@@ -1,4 +1,5 @@
 ﻿using EpsilonEngine;
+
 namespace DMCCR
 {
     public sealed class DMCCR : Game
@@ -6,7 +7,8 @@ namespace DMCCR
         public DMCCR()
         {
             BackgroundColor = new Color(255, 0, 0, 0);
-            new StagePlayer(this);
+           Stage stage = new Stage(this);
+            TargetFPS = 60.0f;
         }
         public override string ToString()
         {

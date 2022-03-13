@@ -1,4 +1,4 @@
-using System;
+//Approved 3/1/2022
 namespace EpsilonEngine
 {
     public struct Bounds
@@ -24,16 +24,16 @@ namespace EpsilonEngine
             {
                 if (value < _minX)
                 {
-                    throw new Exception("MinX must be less than or equal to MaxX.");
+                    throw new System.Exception("MinX must be less than or equal to MaxX.");
                 }
 
                 _minX = value;
 
                 _min.X = _minX;
 
-                _width = _maxX - _minX;
+                Width = _maxX - _minX;
 
-                _size.X = _width;
+                Size = new Vector(Width, Height);
             }
         }
         public float MinY
@@ -46,16 +46,16 @@ namespace EpsilonEngine
             {
                 if (value > _maxY)
                 {
-                    throw new Exception("MinY must be less than or equal to MaxY.");
+                    throw new System.Exception("MinY must be less than or equal to MaxY.");
                 }
 
                 _minY = value;
 
                 _min.Y = _minY;
 
-                _height = _maxY - _minY;
+                Height = _maxY - _minY;
 
-                _size.Y = _height;
+                Size = new Vector(Width, Height);
             }
         }
         public float MaxX
@@ -68,16 +68,16 @@ namespace EpsilonEngine
             {
                 if (value < _minX)
                 {
-                    throw new Exception("MaxX must be greater than or equal to MinX.");
+                    throw new System.Exception("MaxX must be greater than or equal to MinX.");
                 }
 
                 _maxX = value;
 
                 _max.X = _maxX;
 
-                _width = _maxX - _minX;
+                Width = _maxX - _minX;
 
-                _size.X = _width;
+                Size = new Vector(Width, Height);
             }
         }
         public float MaxY
@@ -90,16 +90,16 @@ namespace EpsilonEngine
             {
                 if (value < _minY)
                 {
-                    throw new Exception("MaxY must be greater than or equal to MinY.");
+                    throw new System.Exception("MaxY must be greater than or equal to MinY.");
                 }
 
                 _maxY = value;
 
                 _max.Y = _maxY;
 
-                _height = _maxY - _minY;
+                Height = _maxY - _minY;
 
-                _size.Y = _height;
+                Size = new Vector(Width, Height);
             }
         }
         public Vector Min
@@ -112,20 +112,18 @@ namespace EpsilonEngine
             {
                 if (value.X > _maxX || value.Y > _maxY)
                 {
-                    throw new Exception("Min must be less than or equal to Max.");
+                    throw new System.Exception("Min must be less than or equal to Max.");
                 }
 
                 _minX = value.X;
                 _minY = value.Y;
 
-                _min.X = _minX;
-                _min.Y = _minY;
+                _min = value;
 
-                _width = _maxX - _minX;
-                _height = _maxY - _minY;
+                Width = _maxX - _minX;
+                Height = _maxY - _minY;
 
-                _size.X = _width;
-                _size.Y = _height;
+                Size = new Vector(Width, Height);
             }
         }
         public Vector Max
@@ -138,68 +136,45 @@ namespace EpsilonEngine
             {
                 if (value.X < _minX || value.Y < _minY)
                 {
-                    throw new Exception("Max must be greater than or equal to Min.");
+                    throw new System.Exception("Max must be greater than or equal to Min.");
                 }
 
                 _maxX = value.X;
                 _maxY = value.Y;
 
-                _max.X = _minX;
-                _max.Y = _minY;
+                _max = value;
 
-                _width = _maxX - _minX;
-                _height = _maxY - _minY;
+                Width = _maxX - _minX;
+                Height = _maxY - _minY;
 
-                _size.X = _width;
-                _size.Y = _height;
+                Size = new Vector(Width, Height);
             }
         }
-        public float Width
-        {
-            get
-            {
-                return _width;
-            }
-        }
-        public float Height
-        {
-            get
-            {
-                return _height;
-            }
-        }
-        public Vector Size
-        {
-            get
-            {
-                return _size;
-            }
-        }
+        public float Width { get; private set; }
+        public float Height { get; private set; }
+        public Vector Size { get; private set; }
         #endregion
-        #region Internal Variables
-        internal float _minX;
-        internal float _minY;
-        internal float _maxX;
-        internal float _maxY;
-        internal Vector _min;
-        internal Vector _max;
-        internal float _width;
-        internal float _height;
-        internal Vector _size;
+        #region Private Variables
+        private float _minX;
+        private float _minY;
+        private float _maxX;
+        private float _maxY;
+        private Vector _min;
+        private Vector _max;
         #endregion
         #region Public Constructors
         public Bounds(float minX, float minY, float maxX, float maxY)
         {
             if (minX > maxX)
             {
-                throw new Exception("MaxX must be greater than MinX.");
+                throw new System.Exception("MaxX must be greater than MinX.");
             }
             _minX = minX;
             _maxX = maxX;
             
             if (minY > maxY)
             {
-                throw new Exception("MaxY must be greater than MinY.");
+                throw new System.Exception("MaxY must be greater than MinY.");
             }
             _minY = minY;
             _maxY = maxY;
@@ -207,17 +182,20 @@ namespace EpsilonEngine
             _min = new Vector(_minX, _minY);
             _max = new Vector(_maxX, _maxY);
 
-            _width = _maxX - _minX;
-            _height = _maxY - _minY;
+            Width = _maxX - _minX;
+            Height = _maxY - _minY;
 
-            _size = new Vector(_width, _height);
+            Size = new Vector(Width, Height);
         }
         public Bounds(Vector min, Vector max)
         {
             if (min.X > max.X || min.Y > max.Y)
             {
-                throw new Exception("Max must be greater or equal to than Min.");
+                throw new System.Exception("Max must be greater or equal to than Min.");
             }
+
+            _min = min;
+            _max = max;
 
             _minX = min.X;
             _minY = min.Y;
@@ -225,13 +203,10 @@ namespace EpsilonEngine
             _maxX = max.X;
             _maxY = max.Y;
 
-            _min = new Vector(_minX, _minY);
-            _max = new Vector(_maxX, _maxY);
+            Width = _maxX - _minX;
+            Height = _maxY - _minY;
 
-            _width = _maxX - _minX;
-            _height = _maxY - _minY;
-
-            _size = new Vector(_width, _height);
+            Size = new Vector(Width, Height);
         }
         #endregion
         #region Public Overrides
@@ -265,15 +240,15 @@ namespace EpsilonEngine
         #region Public Methods
         public bool Incapsulates(Vector a)
         {
-            return a.X >= _minX && a.X <= _maxX && a.Y >= _minY && a.Y <= _maxY;
+            return a.X >= _minX && a.Y >= _minY && a.X <= _maxX && a.Y <= _maxY;
         }
         public bool Incapsulates(Bounds a)
         {
-            return a._maxY <= _maxY && a._minY >= _minY && a._maxX <= _maxX && a._minX >= _minX;
+            return a._minX >= _minX && a._minY >= _minY && a._maxX <= _maxX && a._maxY <= _maxY;
         }
         public bool Overlaps(Bounds a)
         {
-            return _maxX >= a._minX && _minX <= a._maxX && _maxY >= a._minY && _minY <= a._maxY;
+            return a._minX <= _maxX && a._minY <= _maxY && a._maxX >= _minX && a._maxY >= _minY;
         }
         #endregion
     }

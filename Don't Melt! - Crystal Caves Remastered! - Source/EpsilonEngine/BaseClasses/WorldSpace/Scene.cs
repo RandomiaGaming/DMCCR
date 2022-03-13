@@ -76,12 +76,12 @@ namespace EpsilonEngine
             set
             {
                 _backgroundColor = value;
-                _XNABackgroundColorCache = new Microsoft.Xna.Framework.Color(_backgroundColor._r, _backgroundColor._g, _backgroundColor._b, _backgroundColor._a);
+                _XNABackgroundColorCache = new Microsoft.Xna.Framework.Color(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A);
             }
         }
         #endregion
         #region Internal Variables
-        internal OrderedPump RenderPump = new OrderedPump();
+        internal InverseOrderedPump RenderPump = new InverseOrderedPump();
 
         internal UnorderedPump CameraMovePump = new UnorderedPump();
 
@@ -451,6 +451,23 @@ namespace EpsilonEngine
         #region Private Methods
         private void Draw()
         {
+           /*int colorDataLength = XNARenderTarget.Width * XNARenderTarget.Height;
+
+            Microsoft.Xna.Framework.Color[] colorData = new Microsoft.Xna.Framework.Color[colorDataLength];
+           
+            XNARenderTarget.GetData(colorData);
+
+            for (int i = 0; i < colorDataLength; i++)
+            {
+                Microsoft.Xna.Framework.Color color = colorData[i];
+                
+                byte brightness = (byte)((color.R + color.G + color.B) / 3);
+
+                colorData[i] = new Microsoft.Xna.Framework.Color(brightness, brightness, brightness, byte.MaxValue);
+            }
+
+            XNARenderTarget.SetData(colorData);*/
+
             Game.DrawTextureUnsafe(XNARenderTarget);
         }
         private void RenderScene()

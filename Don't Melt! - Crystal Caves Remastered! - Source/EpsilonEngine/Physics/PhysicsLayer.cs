@@ -4,9 +4,11 @@ namespace EpsilonEngine
 {
     public sealed class PhysicsLayer
     {
-        #region Variables
-        private List<PhysicsObject> _physicsObjects = new List<PhysicsObject>();
+        #region Internal Variables
         internal PhysicsObject[] _physicsObjectCache = new PhysicsObject[0];
+        #endregion
+        #region Private Variables
+        private List<PhysicsObject> _physicsObjects = new List<PhysicsObject>();
         private bool _physicsObjectCacheValid = true;
         #endregion
         #region Properties
@@ -177,7 +179,7 @@ namespace EpsilonEngine
         }
         #endregion
         #region Internals
-        private void ClearCache()
+        internal void ClearCache()
         {
             if (!_physicsObjectCacheValid)
             {
@@ -185,17 +187,49 @@ namespace EpsilonEngine
                 _physicsObjectCacheValid = true;
             }
         }
-        internal void RemovePhysicsObject(PhysicsObject physicsObject)
+        public void RemovePhysicsObject(PhysicsObject physicsObject)
         {
-            Game.InitializationPump.RegisterPumpEventUnsafe(ClearCache);
-
-            _physicsObjects.Remove(physicsObject);
+            if (physicsObject is null)
+            {
+                throw new Exception("physicsObject cannot be null.");
+            }
+            if (physicsObject.PhysicsScene != PhysicsScene)
+            {
+                throw new Exception("physicsObject belongs to a different PhysicsScene.");
+            }
 
             _physicsObjectCacheValid = false;
+
+            int physicsObjectsCount = _physicsObjects.Count;
+            for (int i = 0; i < physicsObjectsCount; i++)
+            {
+                if (_physicsObjects[i] == physicsObject)
+                {
+                    _physicsObjects.RemoveAt(i);
+                }
+            }
+
+            throw new Exception("physicsObject was not present on this PhysicsLayer.");
         }
-        internal void AddPhysicsObject(PhysicsObject physicsObject)
+        public void AddPhysicsObject(PhysicsObject physicsObject)
         {
-            Game.InitializationPump.RegisterPumpEventUnsafe(ClearCache);
+            if (physicsObject is null)
+            {
+                throw new Exception("physicsObject cannot be null.");
+            }
+            if (physicsObject.PhysicsScene != PhysicsScene)
+            {
+                throw new Exception("physicsObject belongs to a different PhysicsScene.");
+            }
+
+            int physicsObjectsCount = _physicsObjects.Count;
+            for (int i = 0; i < physicsObjectsCount; i++)
+            {
+                if(_physicsObjects[i] == physicsObject)
+                {
+                    throw new Exception("physicsObject was already added to this PhysicsLayer.");
+                }
+            }
 
             _physicsObjects.Add(physicsObject);
 

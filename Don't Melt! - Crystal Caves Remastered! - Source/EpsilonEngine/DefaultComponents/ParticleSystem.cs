@@ -15,34 +15,38 @@ namespace EpsilonEngine
             public float velocityX;
             public float velocityY;
 
-            public int lifetime;
+            public long deathTime;
 
-            public Color color;
-            public Particle(int positionX, int positionY, float velocityX, float velocityY, Color color, int lifetime)
+            public byte brightness;
+            public Particle(int positionX, int positionY, float velocityX, float velocityY, long deathTime, byte brightness)
             {
                 this.positionX = positionX;
                 this.positionY = positionY;
 
-                this.subPixelX = 0;
-                this.subPixelY = 0;
+                subPixelX = 0;
+                subPixelY = 0;
 
                 this.velocityX = velocityX;
                 this.velocityY = velocityY;
 
-                this.color = color;
+                this.deathTime = deathTime;
 
-                this.lifetime = lifetime;
+                this.brightness = brightness;
             }
         }
         private List<Particle> _particles = new List<Particle>();
         private Texture _particleTexture = null;
+
+        public float particleSpeed = 0.1f;
+        public int particleLifeTime = 100;
+
         public float EmissionRate = 0;
         private float _timer = 0;
-        public bool UseWorldSpace = false;
 
-        public ParticleSystem(GameObject gameObject, Texture particleTexture) : base(gameObject)
+        private Microsoft.Xna.Framework.Vector2 _XNAPositionCache = Microsoft.Xna.Framework.Vector2.Zero;
+        public ParticleSystem(GameObject gameObject, Texture particleTexture, int renderPriority) : base(gameObject, 0, renderPriority)
         {
-            if(particleTexture is null)
+            if (particleTexture is null)
             {
                 throw new Exception("particleTexture cannot be null.");
             }
@@ -56,16 +60,20 @@ namespace EpsilonEngine
         protected override void Update()
         {
             _timer += EmissionRate;
-            while(_timer >= 1)
+            if(_timer < 0.5f)
+            {
+
+            }
+            while (_timer >= 1)
             {
                 _timer--;
-                double rot = RandomnessHelper.NextDouble(0, Math.PI * 2);
-                _particles.Add(new Particle(0, 0, (float)Math.Cos(rot) * 0.1f, (float)Math.Sin(rot) * 0.1f, new Color((byte)RandomnessHelper.NextInt(0, 255), (byte)RandomnessHelper.NextInt(0, 255), (byte)RandomnessHelper.NextInt(0, 255), (byte)255), 1000));
+                double rot = RandomnessHelper.NextFloat(0, MathHelper.PIFloat * 2.0f);
+                _particles.Add(new Particle(0, 0, (float)Math.Cos(rot) * particleSpeed, (float)Math.Sin(rot) * particleSpeed, particleLifeTime, (byte)RandomnessHelper.NextInt(175, 255)));
             }
             for (int i = 0; i < _particles.Count; i++)
             {
                 Particle particle = _particles[i];
-                if (particle.lifetime <= 0)
+                if (particle.deathTime <= 0)
                 {
                     _particles.RemoveAt(i);
                     i--;
@@ -84,7 +92,7 @@ namespace EpsilonEngine
                     particle.subPixelX -= (float)moveX;
                     particle.subPixelY -= (float)moveY;
                 }
-                particle.lifetime--;
+                particle.deathTime--;
             }
         }
         protected override void Render()
@@ -92,14 +100,17 @@ namespace EpsilonEngine
             for (int i = 0; i < _particles.Count; i++)
             {
                 Particle particle = _particles[i];
-                if (UseWorldSpace)
+
+                int positionX = particle.positionX - Scene.CameraPositionX + GameObject.PositionX;
+                int positionY = Scene.RenderHeight - particle.positionY + Scene.CameraPositionY - GameObject.PositionY - _particleTexture.Height;
+               /* if (positionX < -_particleTexture.Width || positionY + _particleTexture.Height < 0 || positionX > Scene.RenderWidth || positionY > Scene.RenderHeight)
                 {
-                    Scene.DrawTextureWorldSpaceUnsafe(_particleTexture._XNABase, particle.positionX, particle.positionY, particle.color.R, particle.color.G, particle.color.B, particle.color.A);
-                }
-                else
-                {
-                    GameObject.DrawTextureLocalSpaceUnsafe(_particleTexture._XNABase, particle.positionX, particle.positionY, particle.color.R, particle.color.G, particle.color.B, particle.color.A);
-                }
+                    return;
+                }*/
+                _XNAPositionCache.X = positionX;
+                _XNAPositionCache.Y = positionY;
+
+                Scene.XNASpriteBatch.Draw(_particleTexture._XNABase, _XNAPositionCache, new Microsoft.Xna.Framework.Color(particle.brightness, particle.brightness, particle.brightness, byte.MaxValue));
             }
         }
     }

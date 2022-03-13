@@ -6,7 +6,7 @@ namespace EpsilonEngine
     public static class Modloader
     {
         #region Public Variables
-        public static bool ProfilerEnabled { get; private set; } = false;
+        public static bool ProfilerEnabled { get; internal set; } = false;
         #endregion
         #region Private Variables
         private static List<Assembly> _loadedMods = new List<Assembly>();

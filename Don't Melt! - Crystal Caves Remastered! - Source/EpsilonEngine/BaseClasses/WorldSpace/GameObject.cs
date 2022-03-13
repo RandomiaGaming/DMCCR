@@ -6,15 +6,15 @@ namespace EpsilonEngine
     public class GameObject
     {
         #region Public Variables
-        public Scene Scene { get; private set; } = null;
-        public Game Game { get; private set; } = null;
+        public Scene Scene { get; private set; }
+        public Game Game { get; private set; }
 
-        public bool Destroyed { get; private set; } = false;
+        public bool Destroyed { get; private set; }
 
-        public bool OverridesUpdate { get; private set; } = false;
-        public int UpdatePriority { get; private set; } = 0;
-        public bool OverridesRender { get; private set; } = false;
-        public int RenderPriority { get; private set; } = 0;
+        public bool OverridesUpdate { get; private set; }
+        public int UpdatePriority { get; private set; }
+        public bool OverridesRender { get; private set; }
+        public int RenderPriority { get; private set; }
 
         public int PositionX
         {
@@ -67,14 +67,14 @@ namespace EpsilonEngine
         #region Private Variables
         private List<Component> _components = new List<Component>();
         private Component[] _componentCache = new Component[0];
-        private bool _componentValidateQued = false;
+        private bool _componentValidateQued;
 
-        private int _positionX = 0;
-        private int _positionY = 0;
-        private Point _position = new Point(0, 0);
+        private int _positionX;
+        private int _positionY;
+        private Point _position;
 
-        private Microsoft.Xna.Framework.Vector2 _XNAReusableDrawPosition = new Microsoft.Xna.Framework.Vector2(0, 0);
-        private Microsoft.Xna.Framework.Color _XNAReusableDrawColor = new Microsoft.Xna.Framework.Color(byte.MaxValue, byte.MaxValue, byte.MaxValue, byte.MaxValue);
+        private Microsoft.Xna.Framework.Vector2 _XNAReusableDrawPosition;
+        private Microsoft.Xna.Framework.Color _XNAReusableDrawColor;
         #endregion
         #region Constructors
         public GameObject(Scene scene)

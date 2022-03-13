@@ -1,9 +1,10 @@
+//Approved 3/1/2022
 namespace EpsilonEngine
 {
     public struct Point
     {
         #region Public Constants
-        public static readonly Point Zero = new Point(0, 0);
+        public static readonly Point Zero = new Point();
         public static readonly Point One = new Point(1, 1);
         public static readonly Point NegativeOne = new Point(-1, -1);
 
@@ -18,49 +19,20 @@ namespace EpsilonEngine
         public static readonly Point DownLeft = new Point(-1, -1);
         #endregion
         #region Public Varialbes
-        public int X
-        {
-            get
-            {
-                return _x;
-            }
-            set
-            {
-                _x = value;
-            }
-        }
-        public int Y
-        {
-            get
-            {
-                return _y;
-            }
-            set
-            {
-                _y = value;
-            }
-        }
-        #endregion
-        #region Internal Variables
-        internal int _x;
-        internal int _y;
+        public int X;
+        public int Y;
         #endregion
         #region Public Constructors
         public Point(int x, int y)
         {
-            _x = x;
-            _y = y;
-        }
-        public Point(Vector source)
-        {
-            _x = (int)source.X;
-            _y = (int)source.Y;
+            X = x;
+            Y = y;
         }
         #endregion
         #region Public Overrides
         public override string ToString()
         {
-            return $"EpsilonEngine.Point({_x}, {_y})";
+            return $"EpsilonEngine.Point({X}, {Y})";
         }
         public override bool Equals(object obj)
         {
@@ -71,76 +43,76 @@ namespace EpsilonEngine
             else
             {
                 Point a = (Point)obj;
-                return _x == a._x && _y == a._y;
+                return X == a.X && Y == a.Y;
             }
         }
         #endregion
         #region Public Operators
         public static bool operator ==(Point a, Point b)
         {
-            return a._x == b._x && a._y == b._y;
+            return a.X == b.X && a.Y == b.Y;
         }
         public static bool operator !=(Point a, Point b)
         {
-            return a._x != b._x || a._y != b._y;
+            return a.X != b.X || a.Y != b.Y;
         }
         public static Point operator +(Point a, Point b)
         {
-            a._x += b._x;
-            a._y += b._y;
+            a.X += b.X;
+            a.Y += b.Y;
             return a;
         }
         public static Point operator -(Point a, Point b)
         {
-            a._x -= b._x;
-            a._y -= b._y;
+            a.X -= b.X;
+            a.Y -= b.Y;
             return a;
         }
         public static Point operator *(Point a, Point b)
         {
-            a._x *= b._x;
-            a._y *= b._y;
+            a.X *= b.X;
+            a.Y *= b.Y;
             return a;
         }
         public static Point operator /(Point a, Point b)
         {
-            a._x /= b._x;
-            a._y /= b._y;
+            a.X /= b.X;
+            a.Y /= b.Y;
             return a;
         }
         public static Point operator +(Point a, int b)
         {
-            a._x += b;
-            a._y += b;
+            a.X += b;
+            a.Y += b;
             return a;
         }
         public static Point operator -(Point a, int b)
         {
-            a._x -= b;
-            a._y -= b;
+            a.X -= b;
+            a.Y -= b;
             return a;
         }
         public static Point operator *(Point a, int b)
         {
-            a._x *= b;
-            a._y *= b;
+            a.X *= b;
+            a.Y *= b;
             return a;
         }
         public static Point operator /(Point a, int b)
         {
-            a._x /= b;
-            a._y /= b;
+            a.X /= b;
+            a.Y /= b;
             return a;
         }
         public static Point operator -(Point a)
         {
-            a._x = -a._x;
-            a._y = -a._y;
+            a.X = -a.X;
+            a.Y = -a.Y;
             return a;
         }
         public static explicit operator Vector(Point source)
         {
-            return new Vector(source._x, source._y);
+            return new Vector(source.X, source.Y);
         }
         #endregion
     }

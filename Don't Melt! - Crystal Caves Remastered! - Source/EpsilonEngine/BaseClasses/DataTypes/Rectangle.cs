@@ -1,5 +1,4 @@
-//Approved 2/28/2022
-using System;
+//Approved 3/1/2022
 namespace EpsilonEngine
 {
     public struct Rectangle
@@ -25,7 +24,7 @@ namespace EpsilonEngine
             {
                 if (value > _minX)
                 {
-                    throw new Exception("MinX must be less than or equal to MaxX.");
+                    throw new System.Exception("MinX must be less than or equal to MaxX.");
                 }
 
                 _minX = value;
@@ -47,7 +46,7 @@ namespace EpsilonEngine
             {
                 if (value > _maxY)
                 {
-                    throw new Exception("MinY must be less than or equal to MaxY.");
+                    throw new System.Exception("MinY must be less than or equal to MaxY.");
                 }
 
                 _minY = value;
@@ -69,7 +68,7 @@ namespace EpsilonEngine
             {
                 if (value < _minX)
                 {
-                    throw new Exception("MaxX must be greater than or equal to MinX.");
+                    throw new System.Exception("MaxX must be greater than or equal to MinX.");
                 }
 
                 _maxX = value;
@@ -91,7 +90,7 @@ namespace EpsilonEngine
             {
                 if (value < _minY)
                 {
-                    throw new Exception("MaxY must be greater than or equal to MinY.");
+                    throw new System.Exception("MaxY must be greater than or equal to MinY.");
                 }
 
                 _maxY = value;
@@ -113,7 +112,7 @@ namespace EpsilonEngine
             {
                 if (value.X > _maxX || value.Y > _maxY)
                 {
-                    throw new Exception("Min must be less than or equal to Max.");
+                    throw new System.Exception("Min must be less than or equal to Max.");
                 }
 
                 _minX = value.X;
@@ -137,7 +136,7 @@ namespace EpsilonEngine
             {
                 if (value.X < _minX || value.Y < _minY)
                 {
-                    throw new Exception("Max must be greater than or equal to Min.");
+                    throw new System.Exception("Max must be greater than or equal to Min.");
                 }
 
                 _maxX = value.X;
@@ -168,14 +167,14 @@ namespace EpsilonEngine
         {
             if (minX > maxX)
             {
-                throw new Exception("maxX must be greater than minX.");
+                throw new System.Exception("maxX must be greater than minX.");
             }
             _minX = minX;
             _maxX = maxX;
 
             if (minY > maxY)
             {
-                throw new Exception("maxY must be greater than minY.");
+                throw new System.Exception("maxY must be greater than minY.");
             }
             _minY = minY;
             _maxY = maxY;
@@ -192,7 +191,7 @@ namespace EpsilonEngine
         {
             if (min.X > max.X || min.Y > max.Y)
             {
-                throw new Exception("max must be greater or equal to than min.");
+                throw new System.Exception("max must be greater or equal to than min.");
             }
 
             _min = min;
@@ -228,20 +227,10 @@ namespace EpsilonEngine
             }
         }
         #endregion
-        #region Public Operators
-        public static bool operator ==(Rectangle a, Rectangle b)
-        {
-            return a._minX == b._minX && a._minY == b._minY && a._maxX == b._maxX && a._maxY == b._maxY;
-        }
-        public static bool operator !=(Rectangle a, Rectangle b)
-        {
-            return a._minX != b._minX || a._minY != b._minY || a._maxX != b._maxX || a._maxY != b._maxY;
-        }
-        #endregion
         #region Public Methods
         public bool Incapsulates(Point a)
         {
-            return a._x >= _minX && a._y >= _minY && a._x <= _maxX && a._y <= _maxY;
+            return a.X >= _minX && a.Y >= _minY && a.X <= _maxX && a.Y <= _maxY;
         }
         public bool Incapsulates(Rectangle a)
         {

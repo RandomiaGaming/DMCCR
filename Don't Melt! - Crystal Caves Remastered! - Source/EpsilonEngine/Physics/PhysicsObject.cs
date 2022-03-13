@@ -16,8 +16,7 @@ namespace EpsilonEngine
         #endregion
         #region Properties
         public PhysicsScene PhysicsScene { get; private set; } = null;
-        public PhysicsLayer PhysicsLayer { get; private set; } = null;
-        public PhysicsLayer[] CollisionPhysicsLayers { get; set; } = null;
+        public PhysicsLayer CollisionPhysicsLayers = null;
         public bool IsStatic { get; private set; } = true;
         //Velocity is the objects move speed over time in pixels per frame.
         public float VelocityX { get; set; } = 0f;
@@ -198,7 +197,7 @@ namespace EpsilonEngine
         }
         #endregion
         #region Constructors
-        public PhysicsObject(PhysicsScene physicsScene, PhysicsLayer physicsLayer, bool isStatic) : base(physicsScene)
+        public PhysicsObject(PhysicsScene physicsScene, bool isStatic) : base(physicsScene)
         {
             if (physicsScene is null)
             {
@@ -206,26 +205,14 @@ namespace EpsilonEngine
             }
             PhysicsScene = physicsScene;
 
-            if (physicsLayer is null)
-            {
-                throw new Exception("physicsLayer cannot be null.");
-            }
-            if (physicsLayer.PhysicsScene != physicsScene)
-            {
-                throw new Exception("physicsScene cannot be null.");
-            }
-            PhysicsLayer = physicsLayer;
-
             IsStatic = isStatic;
 
             if (!IsStatic)
             {
-                Game.UpdatePump.RegisterPumpEventUnsafe(PhysicsUpdate, 0);
+                Game.PhysicsUpdatePump.RegisterPumpEventUnsafe(PhysicsUpdate, 0);
             }
 
             PhysicsScene.AddPhysicsObject(this);
-
-            PhysicsLayer.AddPhysicsObject(this);
 
             MovePump.RegisterPumpEventUnsafe(RecalculateOnMove);
         }
@@ -423,54 +410,51 @@ namespace EpsilonEngine
 
             _moving = true;
 
-            foreach (PhysicsLayer collisionPhysicsLayer in CollisionPhysicsLayers)
+            foreach (PhysicsObject collisionPhysicsObject in CollisionPhysicsLayers._physicsObjectCache)
             {
-                foreach (PhysicsObject collisionPhysicsObject in collisionPhysicsLayer._physicsObjectCache)
+                if (collisionPhysicsObject != this && collisionPhysicsObject.SolidDown)
                 {
-                    if (collisionPhysicsObject != this && collisionPhysicsObject.SolidDown)
+                    if (collisionPhysicsObject.ColliderBoundsMinX > ColliderBoundsMaxX || collisionPhysicsObject.ColliderBoundsMaxX < ColliderBoundsMinX)
                     {
-                        if (collisionPhysicsObject.ColliderBoundsMinX > ColliderBoundsMaxX || collisionPhysicsObject.ColliderBoundsMaxX < ColliderBoundsMinX)
+                        //Ignore this physics object because it is too far to the left or right for a collision.
+                    }
+                    else if (collisionPhysicsObject.ColliderBoundsMaxY < ColliderBoundsMinY)
+                    {
+                        //Ignore this physics object because it is too below us for a collision.
+                    }
+                    else if (collisionPhysicsObject.ColliderBoundsMinY > ColliderBoundsMaxY)
+                    {
+                        foreach (Rectangle thisColliderShape in _worldColliderShapes)
                         {
-                            //Ignore this physics object because it is too far to the left or right for a collision.
+                            foreach (Rectangle otherColliderShape in collisionPhysicsObject._worldColliderShapes)
+                            {
+
+                            }
                         }
-                        else if (collisionPhysicsObject.ColliderBoundsMaxY < ColliderBoundsMinY)
+                        //This physics object must be in front of us.
+                        int maxMove = collisionPhysicsObject.ColliderBoundsMinY - ColliderBoundsMaxY - 1;
+
+                        if (maxMove < moveDistance && PushOthersUp && collisionPhysicsObject.PushableUp)
                         {
-                            //Ignore this physics object because it is too below us for a collision.
+                            int pushRequest = moveDistance - maxMove;
+                            int pushDistance = collisionPhysicsObject.PhysicsMoveUpUnsafe(pushRequest);
+                            maxMove = maxMove + pushDistance;
                         }
-                        else if (collisionPhysicsObject.ColliderBoundsMinY > ColliderBoundsMaxY)
+
+                        if (maxMove > moveDistance)
                         {
-                            foreach (Rectangle thisColliderShape in _worldColliderShapes)
-                            {
-                                foreach (Rectangle otherColliderShape in collisionPhysicsObject._worldColliderShapes)
-                                {
-
-                                }
-                            }
-                            //This physics object must be in front of us.
-                            int maxMove = collisionPhysicsObject.ColliderBoundsMinY - ColliderBoundsMaxY - 1;
-
-                            if (maxMove < moveDistance && PushOthersUp && collisionPhysicsObject.PushableUp)
-                            {
-                                int pushRequest = moveDistance - maxMove;
-                                int pushDistance = collisionPhysicsObject.PhysicsMoveUpUnsafe(pushRequest);
-                                maxMove = maxMove + pushDistance;
-                            }
-
-                            if (maxMove > moveDistance)
-                            {
-                                //Ignore this collision because the object we hit is too far in front.
-                            }
-                            else
-                            {
-                                //Set the target move to the maximun and zero out the velocity due to a collision.
-                                moveDistance = maxMove;
-                            }
+                            //Ignore this collision because the object we hit is too far in front.
                         }
                         else
                         {
-                            //Set target move to 0, and zero out the velocity because there is an object overlapping us.
-                            moveDistance = 0;
+                            //Set the target move to the maximun and zero out the velocity due to a collision.
+                            moveDistance = maxMove;
                         }
+                    }
+                    else
+                    {
+                        //Set target move to 0, and zero out the velocity because there is an object overlapping us.
+                        moveDistance = 0;
                     }
                 }
             }
@@ -496,48 +480,46 @@ namespace EpsilonEngine
                 return moveDistance;
             }
 
-            foreach (PhysicsLayer collisionPhysicsLayer in CollisionPhysicsLayers)
+            foreach (PhysicsObject collisionPhysicsObject in CollisionPhysicsLayers._physicsObjectCache)
             {
-                foreach (PhysicsObject collisionPhysicsObject in collisionPhysicsLayer._physicsObjectCache)
+                if (collisionPhysicsObject != this && collisionPhysicsObject.SolidLeft)
                 {
-                    if (collisionPhysicsObject != this && collisionPhysicsObject.SolidLeft)
+                    if (collisionPhysicsObject.ColliderBoundsMinY > ColliderBoundsMaxY || collisionPhysicsObject.ColliderBoundsMaxY < ColliderBoundsMinY)
                     {
-                        if (collisionPhysicsObject.ColliderBoundsMinY > ColliderBoundsMaxY || collisionPhysicsObject.ColliderBoundsMaxY < ColliderBoundsMinY)
-                        {
-                            //Ignore this physics object because it is too far to the left or right for a collision.
-                        }
-                        else if (collisionPhysicsObject.ColliderBoundsMaxX < ColliderBoundsMinX)
-                        {
-                            //Ignore this physics object because it is too below us for a collision.
-                        }
-                        else if (collisionPhysicsObject.ColliderBoundsMinX > ColliderBoundsMaxX)
-                        {
-                            //This physics object must be in front of us.
-                            int maxMove = collisionPhysicsObject.ColliderBoundsMinX - ColliderBoundsMaxX - 1;
+                        //Ignore this physics object because it is too far to the left or right for a collision.
+                    }
+                    else if (collisionPhysicsObject.ColliderBoundsMaxX < ColliderBoundsMinX)
+                    {
+                        //Ignore this physics object because it is too below us for a collision.
+                    }
+                    else if (collisionPhysicsObject.ColliderBoundsMinX > ColliderBoundsMaxX)
+                    {
+                        //This physics object must be in front of us.
+                        int maxMove = collisionPhysicsObject.ColliderBoundsMinX - ColliderBoundsMaxX - 1;
 
-                            if (maxMove < moveDistance && PushOthersRight && collisionPhysicsObject.PushableRight)
-                            {
-                                int pushRequest = moveDistance - maxMove;
-                                int pushDistance = collisionPhysicsObject.PhysicsMoveRightUnsafe(pushRequest);
-                                maxMove = maxMove + pushDistance;
-                            }
+                        if (maxMove < moveDistance && PushOthersRight && collisionPhysicsObject.PushableRight)
+                        {
+                            int pushRequest = moveDistance - maxMove;
+                            int pushDistance = collisionPhysicsObject.PhysicsMoveRightUnsafe(pushRequest);
+                            maxMove = maxMove + pushDistance;
+                        }
 
-                            if (maxMove > moveDistance)
-                            {
-                                //Ignore this collision because the object we hit is too far in front.
-                            }
-                            else
-                            {
-                                //Set the target move to the maximun and zero out the velocity due to a collision.
-                                moveDistance = maxMove;
-                            }
+                        if (maxMove > moveDistance)
+                        {
+                            //Ignore this collision because the object we hit is too far in front.
                         }
                         else
                         {
-                            //Set target move to 0, and zero out the velocity because there is an object overlapping us.
-                            moveDistance = 0;
+                            //Set the target move to the maximun and zero out the velocity due to a collision.
+                            moveDistance = maxMove;
                         }
                     }
+                    else
+                    {
+                        //Set target move to 0, and zero out the velocity because there is an object overlapping us.
+                        moveDistance = 0;
+                    }
+
                 }
             }
 
@@ -562,47 +544,44 @@ namespace EpsilonEngine
                 return moveDistance;
             }
 
-            foreach (PhysicsLayer collisionPhysicsLayer in CollisionPhysicsLayers)
+            foreach (PhysicsObject collisionPhysicsObject in CollisionPhysicsLayers._physicsObjectCache)
             {
-                foreach (PhysicsObject collisionPhysicsObject in collisionPhysicsLayer._physicsObjectCache)
+                if (collisionPhysicsObject != this && collisionPhysicsObject.SolidUp)
                 {
-                    if (collisionPhysicsObject != this && collisionPhysicsObject.SolidUp)
+                    if (collisionPhysicsObject.ColliderBoundsMinX > ColliderBoundsMaxX || collisionPhysicsObject.ColliderBoundsMaxX < ColliderBoundsMinX)
                     {
-                        if (collisionPhysicsObject.ColliderBoundsMinX > ColliderBoundsMaxX || collisionPhysicsObject.ColliderBoundsMaxX < ColliderBoundsMinX)
-                        {
-                            //Ignore this physics object because it is too far to the left or right for a collision.
-                        }
-                        else if (collisionPhysicsObject.ColliderBoundsMinY > ColliderBoundsMaxY)
-                        {
-                            //Ignore this physics object because it is too below us for a collision.
-                        }
-                        else if (collisionPhysicsObject.ColliderBoundsMaxY < ColliderBoundsMinY)
-                        {
-                            //This physics object must be in front of us.
-                            int maxMove = ColliderBoundsMinY - collisionPhysicsObject.ColliderBoundsMaxY - 1;
+                        //Ignore this physics object because it is too far to the left or right for a collision.
+                    }
+                    else if (collisionPhysicsObject.ColliderBoundsMinY > ColliderBoundsMaxY)
+                    {
+                        //Ignore this physics object because it is too below us for a collision.
+                    }
+                    else if (collisionPhysicsObject.ColliderBoundsMaxY < ColliderBoundsMinY)
+                    {
+                        //This physics object must be in front of us.
+                        int maxMove = ColliderBoundsMinY - collisionPhysicsObject.ColliderBoundsMaxY - 1;
 
-                            if (maxMove < moveDistance && PushOthersDown && collisionPhysicsObject.PushableDown)
-                            {
-                                int pushRequest = moveDistance - maxMove;
-                                int pushDistance = collisionPhysicsObject.PhysicsMoveDownUnsafe(pushRequest);
-                                maxMove = maxMove + pushDistance;
-                            }
+                        if (maxMove < moveDistance && PushOthersDown && collisionPhysicsObject.PushableDown)
+                        {
+                            int pushRequest = moveDistance - maxMove;
+                            int pushDistance = collisionPhysicsObject.PhysicsMoveDownUnsafe(pushRequest);
+                            maxMove = maxMove + pushDistance;
+                        }
 
-                            if (maxMove > moveDistance)
-                            {
-                                //Ignore this collision because the object we hit is too far in front.
-                            }
-                            else
-                            {
-                                //Set the target move to the maximun and zero out the velocity due to a collision.
-                                moveDistance = maxMove;
-                            }
+                        if (maxMove > moveDistance)
+                        {
+                            //Ignore this collision because the object we hit is too far in front.
                         }
                         else
                         {
-                            //Set target move to 0, and zero out the velocity because there is an object overlapping us.
-                            moveDistance = 0;
+                            //Set the target move to the maximun and zero out the velocity due to a collision.
+                            moveDistance = maxMove;
                         }
+                    }
+                    else
+                    {
+                        //Set target move to 0, and zero out the velocity because there is an object overlapping us.
+                        moveDistance = 0;
                     }
                 }
             }
@@ -628,47 +607,44 @@ namespace EpsilonEngine
                 return moveDistance;
             }
 
-            foreach (PhysicsLayer collisionPhysicsLayer in CollisionPhysicsLayers)
+            foreach (PhysicsObject collisionPhysicsObject in CollisionPhysicsLayers._physicsObjectCache)
             {
-                foreach (PhysicsObject collisionPhysicsObject in collisionPhysicsLayer._physicsObjectCache)
+                if (collisionPhysicsObject != this && collisionPhysicsObject.SolidRight)
                 {
-                    if (collisionPhysicsObject != this && collisionPhysicsObject.SolidRight)
+                    if (collisionPhysicsObject.ColliderBoundsMinY > ColliderBoundsMaxY || collisionPhysicsObject.ColliderBoundsMaxY < ColliderBoundsMinY)
                     {
-                        if (collisionPhysicsObject.ColliderBoundsMinY > ColliderBoundsMaxY || collisionPhysicsObject.ColliderBoundsMaxY < ColliderBoundsMinY)
-                        {
-                            //Ignore this physics object because it is too far to the left or right for a collision.
-                        }
-                        else if (collisionPhysicsObject.ColliderBoundsMinX > ColliderBoundsMaxX)
-                        {
-                            //Ignore this physics object because it is too below us for a collision.
-                        }
-                        else if (collisionPhysicsObject.ColliderBoundsMaxX < ColliderBoundsMinX)
-                        {
-                            //This physics object must be in front of us.
-                            int maxMove = ColliderBoundsMinX - collisionPhysicsObject.ColliderBoundsMaxX - 1;
+                        //Ignore this physics object because it is too far to the left or right for a collision.
+                    }
+                    else if (collisionPhysicsObject.ColliderBoundsMinX > ColliderBoundsMaxX)
+                    {
+                        //Ignore this physics object because it is too below us for a collision.
+                    }
+                    else if (collisionPhysicsObject.ColliderBoundsMaxX < ColliderBoundsMinX)
+                    {
+                        //This physics object must be in front of us.
+                        int maxMove = ColliderBoundsMinX - collisionPhysicsObject.ColliderBoundsMaxX - 1;
 
-                            if (maxMove < moveDistance && PushOthersLeft && collisionPhysicsObject.PushableLeft)
-                            {
-                                int pushRequest = moveDistance - maxMove;
-                                int pushDistance = collisionPhysicsObject.PhysicsMoveLeftUnsafe(pushRequest);
-                                maxMove = maxMove + pushDistance;
-                            }
+                        if (maxMove < moveDistance && PushOthersLeft && collisionPhysicsObject.PushableLeft)
+                        {
+                            int pushRequest = moveDistance - maxMove;
+                            int pushDistance = collisionPhysicsObject.PhysicsMoveLeftUnsafe(pushRequest);
+                            maxMove = maxMove + pushDistance;
+                        }
 
-                            if (maxMove > moveDistance)
-                            {
-                                //Ignore this collision because the object we hit is too far in front.
-                            }
-                            else
-                            {
-                                //Set the target move to the maximun and zero out the velocity due to a collision.
-                                moveDistance = maxMove;
-                            }
+                        if (maxMove > moveDistance)
+                        {
+                            //Ignore this collision because the object we hit is too far in front.
                         }
                         else
                         {
-                            //Set target move to 0, and zero out the velocity because there is an object overlapping us.
-                            moveDistance = 0;
+                            //Set the target move to the maximun and zero out the velocity due to a collision.
+                            moveDistance = maxMove;
                         }
+                    }
+                    else
+                    {
+                        //Set target move to 0, and zero out the velocity because there is an object overlapping us.
+                        moveDistance = 0;
                     }
                 }
             }
@@ -686,18 +662,7 @@ namespace EpsilonEngine
             for (int i = 0; i < localColliderShapesLength; i++)
             {
                 Rectangle localShape = _localColliderShapes[i];
-                Rectangle worldShape = _worldColliderShapes[i];
-                worldShape._minX = PositionX + localShape.MinX;
-                worldShape._minY = PositionY + localShape.MinY;
-                worldShape._maxX = PositionX + localShape.MaxX;
-                worldShape._maxY = PositionY + localShape.MaxY;
-
-                worldShape.Width = worldShape._maxX - worldShape._minX + 1;
-                worldShape.Height = worldShape._maxY - worldShape._minY + 1;
-
-                worldShape.Size._x = worldShape.Width;
-                worldShape.Size._y = worldShape.Height;
-
+                _worldColliderShapes[i] = new Rectangle(PositionX + localShape.MinX, PositionY + localShape.MinY, PositionX + localShape.MaxX, PositionY + localShape.MaxY);
             }
             ColliderBoundsMinX = PositionX + LocalColliderBoundsMinX;
             ColliderBoundsMinY = PositionY + LocalColliderBoundsMinY;
@@ -707,6 +672,11 @@ namespace EpsilonEngine
         }
         private void PhysicsUpdate()
         {
+            if(CollisionPhysicsLayers != null)
+            {
+                CollisionPhysicsLayers.ClearCache();
+            }
+
             if (VelocityY != 0)
             {
                 SubPixelY += VelocityY;
@@ -790,14 +760,11 @@ namespace EpsilonEngine
                 return;
             }
 
-            foreach (PhysicsLayer collisionPhysicsLayer in CollisionPhysicsLayers)
+            foreach (PhysicsObject collisionPhysicsObject in CollisionPhysicsLayers._physicsObjectCache)
             {
-                foreach (PhysicsObject collisionPhysicsObject in collisionPhysicsLayer._physicsObjectCache)
+                if (collisionPhysicsObject != this && (collisionPhysicsObject.SolidDown || collisionPhysicsObject.SolidUp || collisionPhysicsObject.SolidLeft || collisionPhysicsObject.SolidRight) && collisionPhysicsObject.ColliderBounds.Overlaps(ColliderBounds))
                 {
-                    if (collisionPhysicsObject != this && (collisionPhysicsObject.SolidDown || collisionPhysicsObject.SolidUp || collisionPhysicsObject.SolidLeft || collisionPhysicsObject.SolidRight) && collisionPhysicsObject.ColliderBounds.Overlaps(ColliderBounds))
-                    {
-                        _overlaps.Add(collisionPhysicsObject);
-                    }
+                    _overlaps.Add(collisionPhysicsObject);
                 }
             }
         }
@@ -810,14 +777,11 @@ namespace EpsilonEngine
                 return;
             }
 
-            foreach (PhysicsLayer collisionPhysicsLayer in CollisionPhysicsLayers)
+            foreach (PhysicsObject collisionPhysicsObject in CollisionPhysicsLayers._physicsObjectCache)
             {
-                foreach (PhysicsObject collisionPhysicsObject in collisionPhysicsLayer._physicsObjectCache)
+                if (collisionPhysicsObject != this && collisionPhysicsObject.SolidDown && collisionPhysicsObject.ColliderBoundsMinX <= ColliderBoundsMaxX && collisionPhysicsObject.ColliderBoundsMaxX >= ColliderBoundsMinX && collisionPhysicsObject.ColliderBoundsMinY == ColliderBoundsMaxY + 1)
                 {
-                    if (collisionPhysicsObject != this && collisionPhysicsObject.SolidDown && collisionPhysicsObject.ColliderBoundsMinX <= ColliderBoundsMaxX && collisionPhysicsObject.ColliderBoundsMaxX >= ColliderBoundsMinX && collisionPhysicsObject.ColliderBoundsMinY == ColliderBoundsMaxY + 1)
-                    {
-                        _collisionsUp.Add(collisionPhysicsObject);
-                    }
+                    _collisionsUp.Add(collisionPhysicsObject);
                 }
             }
         }
@@ -830,14 +794,11 @@ namespace EpsilonEngine
                 return;
             }
 
-            foreach (PhysicsLayer collisionPhysicsLayer in CollisionPhysicsLayers)
+            foreach (PhysicsObject collisionPhysicsObject in CollisionPhysicsLayers._physicsObjectCache)
             {
-                foreach (PhysicsObject collisionPhysicsObject in collisionPhysicsLayer._physicsObjectCache)
+                if (collisionPhysicsObject != this && collisionPhysicsObject.SolidDown && collisionPhysicsObject.ColliderBoundsMinY <= ColliderBoundsMaxY && collisionPhysicsObject.ColliderBoundsMaxY >= ColliderBoundsMinY && collisionPhysicsObject.ColliderBoundsMinX == ColliderBoundsMaxX + 1)
                 {
-                    if (collisionPhysicsObject != this && collisionPhysicsObject.SolidDown && collisionPhysicsObject.ColliderBoundsMinY <= ColliderBoundsMaxY && collisionPhysicsObject.ColliderBoundsMaxY >= ColliderBoundsMinY && collisionPhysicsObject.ColliderBoundsMinX == ColliderBoundsMaxX + 1)
-                    {
-                        _collisionsRight.Add(collisionPhysicsObject);
-                    }
+                    _collisionsRight.Add(collisionPhysicsObject);
                 }
             }
         }
@@ -850,14 +811,11 @@ namespace EpsilonEngine
                 return;
             }
 
-            foreach (PhysicsLayer collisionPhysicsLayer in CollisionPhysicsLayers)
+            foreach (PhysicsObject collisionPhysicsObject in CollisionPhysicsLayers._physicsObjectCache)
             {
-                foreach (PhysicsObject collisionPhysicsObject in collisionPhysicsLayer._physicsObjectCache)
+                if (collisionPhysicsObject != this && collisionPhysicsObject.SolidDown && collisionPhysicsObject.ColliderBoundsMinX <= ColliderBoundsMaxX && collisionPhysicsObject.ColliderBoundsMaxX >= ColliderBoundsMinX && collisionPhysicsObject.ColliderBoundsMaxY + 1 == ColliderBoundsMinY)
                 {
-                    if (collisionPhysicsObject != this && collisionPhysicsObject.SolidDown && collisionPhysicsObject.ColliderBoundsMinX <= ColliderBoundsMaxX && collisionPhysicsObject.ColliderBoundsMaxX >= ColliderBoundsMinX && collisionPhysicsObject.ColliderBoundsMaxY + 1 == ColliderBoundsMinY)
-                    {
-                        _collisionsDown.Add(collisionPhysicsObject);
-                    }
+                    _collisionsDown.Add(collisionPhysicsObject);
                 }
             }
         }
@@ -870,14 +828,11 @@ namespace EpsilonEngine
                 return;
             }
 
-            foreach (PhysicsLayer collisionPhysicsLayer in CollisionPhysicsLayers)
+            foreach (PhysicsObject collisionPhysicsObject in CollisionPhysicsLayers._physicsObjectCache)
             {
-                foreach (PhysicsObject collisionPhysicsObject in collisionPhysicsLayer._physicsObjectCache)
+                if (collisionPhysicsObject != this && collisionPhysicsObject.SolidDown && collisionPhysicsObject.ColliderBoundsMinY <= ColliderBoundsMaxY && collisionPhysicsObject.ColliderBoundsMaxY >= ColliderBoundsMinY && collisionPhysicsObject.ColliderBoundsMaxX + 1 == ColliderBoundsMinX)
                 {
-                    if (collisionPhysicsObject != this && collisionPhysicsObject.SolidDown && collisionPhysicsObject.ColliderBoundsMinY <= ColliderBoundsMaxY && collisionPhysicsObject.ColliderBoundsMaxY >= ColliderBoundsMinY && collisionPhysicsObject.ColliderBoundsMaxX + 1 == ColliderBoundsMinX)
-                    {
-                        _collisionsLeft.Add(collisionPhysicsObject);
-                    }
+                    _collisionsLeft.Add(collisionPhysicsObject);
                 }
             }
         }

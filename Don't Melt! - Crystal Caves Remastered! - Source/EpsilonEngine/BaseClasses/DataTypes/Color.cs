@@ -1,4 +1,4 @@
-using System;
+//Approved 3/1/2022
 namespace EpsilonEngine
 {
     public struct Color
@@ -7,7 +7,7 @@ namespace EpsilonEngine
         public static readonly Color White = new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue, byte.MaxValue);
         public static readonly Color Black = new Color(byte.MinValue, byte.MinValue, byte.MinValue, byte.MaxValue);
 
-        public static readonly Color Transparent = new Color(byte.MinValue, byte.MinValue, byte.MinValue, byte.MinValue);
+        public static readonly Color Transparent = new Color();
         public static readonly Color TransparentWhite = new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue, byte.MinValue);
         public static readonly Color TransparentBlack = new Color(byte.MinValue, byte.MinValue, byte.MinValue, byte.MinValue);
 
@@ -26,77 +26,31 @@ namespace EpsilonEngine
         public static readonly Color SoftPink = new Color(byte.MaxValue, 150, byte.MaxValue, byte.MaxValue);
         #endregion
         #region Public Variables
-        public byte R
-        {
-            get
-            {
-                return _r;
-            }
-            set
-            {
-                _r = value;
-            }
-        }
-        public byte G
-        {
-            get
-            {
-                return _g;
-            }
-            set
-            {
-                _g = value;
-            }
-        }
-        public byte B
-        {
-            get
-            {
-                return _b;
-            }
-            set
-            {
-                _b = value;
-            }
-        }
-        public byte A
-        {
-            get
-            {
-                return _a;
-            }
-            set
-            {
-                _a = value;
-            }
-        }
-        #endregion
-        #region Internal Variables
-        internal byte _r;
-        internal byte _g;
-        internal byte _b;
-        internal byte _a;
+        public byte R;
+        public byte G;
+        public byte B;
+        public byte A;
         #endregion
         #region Public Constructors
         public Color(byte r, byte g, byte b, byte a)
         {
-            _r = r;
-            _g = g;
-            _b = b;
-            _a = a;
+            R = r;
+            G = g;
+            B = b;
+            A = a;
         }
         public Color(byte r, byte g, byte b)
         {
-            _r = r;
-            _g = g;
-            _b = b;
-            _a = byte.MaxValue;
+            R = r;
+            G = g;
+            B = b;
+            A = byte.MaxValue;
         }
         #endregion
         #region Public Overrides
         public override string ToString()
         {
-            return $"EpsilonEngine.Color({_r}, {_g}, {_b}, {_a})";
+            return $"EpsilonEngine.Color({R}, {G}, {B}, {A})";
         }
         public override bool Equals(object obj)
         {
@@ -107,28 +61,28 @@ namespace EpsilonEngine
             else
             {
                 Color a = (Color)obj;
-                return _r == a._r && _g == a._g && _b == a._b && _a == a._a;
+                return R == a.R && G == a.G && B == a.B && A == a.A;
             }
         }
         #endregion
         #region Public Operators
         public static bool operator ==(Color a, Color b)
         {
-            return a._r == b._r && a._g == b._g && a._b == b._b && a._a == b._a;
+            return a.R == b.R && a.G == b.G && a.B == b.B && a.A == b.A;
         }
         public static bool operator !=(Color a, Color b)
         {
-            return a._r != b._r || a._g != b._g || a._b != b._b || a._a != b._a;
+            return a.R != b.R || a.G != b.G || a.B != b.B || a.A != b.A;
         }
         #endregion
         #region Public Static Methods
         public static uint Pack(Color source)
         {
-            return BitConverter.ToUInt32(new byte[4] { source._r, source._g, source._b, source._a }, 0);
+            return System.BitConverter.ToUInt32(new byte[4] { source.R, source.G, source.B, source.A }, 0);
         }
         public static Color Unpack(uint source)
         {
-            byte[] sourceBytes = BitConverter.GetBytes(source);
+            byte[] sourceBytes = System.BitConverter.GetBytes(source);
             return new Color(sourceBytes[0], sourceBytes[1], sourceBytes[2], sourceBytes[3]);
         }
         #endregion

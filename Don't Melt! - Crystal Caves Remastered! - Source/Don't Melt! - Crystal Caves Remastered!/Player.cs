@@ -5,7 +5,8 @@ namespace DMCCR
     public enum FacingDirection { Right, Left };
     public sealed class Player : PhysicsObject
     {
-        private StagePlayer stagePlayer;
+        private int respawnTimer = 0;
+        private Stage stagePlayer;
 
         private TextureRenderer _textureRenderer = null;
 
@@ -18,16 +19,23 @@ namespace DMCCR
         public const float WallJumpForce = 15f * 16f / 60f;
         public const float MoveForce = 10f * 16f / 60f;
         public const float GravityForce = 9.8f * 16f * 1.5f / 60f / 60f;
-        public Player(StagePlayer stagePlayer, PhysicsLayer physicsLayer, PhysicsLayer[] collsionPhysicsLayers) : base(stagePlayer, physicsLayer, false)
+
+        private ParticleSystem deathParticles;
+        public Player(Stage stagePlayer, PhysicsLayer physicsLayer) : base(stagePlayer, false)
         {
             this.stagePlayer = stagePlayer;
 
             _playerTextureRight = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.PlayerRight.png"));
             _playerTextureLeft = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.PlayerLeft.png"));
 
-            _textureRenderer = new TextureRenderer(this, -5);
+            _textureRenderer = new TextureRenderer(this, 2);
 
             _textureRenderer.Texture = _playerTextureRight;
+
+            deathParticles = new ParticleSystem(this, new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.Death Particle Texture.png")), 3);
+            deathParticles.EmissionRate = 0;
+            deathParticles.particleLifeTime = 25;
+            deathParticles.particleSpeed = 2;
 
             SetColliderShape(new Rectangle[1] { new Rectangle(0, 0, 11, 11) });
 
@@ -38,10 +46,11 @@ namespace DMCCR
 
             MovePump.RegisterPumpEventUnsafe(CameraUpdate);
 
-            CollisionPhysicsLayers = collsionPhysicsLayers;
+            CollisionPhysicsLayers = physicsLayer;
         }
         private bool _leftMouseButtonPressedLastFrame = false;
         private bool _rightMouseButtonPressedLastFrame = false;
+        private bool _middleMouseButtonPressedLastFrame = false;
         private Point _reusablePoint = new Point(0, 0);
 
         private double GradientProgress = 0.0f;
@@ -53,92 +62,111 @@ namespace DMCCR
         }
         protected override void Update()
         {
-            Game.BackgroundColor = ColorHelper.SampleHueGradient(GradientProgress, 150);
-            GradientProgress += 1.0 / (20.0 * 200.0);
-            if(GradientProgress > 1.0f)
+            Game.BackgroundColor = GradientHelper.SampleLightHueGradient(GradientProgress, 100);
+            GradientProgress += 1.0 / (10.0 * 60.0 * 10.0);
+            if (GradientProgress > 1.0f)
             {
                 GradientProgress = 0.0f;
             }
 
-            Microsoft.Xna.Framework.Input.MouseState mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
-
-            bool leftMouseButtonPressed = mouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed;
-            bool rightMouseButtonPressed = mouseState.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed;
-
-            bool leftMouseButtonDown = !_leftMouseButtonPressedLastFrame && leftMouseButtonPressed;
-            bool rightMouseButtonDown = !_rightMouseButtonPressedLastFrame && rightMouseButtonPressed;
-
-            bool Grounded = false;
-            bool Walled = false;
-
-            foreach (PhysicsObject physicsObject in _collisionsUp)
+            if (respawnTimer > 35)
             {
-                if (physicsObject.GetType() == typeof(Lava))
-                {
-                    Kill();
-                    return;
-                }
+                _textureRenderer.Texture = null;
+
+                deathParticles.EmissionRate = 15;
+
+                Velocity = Vector.Zero;
+
+                respawnTimer--;
             }
-
-            foreach (PhysicsObject physicsObject in _collisionsRight)
+            else if (respawnTimer <= 35 && respawnTimer > 0)
             {
-                if (physicsObject.GetType() == typeof(Lava))
-                {
-                    Kill();
-                   return;
-                }
-                if (physicsObject.GetType() == typeof(Ground))
-                {
-                    Walled = true;
-                }
+                _textureRenderer.Texture = null;
+
+                deathParticles.EmissionRate = 0;
+
+                Velocity = Vector.Zero;
+
+                respawnTimer--;
             }
-
-            foreach (PhysicsObject physicsObject in _collisionsDown)
+            else if (respawnTimer == 0)
             {
-                if (physicsObject.GetType() == typeof(Lava))
-                {
-                    Kill();
-                    return;
-                }
-                if (physicsObject.GetType() == typeof(Ground))
-                {
-                    Grounded = true;
-                }
+                _textureRenderer.Texture = null;
+
+                deathParticles.EmissionRate = 0;
+
+                Position = stagePlayer.CheckPointPos;
+
+                Velocity = Vector.Zero;
+
+                respawnTimer = -1;
             }
-
-            foreach (PhysicsObject physicsObject in _collisionsLeft)
+            else if (respawnTimer < 0)
             {
-                if (physicsObject.GetType() == typeof(Lava))
-                {
-                    Kill();
-                    return;
-                }
-                if (physicsObject.GetType() == typeof(Ground))
-                {
-                    Walled = true;
-                }
-            }
+                Microsoft.Xna.Framework.Input.MouseState mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
 
+                bool leftMouseButtonPressed = mouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed;
+                bool rightMouseButtonPressed = mouseState.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed;
+                bool middleMouseButtonPressed = mouseState.MiddleButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed;
 
-            if (rightMouseButtonDown)
-            {
-                if (FacingDirection == FacingDirection.Right)
-                {
-                    FacingDirection = FacingDirection.Left;
-                }
-                else
-                {
-                    FacingDirection = FacingDirection.Right;
-                }
-            }
+                bool leftMouseButtonDown = !_leftMouseButtonPressedLastFrame && leftMouseButtonPressed;
+                bool rightMouseButtonDown = !_rightMouseButtonPressedLastFrame && rightMouseButtonPressed;
+                bool middleMouseButtonDown = !_middleMouseButtonPressedLastFrame && middleMouseButtonPressed;
 
-            if (leftMouseButtonDown)
-            {
-                if (Grounded)
+                bool Grounded = false;
+                bool Walled = false;
+
+                foreach (PhysicsObject physicsObject in _collisionsUp)
                 {
-                    VelocityY = JumpForce;
+                    if (physicsObject.GetType() == typeof(Lava))
+                    {
+                        Kill();
+                    }
                 }
-                else if (Walled)
+
+                foreach (PhysicsObject physicsObject in _collisionsRight)
+                {
+                    if (physicsObject.GetType() == typeof(Lava))
+                    {
+                        Kill();
+                    }
+                    if (physicsObject.GetType() == typeof(Ground))
+                    {
+                        Walled = true;
+                    }
+                }
+
+                foreach (PhysicsObject physicsObject in _collisionsDown)
+                {
+                    if (physicsObject.GetType() == typeof(Lava))
+                    {
+                        Kill();
+                    }
+                    if (physicsObject.GetType() == typeof(Ground))
+                    {
+                        Grounded = true;
+                    }
+                }
+
+                foreach (PhysicsObject physicsObject in _collisionsLeft)
+                {
+                    if (physicsObject.GetType() == typeof(Lava))
+                    {
+                        Kill();
+                    }
+                    if (physicsObject.GetType() == typeof(Ground))
+                    {
+                        Walled = true;
+                    }
+                }
+
+                if (middleMouseButtonDown)
+                {
+                    Point mousePosition = new Point(mouseState.Position.X * Scene.RenderWidth / Game.ViewportWidth, (Game.ViewportHeight - mouseState.Position.Y) * Scene.RenderHeight / Game.ViewportHeight);
+                    Position = mousePosition + Scene.CameraPosition;
+                }
+
+                if (rightMouseButtonDown)
                 {
                     if (FacingDirection == FacingDirection.Right)
                     {
@@ -148,115 +176,55 @@ namespace DMCCR
                     {
                         FacingDirection = FacingDirection.Right;
                     }
-
-                    VelocityY = WallJumpForce;
                 }
-            }
 
-            if (FacingDirection == FacingDirection.Right)
-            {
-                _textureRenderer.Texture = _playerTextureRight;
-                VelocityX = MoveForce;
-            }
-            else
-            {
-                _textureRenderer.Texture = _playerTextureLeft;
-                VelocityX = MoveForce * -1;
-            }
+                if (leftMouseButtonDown)
+                {
+                    if (Grounded)
+                    {
+                        VelocityY = JumpForce;
+                    }
+                    else if (Walled)
+                    {
+                        if (FacingDirection == FacingDirection.Right)
+                        {
+                            FacingDirection = FacingDirection.Left;
+                        }
+                        else
+                        {
+                            FacingDirection = FacingDirection.Right;
+                        }
 
-            VelocityY -= GravityForce;
+                        VelocityY = WallJumpForce;
+                    }
+                }
 
-            _leftMouseButtonPressedLastFrame = leftMouseButtonPressed;
-            _rightMouseButtonPressedLastFrame = rightMouseButtonPressed;
+                if (FacingDirection == FacingDirection.Right)
+                {
+                    _textureRenderer.Texture = _playerTextureRight;
+                    VelocityX = MoveForce;
+                }
+                else
+                {
+                    _textureRenderer.Texture = _playerTextureLeft;
+                    VelocityX = MoveForce * -1;
+                }
+
+                VelocityY -= GravityForce;
+
+                _leftMouseButtonPressedLastFrame = leftMouseButtonPressed;
+                _rightMouseButtonPressedLastFrame = rightMouseButtonPressed;
+                _middleMouseButtonPressedLastFrame = middleMouseButtonPressed;
+            }
         }
         public override string ToString()
         {
             return $"DMCCR.Player()";
         }
-        private bool killed = false;
         public void Kill()
         {
-            Velocity = Vector.Zero;
-            Position = stagePlayer.CheckPointPos;
+            respawnTimer = 55;
+            deathParticles.EmissionRate = 15;
         }
     }
 }
-
-
-
-
-
-
-
-/*using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-namespace EpsilonEngine
-{
-    public sealed class Player : GameObject
-    {
-        public float gravityForce = -0.00008f;
-        private VirtualInput jumpVirtualInput = null;
-        private VirtualInput rightVirtualInput = null;
-        private VirtualInput leftVirtualInput = null;
-        private VirtualInput upVirtualInput = null;
-        private VirtualInput downVirtualInput = null;
-
-        private Rigidbody _rigidbody = null;
-        private float moveSpeed = 0.00005f;
-        public Player(Scene stage, PhysicsManager physicsManager) : base(stage)
-        {
-            TextureRenderer textureRenderer = new TextureRenderer(this, new Texture(Engine, @"D:\C# Windows Apps\Epsilon\Epsilon - Source\Old Code\Default\Assets\Textures\Item Textures\LavaBubble.png"));
-            _rigidbody = new Rigidbody(this, 0);
-            Collider collider = new Collider(this, physicsManager, 1);
-        }
-        public override string ToString()
-        {
-            return $"Epsilon.Player({Position})";
-        }
-        protected override void Initialize()
-        {
-            _rigidbody = GetComponent<Rigidbody>();
-            jumpVirtualInput = Engine.InputManager.GetVirtualInputFromName("Jump");
-            rightVirtualInput = Engine.InputManager.GetVirtualInputFromName("Right");
-            leftVirtualInput = Engine.InputManager.GetVirtualInputFromName("Left");
-            upVirtualInput = Engine.InputManager.GetVirtualInputFromName("Up");
-            downVirtualInput = Engine.InputManager.GetVirtualInputFromName("Down");
-        }
-        protected override void Update()
-        {
-            float horizontalAxis = 0;
-
-            if (rightVirtualInput.Pressed && !leftVirtualInput.Pressed)
-            {
-                horizontalAxis = 1;
-            }
-            else if (leftVirtualInput.Pressed && !rightVirtualInput.Pressed)
-            {
-                horizontalAxis = -1;
-            }
-
-            float vericalAxis = 0;
-
-            if (upVirtualInput.Pressed && !downVirtualInput.Pressed)
-            {
-                vericalAxis = 1;
-            }
-            else if (downVirtualInput.Pressed && !upVirtualInput.Pressed)
-            {
-                vericalAxis = -1;
-            }
-
-            if (jumpVirtualInput.Pressed)
-            {
-                _rigidbody.velocity.Y = 0.1f;
-            }
-
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.X + (horizontalAxis * moveSpeed), _rigidbody.velocity.Y + gravityForce);
-
-            Scene.CameraPosition = Position - new Point(Scene.ViewPortSize.X / 2, Scene.ViewPortSize.Y / 2) + new Point(8, 8);
-        }
-    }
-}
-*/

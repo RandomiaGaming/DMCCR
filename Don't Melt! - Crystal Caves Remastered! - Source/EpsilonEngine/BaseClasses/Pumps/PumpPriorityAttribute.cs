@@ -1,22 +1,22 @@
-﻿using System;
+﻿//Approved 3/1/2022
 namespace EpsilonEngine
 {
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public sealed class PumpPriorityAttribute : Attribute
+    [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    public sealed class PumpPriorityAttribute : System.Attribute
     {
         #region Public Variables
-        public int Priority { get; private set; } = 0;
+        public readonly int Priority = 0;
         #endregion
-        #region Constructors
+        #region Public Constructors
         public PumpPriorityAttribute(int priority)
         {
             Priority = priority;
         }
         #endregion
-        #region Override Methods
+        #region Public Overrides
         public override string ToString()
         {
-            return $"EpsilonEngine.PumpPriorityAttribute()";
+            return $"EpsilonEngine.PumpPriorityAttribute({Priority})";
         }
         #endregion
     }

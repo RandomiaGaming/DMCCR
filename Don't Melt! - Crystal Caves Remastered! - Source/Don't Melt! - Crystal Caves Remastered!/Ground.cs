@@ -3,11 +3,9 @@ namespace DMCCR
 {
     public sealed class Ground : PhysicsObject
     {
-        public Ground(StagePlayer stagePlayer, PhysicsLayer physicsLayer) : base(stagePlayer, physicsLayer, true)
+        public Ground(Stage stagePlayer, Rectangle colliderShape) : base(stagePlayer, true)
         {
-            SetColliderShape(new Rectangle[1] { new Rectangle(0, 0, 15, 15) });
-
-            CollisionPhysicsLayers = null;
+           SetColliderShape(new Rectangle[1] { colliderShape });
         }
         public override string ToString()
         {

@@ -1,168 +1,307 @@
-﻿using System;
-using System.Collections.Generic;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
-    public struct TileData
+    public sealed class Tilemap : Component
     {
-        public Tile Tile;
-        public Point Position;
-        public TileData(Tile tile, Point position)
-        {
-            Tile = tile;
-            Position = position;
-        }
-    }
-    public class Tilemap : PhysicsObject
-    {
-        private Microsoft.Xna.Framework.Graphics.Texture2D _tilemapRender = null;
-        private Microsoft.Xna.Framework.Vector2 _XNAPositionCache = Microsoft.Xna.Framework.Vector2.Zero;
-        private int TilemapBoundsMinX = 0;
-        private int TilemapBoundsMinY = 0;
-        private int TilemapBoundsMaxX = 0;
-        private int TilemapBoundsMaxY = 0;
-        private List<Rectangle> tilemapColliderShape = new List<Rectangle>();
-        private List<TileData> tiles = new List<TileData>();
-        public Tilemap(PhysicsScene physicsScene, PhysicsLayer physicsLayer, bool Static) : base(physicsScene, physicsLayer, Static)
-        {
+        #region Public Variables
+        public readonly int CellWidth;
+        public readonly int CellHeight;
 
-        }
-        public void SetTile(Tile tile, Point position)
+        public readonly int TileWidth;
+        public readonly int TileHeight;
+
+        public readonly int PixelWidth;
+        public readonly int PixelHeight;
+
+        public Point Offset;
+        public Color Color
         {
-            tiles.Add(new TileData(tile, position));
+            get
+            {
+                return _color;
+            }
+            set
+            {
+                _color = value;
+                _XNAColorCache = new Microsoft.Xna.Framework.Color(value.R, value.G, value.B, value.A);
+            }
         }
-        protected override void Render()
+        #endregion
+        #region Private Variables
+        private int _heightMinusOne;
+        private int _dataLength;
+
+        private Tile[] _tileData;
+
+        private Microsoft.Xna.Framework.Graphics.RenderTarget2D _XNARenderTarget;
+        private Microsoft.Xna.Framework.Graphics.SpriteBatch _XNASpriteBatch;
+
+        private Microsoft.Xna.Framework.Color _XNAColorCache = Microsoft.Xna.Framework.Color.White;
+        private Color _color;
+        #endregion
+        #region Public Constructors
+        public Tilemap(GameObject gameObject, int cellWidth, int cellHeight, int tileWidth, int tileHeight) : base(gameObject)
         {
-            if (_tilemapRender is null)
+            if (cellWidth <= 0)
+            {
+                throw new System.Exception("cellWidth must be greater than 0.");
+            }
+            CellWidth = cellWidth;
+
+            if (cellHeight <= 0)
+            {
+                throw new System.Exception("cellHeight must be greater than 0.");
+            }
+            CellHeight = cellHeight;
+
+            if (tileWidth <= 0)
+            {
+                throw new System.Exception("tileWidth must be greater than 0.");
+            }
+            TileWidth = tileWidth;
+
+            if (tileHeight <= 0)
+            {
+                throw new System.Exception("tileHeight must be greater than 0.");
+            }
+            TileHeight = tileHeight;
+
+            PixelWidth = CellWidth * TileWidth;
+            PixelHeight = CellHeight * TileHeight;
+
+            _heightMinusOne = TileHeight - 1;
+
+            _dataLength = TileWidth * TileHeight;
+
+            _tileData = new Tile[_dataLength];
+
+            _XNARenderTarget = new Microsoft.Xna.Framework.Graphics.RenderTarget2D(Game.GameInterface.XNAGraphicsDevice, PixelWidth, PixelHeight);
+
+            _XNASpriteBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(Game.GameInterface.XNAGraphicsDevice);
+
+            Game.GameInterface.XNAGraphicsDevice.SetRenderTarget(_XNARenderTarget);
+            Game.GameInterface.XNAGraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
+            Game.GameInterface.XNAGraphicsDevice.SetRenderTarget(null);
+        }
+        public Tilemap(GameObject gameObject, int cellWidth, int cellHeight, int tileWidth, int tileHeight, Tile[] data) : base(gameObject)
+        {
+            if (cellWidth <= 0)
+            {
+                throw new System.Exception("cellWidth must be greater than 0.");
+            }
+            CellWidth = cellWidth;
+
+            if (cellHeight <= 0)
+            {
+                throw new System.Exception("cellHeight must be greater than 0.");
+            }
+            CellHeight = cellHeight;
+
+            if (tileWidth <= 0)
+            {
+                throw new System.Exception("tileWidth must be greater than 0.");
+            }
+            TileWidth = tileWidth;
+
+            if (tileHeight <= 0)
+            {
+                throw new System.Exception("tileHeight must be greater than 0.");
+            }
+            TileHeight = tileHeight;
+
+            PixelWidth = CellWidth * TileWidth;
+            PixelHeight = CellHeight * TileHeight;
+
+            _heightMinusOne = TileHeight - 1;
+
+            _dataLength = TileWidth * TileHeight;
+
+            if (data is null)
+            {
+                throw new System.Exception("data cannot be null.");
+            }
+            if (data.Length != _dataLength)
+            {
+                throw new System.Exception("data.Length must be equal to tileWidth times tileHeight.");
+            }
+
+            _tileData = (Tile[])data.Clone();
+
+            _XNARenderTarget = new Microsoft.Xna.Framework.Graphics.RenderTarget2D(Game.GameInterface.XNAGraphicsDevice, PixelWidth, PixelHeight);
+
+            _XNASpriteBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(Game.GameInterface.XNAGraphicsDevice);
+
+            Game.GameInterface.XNAGraphicsDevice.SetRenderTarget(_XNARenderTarget);
+            Game.GameInterface.XNAGraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
+
+            _XNASpriteBatch.Begin(Microsoft.Xna.Framework.Graphics.SpriteSortMode.Deferred, Microsoft.Xna.Framework.Graphics.BlendState.AlphaBlend, Microsoft.Xna.Framework.Graphics.SamplerState.PointClamp, null, null, null, null);
+
+            for (int i = 0; i < _dataLength; i++)
+            {
+                Tile tile = _tileData[i];
+                if (tile is not null)
+                {
+                    int x = (i % TileWidth) * CellWidth;
+                    int y = (_heightMinusOne - (i / TileWidth)) * CellHeight;
+                    y = (TileHeight * CellHeight) - y - CellHeight;
+
+                    _XNASpriteBatch.Draw(tile.Texture._XNABase, new Microsoft.Xna.Framework.Vector2(x, y), new Microsoft.Xna.Framework.Color(tile.Color.R, tile.Color.G, tile.Color.B, tile.Color.A));
+                }
+            }
+
+            _XNASpriteBatch.End();
+
+            Game.GameInterface.XNAGraphicsDevice.SetRenderTarget(null);
+        }
+        #endregion
+        #region Public Overrides
+        public override string ToString()
+        {
+            return $"EpsilonEngine.Tilemap({TileWidth}, {TileHeight})";
+        }
+        #endregion
+        #region Public Methods
+        public void SetTile(int x, int y, Tile tile)
+        {
+            if (x < 0)
+            {
+                throw new System.Exception("x must be greater than or equal to 0.");
+            }
+            if (x >= TileWidth)
+            {
+                throw new System.Exception("x must be less than width.");
+            }
+
+            if (y < 0)
+            {
+                throw new System.Exception("y must be greater than or equal to 0.");
+            }
+            if (y >= TileHeight)
+            {
+                throw new System.Exception("y must be less than height.");
+            }
+
+            _tileData[((_heightMinusOne - y) * TileWidth) + x] = tile;
+        }
+        public Tile GetTile(int x, int y)
+        {
+            if (x < 0)
+            {
+                throw new System.Exception("x must be greater than or equal to 0.");
+            }
+            if (x >= TileWidth)
+            {
+                throw new System.Exception("x must be less than width.");
+            }
+
+            if (y < 0)
+            {
+                throw new System.Exception("y must be greater than or equal to 0.");
+            }
+            if (y >= TileHeight)
+            {
+                throw new System.Exception("y must be less than height.");
+            }
+
+            return _tileData[((_heightMinusOne - y) * TileWidth) + x];
+        }
+        public void SetData(Tile[] data)
+        {
+            if (data is null)
+            {
+                throw new System.Exception("data cannot be null.");
+            }
+            if (data.Length != _dataLength)
+            {
+                throw new System.Exception("data.Length must be equal to width times height.");
+            }
+
+            _tileData = (Tile[])data.Clone();
+        }
+        public Tile[] GetData()
+        {
+            return (Tile[])_tileData.Clone();
+        }
+        public void Fill(Tile color)
+        {
+            _tileData[0] = color;
+
+            if (_dataLength == 1)
             {
                 return;
             }
-            int positionX = TilemapBoundsMinX - Scene.CameraPositionX + PositionX;
-            int positionY = Scene.RenderHeight - TilemapBoundsMinY + Scene.CameraPositionY - PositionY - _tilemapRender.Height;
-            if (positionX < -_tilemapRender.Width || positionY + _tilemapRender.Height < 0 || positionX > Scene.RenderWidth || positionY > Scene.RenderHeight)
-            {
 
-            }
-            else
+            int halfDataLength = _dataLength / 2;
+
+            int i = 1;
+
+            while (i < halfDataLength)
             {
-                _XNAPositionCache.X = positionX;
-                _XNAPositionCache.Y = positionY;
-                Scene.XNASpriteBatch.Draw(_tilemapRender, _XNAPositionCache, Microsoft.Xna.Framework.Color.White);
+                System.Array.Copy(_tileData, 0, _tileData, i, i);
+                i = i * 2;
             }
+
+            if (i != _dataLength)
+            {
+                System.Array.Copy(_tileData, 0, _tileData, i, _dataLength - i);
+            }
+        }
+        public void Clear()
+        {
+            _tileData = new Tile[_dataLength];
         }
         public void Apply()
         {
-            TilemapBoundsMinX = int.MaxValue;
-            TilemapBoundsMinY = int.MaxValue;
-            TilemapBoundsMaxX = int.MinValue;
-            TilemapBoundsMaxY = int.MinValue;
-
-            foreach (TileData tileData in tiles)
-            {
-                foreach (Rectangle localShape in tileData.Tile.colliderShape)
-                {
-                    int minX = localShape.MinX + tileData.Position.X;
-                    int minY = localShape.MinY + tileData.Position.X;
-                    int maxX = localShape.MaxX + tileData.Position.X;
-                    int maxY = localShape.MaxY + tileData.Position.X;
-                    tilemapColliderShape.Add(new Rectangle(minX, minY, maxX, maxY));
-
-                    if (minX < TilemapBoundsMinX)
-                    {
-                        TilemapBoundsMinX = minX;
-                    }
-                    if (minY < TilemapBoundsMinY)
-                    {
-                        TilemapBoundsMinY = minY;
-                    }
-                    if (maxX > TilemapBoundsMaxX)
-                    {
-                        TilemapBoundsMaxX = maxX;
-                    }
-                    if (maxY > TilemapBoundsMaxY)
-                    {
-                        TilemapBoundsMaxY = maxY;
-                    }
-                }
-            }
-
-            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(Game.GameInterface.XNAGraphicsDevice);
-            Microsoft.Xna.Framework.Graphics.RenderTarget2D renderTarget2D = new Microsoft.Xna.Framework.Graphics.RenderTarget2D(Game.GameInterface.XNAGraphicsDevice, TilemapBoundsMaxX - TilemapBoundsMinX + 1, TilemapBoundsMaxY - TilemapBoundsMinY + 1);
-
-            Game.GameInterface.XNAGraphicsDevice.SetRenderTarget(renderTarget2D);
+            Game.GameInterface.XNAGraphicsDevice.SetRenderTarget(_XNARenderTarget);
             Game.GameInterface.XNAGraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
-            spriteBatch.Begin(Microsoft.Xna.Framework.Graphics.SpriteSortMode.Deferred, Microsoft.Xna.Framework.Graphics.BlendState.AlphaBlend, Microsoft.Xna.Framework.Graphics.SamplerState.PointClamp, null, null, null, null);
 
-            foreach (TileData tileData in tiles)
+            _XNASpriteBatch.Begin(Microsoft.Xna.Framework.Graphics.SpriteSortMode.Deferred, Microsoft.Xna.Framework.Graphics.BlendState.AlphaBlend, Microsoft.Xna.Framework.Graphics.SamplerState.PointClamp, null, null, null, null);
+
+            for (int i = 0; i < _dataLength; i++)
             {
-                if (tileData.Tile.Texture is not null)
+                Tile tile = _tileData[i];
+                if (tile is not null)
                 {
-                    _XNAPositionCache.X = tileData.Position.X - TilemapBoundsMinX;
-                    _XNAPositionCache.Y = renderTarget2D.Height - tileData.Position.Y + TilemapBoundsMinY - tileData.Tile.Texture.Height;
-                    spriteBatch.Draw(tileData.Tile.Texture._XNABase, _XNAPositionCache, new Microsoft.Xna.Framework.Color(tileData.Tile.Color._r, tileData.Tile.Color._g, tileData.Tile.Color._b, tileData.Tile.Color._a));
+                    int x = (i % TileWidth) * CellWidth;
+                    int y = (_heightMinusOne - (i / TileWidth)) * CellHeight;
+                    y = (TileHeight * CellHeight) - y - CellHeight;
+
+                    _XNASpriteBatch.Draw(tile.Texture._XNABase, new Microsoft.Xna.Framework.Vector2(x, y), new Microsoft.Xna.Framework.Color(tile.Color.R, tile.Color.G, tile.Color.B, tile.Color.A));
                 }
             }
 
-            spriteBatch.End();
+            _XNASpriteBatch.End();
 
-            _tilemapRender = renderTarget2D;
-
-            /*bool end = false;
-            while (!end)
-            {
-                end = true;
-                bool hit = false;
-                int colliderShapeCount = tilemapColliderShape.Count;
-                for (int i = 0; i < colliderShapeCount; i++)
-                {
-                    Rectangle a = tilemapColliderShape[i];
-                    for (int i2 = 0; i2 < tilemapColliderShape.Count; i2++)
-                    {
-                        Rectangle b = tilemapColliderShape[i2];
-                        if (a.MaxY == b.MaxY && a.MinY == b.MinY && a.MaxX + 1 == b.MinX)
-                        {
-                            tilemapColliderShape.RemoveAt(i);
-                            tilemapColliderShape.RemoveAt(i2);
-                            tilemapColliderShape.Add(new Rectangle(a.MinX, a.MinY, b.MaxX, a.MaxY));
-                            hit = true;
-                            end = false;
-                            break;
-                        }
-                        if (a.MaxY == b.MaxY && a.MinY == b.MinY && a.MinX - 1 == b.MaxX)
-                        {
-                            tilemapColliderShape.RemoveAt(i);
-                            tilemapColliderShape.RemoveAt(i2);
-                            tilemapColliderShape.Add(new Rectangle(b.MinX, a.MinY, a.MaxX, a.MaxY));
-                            hit = true;
-                            end = false;
-                            break;
-                        }
-                        if (a.MaxX == b.MaxX && a.MinX == b.MinX && a.MaxY + 1 == b.MinY)
-                        {
-                            tilemapColliderShape.RemoveAt(i);
-                            tilemapColliderShape.RemoveAt(i2);
-                            tilemapColliderShape.Add(new Rectangle(a.MinY, a.MinX, b.MaxY, a.MaxX));
-                            hit = true;
-                            end = false;
-                            break;
-                        }
-                        if (a.MaxX == b.MaxX && a.MinX == b.MinX && a.MinY - 1 == b.MaxY)
-                        {
-                            tilemapColliderShape.RemoveAt(i);
-                            tilemapColliderShape.RemoveAt(i2);
-                            tilemapColliderShape.Add(new Rectangle(b.MinY, a.MinX, a.MaxY, a.MaxX));
-                            hit = true;
-                            end = false;
-                            break;
-                        }
-                    }
-                    if (hit)
-                    {
-                        break;
-                    }
-                }
-            }*/
-
-            //SetColliderShape(tilemapColliderShape.ToArray());
+            Game.GameInterface.XNAGraphicsDevice.SetRenderTarget(null);
         }
+        protected override void Render()
+        {
+            int positionX = Offset.X - Scene.CameraPositionX + GameObject.PositionX;
+            int positionY = Scene.RenderHeight - Offset.Y + Scene.CameraPositionY - GameObject.PositionY - PixelHeight;
+            if (positionX < -PixelWidth || positionY + PixelHeight < 0 || positionX > Scene.RenderWidth || positionY > Scene.RenderHeight)
+            {
+                return;
+            }
+            Scene.XNASpriteBatch.Draw(_XNARenderTarget, new Microsoft.Xna.Framework.Vector2(positionX, positionY), _XNAColorCache);
+        }
+        #endregion
+        #region Internal Methods
+        public void SetTileUnsafe(int x, int y, Tile tile)
+        {
+            _tileData[((_heightMinusOne - y) * TileWidth) + x] = tile;
+        }
+        public Tile GetTileUnsafe(int x, int y)
+        {
+            return _tileData[((_heightMinusOne - y) * TileWidth) + x];
+        }
+        public void SetDataUnsafe(Tile[] data)
+        {
+
+            _tileData = data;
+        }
+        public Tile[] GetDataUnsafe()
+        {
+            return _tileData;
+        }
+        #endregion
     }
 }

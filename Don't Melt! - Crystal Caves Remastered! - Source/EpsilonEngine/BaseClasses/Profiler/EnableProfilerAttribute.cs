@@ -1,10 +1,10 @@
-﻿using System;
+﻿//Approved 3/1/2022
 namespace EpsilonEngine
 {
-    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
-    public sealed class EnableProfilerAttribute : Attribute
+    [System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
+    public sealed class EnableProfilerAttribute : System.Attribute
     {
-        #region Override Methods
+        #region Public Overrides
         public override string ToString()
         {
             return $"EpsilonEngine.EnableProfilerAttribute()";

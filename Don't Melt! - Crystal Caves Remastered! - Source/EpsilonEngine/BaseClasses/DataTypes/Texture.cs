@@ -1,19 +1,13 @@
-﻿//Approved 2/28/2022
-using System;
-using System.IO;
+﻿//Approved 3/1/2022
 namespace EpsilonEngine
 {
     public sealed class Texture
     {
-        #region Public Constants
-        public const int MaxWidth = 46340;
-        public const int MaxHeight = 46340;
-        #endregion
         #region Public Variables
-        public Game Game { get; private set; }
+        public readonly Game Game;
 
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public readonly int Width;
+        public readonly int Height;
         #endregion
         #region Internal Variables
         internal Microsoft.Xna.Framework.Graphics.Texture2D _XNABase = null;
@@ -30,27 +24,19 @@ namespace EpsilonEngine
         {
             if (game is null)
             {
-                throw new Exception("game cannot be null.");
+                throw new System.Exception("game cannot be null.");
             }
             Game = game;
 
             if (width <= 0)
             {
-                throw new Exception("width must be greater than 0.");
-            }
-            if (width > MaxWidth)
-            {
-                throw new Exception("width must be less than MaxWidth.");
+                throw new System.Exception("width must be greater than 0.");
             }
             Width = width;
 
             if (height <= 0)
             {
-                throw new Exception("height must be greater than 0.");
-            }
-            if (height > MaxHeight)
-            {
-                throw new Exception("height must be less than MaxHeight.");
+                throw new System.Exception("height must be greater than 0.");
             }
             Height = height;
 
@@ -68,27 +54,19 @@ namespace EpsilonEngine
         {
             if (game is null)
             {
-                throw new Exception("game cannot be null.");
+                throw new System.Exception("game cannot be null.");
             }
             Game = game;
 
             if (width <= 0)
             {
-                throw new Exception("width must be greater than 0.");
-            }
-            if (width > MaxWidth)
-            {
-                throw new Exception("width must be less than MaxWidth.");
+                throw new System.Exception("width must be greater than 0.");
             }
             Width = width;
 
             if (height <= 0)
             {
-                throw new Exception("height must be greater than 0.");
-            }
-            if (height > MaxHeight)
-            {
-                throw new Exception("height must be less than MaxHeight.");
+                throw new System.Exception("height must be greater than 0.");
             }
             Height = height;
 
@@ -100,11 +78,11 @@ namespace EpsilonEngine
 
             if (data is null)
             {
-                throw new Exception("data cannot be null.");
+                throw new System.Exception("data cannot be null.");
             }
             if (data.Length != _dataLength)
             {
-                throw new Exception("data.Length must be equal to width times height.");
+                throw new System.Exception("data.Length must be equal to width times height.");
             }
 
             _colorData = (Color[])data.Clone();
@@ -114,7 +92,7 @@ namespace EpsilonEngine
             for (int i = 0; i < _dataLength; i++)
             {
                 Color color = _colorData[i];
-                _XNAColorData[i] = new Microsoft.Xna.Framework.Color(color._r, color._g, color._b, color._a);
+                _XNAColorData[i] = new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
             }
 
             _XNABase.SetData(_XNAColorData);
@@ -123,17 +101,17 @@ namespace EpsilonEngine
         {
             if (game is null)
             {
-                throw new Exception("game cannot be null.");
+                throw new System.Exception("game cannot be null.");
             }
             Game = game;
 
             if (sourceFilePath is null)
             {
-                throw new Exception("sourceFilePath cannot be null.");
+                throw new System.Exception("sourceFilePath cannot be null.");
             }
-            if (!File.Exists(sourceFilePath))
+            if (!System.IO.File.Exists(sourceFilePath))
             {
-                throw new Exception("sourceFilePath does not exist.");
+                throw new System.Exception("sourceFilePath does not exist.");
             }
 
             try
@@ -142,7 +120,7 @@ namespace EpsilonEngine
             }
             catch
             {
-                throw new Exception("texture could not be loaded from filePath.");
+                throw new System.Exception("texture could not be loaded from filePath.");
             }
 
             Width = _XNABase.Width;
@@ -150,20 +128,12 @@ namespace EpsilonEngine
 
             if (Width <= 0)
             {
-                throw new Exception("width must be greater than 0.");
-            }
-            if (Width > MaxWidth)
-            {
-                throw new Exception("width must be less than MaxWidth.");
+                throw new System.Exception("width must be greater than 0.");
             }
 
             if (Height <= 0)
             {
-                throw new Exception("height must be greater than 0.");
-            }
-            if (Height > MaxHeight)
-            {
-                throw new Exception("height must be less than MaxHeight.");
+                throw new System.Exception("height must be greater than 0.");
             }
 
             _heightMinusOne = Height - 1;
@@ -182,21 +152,21 @@ namespace EpsilonEngine
                 _colorData[i] = new Color(color.R, color.G, color.B, color.A);
             }
         }
-        public Texture(Game game, Stream sourceStream)
+        public Texture(Game game, System.IO.Stream sourceStream)
         {
             if (game is null)
             {
-                throw new Exception("game cannot be null.");
+                throw new System.Exception("game cannot be null.");
             }
             Game = game;
 
             if (sourceStream is null)
             {
-                throw new Exception("sourceStream cannot be null.");
+                throw new System.Exception("sourceStream cannot be null.");
             }
             if (!sourceStream.CanRead)
             {
-                throw new Exception("sourceStream must be readable.");
+                throw new System.Exception("sourceStream must be readable.");
             }
 
             try
@@ -205,7 +175,7 @@ namespace EpsilonEngine
             }
             catch
             {
-                throw new Exception("texture could not be loaded from filePath.");
+                throw new System.Exception("texture could not be loaded from filePath.");
             }
 
             Width = _XNABase.Width;
@@ -213,20 +183,12 @@ namespace EpsilonEngine
 
             if (Width <= 0)
             {
-                throw new Exception("width must be greater than 0.");
-            }
-            if (Width > MaxWidth)
-            {
-                throw new Exception("width must be less than MaxWidth.");
+                throw new System.Exception("width must be greater than 0.");
             }
 
             if (Height <= 0)
             {
-                throw new Exception("height must be greater than 0.");
-            }
-            if (Height > MaxHeight)
-            {
-                throw new Exception("height must be less than MaxHeight.");
+                throw new System.Exception("height must be greater than 0.");
             }
 
             _heightMinusOne = Height - 1;
@@ -257,46 +219,46 @@ namespace EpsilonEngine
         {
             if (x < 0)
             {
-                throw new Exception("x must be greater than or equal to 0.");
+                throw new System.Exception("x must be greater than or equal to 0.");
             }
             if (x >= Width)
             {
-                throw new Exception("x must be less than width.");
+                throw new System.Exception("x must be less than width.");
             }
 
             if (y < 0)
             {
-                throw new Exception("y must be greater than or equal to 0.");
+                throw new System.Exception("y must be greater than or equal to 0.");
             }
             if (y >= Height)
             {
-                throw new Exception("y must be less than height.");
+                throw new System.Exception("y must be less than height.");
             }
 
             int targetIndex = ((_heightMinusOne - y) * Width) + x;
 
             _colorData[targetIndex] = color;
 
-            _XNAColorData[targetIndex] = new Microsoft.Xna.Framework.Color(color._r, color._g, color._b, color._a);
+            _XNAColorData[targetIndex] = new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
         }
         public Color GetPixel(int x, int y)
         {
             if (x < 0)
             {
-                throw new Exception("x must be greater than or equal to 0.");
+                throw new System.Exception("x must be greater than or equal to 0.");
             }
             if (x >= Width)
             {
-                throw new Exception("x must be less than width.");
+                throw new System.Exception("x must be less than width.");
             }
 
             if (y < 0)
             {
-                throw new Exception("y must be greater than or equal to 0.");
+                throw new System.Exception("y must be greater than or equal to 0.");
             }
             if (y >= Height)
             {
-                throw new Exception("y must be less than height.");
+                throw new System.Exception("y must be less than height.");
             }
 
             return _colorData[((_heightMinusOne - y) * Width) + x];
@@ -305,11 +267,11 @@ namespace EpsilonEngine
         {
             if (data is null)
             {
-                throw new Exception("data cannot be null.");
+                throw new System.Exception("data cannot be null.");
             }
             if (data.Length != _dataLength)
             {
-                throw new Exception("data.Length must be equal to width times height.");
+                throw new System.Exception("data.Length must be equal to width times height.");
             }
 
             _colorData = (Color[])data.Clone();
@@ -317,7 +279,7 @@ namespace EpsilonEngine
             for (int i = 0; i < _dataLength; i++)
             {
                 Color color = _colorData[i];
-                _XNAColorData[i] = new Microsoft.Xna.Framework.Color(color._r, color._g, color._b, color._a);
+                _XNAColorData[i] = new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
             }
         }
         public Color[] GetData()
@@ -328,7 +290,7 @@ namespace EpsilonEngine
         {
             _colorData[0] = color;
 
-            _XNAColorData[0] = new Microsoft.Xna.Framework.Color(color._r, color._g, color._b, color._a);
+            _XNAColorData[0] = new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
 
             if (_dataLength == 1)
             {
@@ -341,20 +303,48 @@ namespace EpsilonEngine
 
             while (i < halfDataLength)
             {
-                Array.Copy(_colorData, 0, _colorData, i, i);
-                Array.Copy(_XNAColorData, 0, _XNAColorData, i, i);
+                System.Array.Copy(_colorData, 0, _colorData, i, i);
+                System.Array.Copy(_XNAColorData, 0, _XNAColorData, i, i);
                 i = i * 2;
             }
 
             if (i != _dataLength)
             {
-                Array.Copy(_colorData, 0, _colorData, i, _dataLength - i);
-                Array.Copy(_XNAColorData, 0, _XNAColorData, i, _dataLength - i);
+                System.Array.Copy(_colorData, 0, _colorData, i, _dataLength - i);
+                System.Array.Copy(_XNAColorData, 0, _XNAColorData, i, _dataLength - i);
             }
         }
         public void Apply()
         {
             _XNABase.SetData(_XNAColorData);
+        }
+        #endregion
+        #region Internal Methods
+        public void SetPixelUnsafe(int x, int y, Color color)
+        {
+            int targetIndex = ((_heightMinusOne - y) * Width) + x;
+
+            _colorData[targetIndex] = color;
+
+            _XNAColorData[targetIndex] = new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
+        }
+        public Color GetPixelUnsafe(int x, int y)
+        {
+            return _colorData[((_heightMinusOne - y) * Width) + x];
+        }
+        public void SetDataUnsafe(Color[] data)
+        {
+            _colorData = data;
+
+            for (int i = 0; i < _dataLength; i++)
+            {
+                Color color = _colorData[i];
+                _XNAColorData[i] = new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
+            }
+        }
+        public Color[] GetDataUnsafe()
+        {
+            return _colorData;
         }
         #endregion
     }

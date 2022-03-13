@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//Approved 3/1/2022
 namespace EpsilonEngine
 {
     public sealed class InverseOrderedPump
@@ -14,8 +13,8 @@ namespace EpsilonEngine
         }
         #endregion
         #region Private Variables
-        private List<PumpEvent> _pumpEvents = new List<PumpEvent>();
-        private List<int> _invokeOrder = new List<int>();
+        private System.Collections.Generic.List<PumpEvent> _pumpEvents = new System.Collections.Generic.List<PumpEvent>();
+        private System.Collections.Generic.List<int> _invokeOrder = new System.Collections.Generic.List<int>();
         private PumpEvent[] _pumpEventCache = new PumpEvent[0];
         private bool _pumpEventCacheValid = true;
         private bool _pumpEmpty = true;
@@ -43,45 +42,58 @@ namespace EpsilonEngine
         {
             if (pumpEvent is null)
             {
-                throw new Exception("pumpEvent cannot be null.");
+                throw new System.Exception("pumpEvent cannot be null.");
             }
 
             int pumpEventsCount = _pumpEvents.Count;
+
+            int insertPosition = 0;
+
             for (int i = 0; i < pumpEventsCount; i++)
             {
                 if (pumpEvent == _pumpEvents[i])
                 {
-                    throw new Exception("pumpEvent has already been added to this pump.");
+                    throw new System.Exception("pumpEvent has already been added to this pump.");
+                }
+                else if (invokePriority >= _invokeOrder[i])
+                {
+                    insertPosition = i + 1;
                 }
             }
 
-            RegisterPumpEventUnsafe(pumpEvent, invokePriority);
+            _invokeOrder.Insert(insertPosition, invokePriority);
+            _pumpEvents.Insert(insertPosition, pumpEvent);
+
+            _pumpEventCacheValid = false;
+            _pumpEmpty = false;
         }
         public void UnregisterPumpEvent(PumpEvent pumpEvent)
         {
             if (pumpEvent is null)
             {
-                throw new Exception("pumpEvent cannot be null.");
+                throw new System.Exception("pumpEvent cannot be null.");
             }
 
-            bool pumpEventFound = false;
-
             int pumpEventsCount = _pumpEvents.Count;
+
+            _pumpEventCacheValid = false;
+
+            if (pumpEventsCount < 2)
+            {
+                _pumpEmpty = true;
+            }
+
             for (int i = 0; i < pumpEventsCount; i++)
             {
                 if (pumpEvent == _pumpEvents[i])
                 {
-                    pumpEventFound = true;
-                    break;
+                    _invokeOrder.RemoveAt(i);
+                    _pumpEvents.RemoveAt(i);
+                    return;
                 }
             }
 
-            if (pumpEventFound)
-            {
-                throw new Exception("pumpEvent was not found on this pump.");
-            }
-
-            UnregisterPumpEventUnsafe(pumpEvent);
+            throw new System.Exception("pumpEvent was not found on this pump.");
         }
         #endregion
         #region Internal Methods
@@ -123,7 +135,7 @@ namespace EpsilonEngine
             }
         }
         #endregion
-        #region Override Methods
+        #region Public Overrides
         public override string ToString()
         {
             return $"EpsilonEngine.InverseOrderedPump({EventCount})";
