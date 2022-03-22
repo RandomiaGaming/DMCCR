@@ -5,8 +5,8 @@
         [System.STAThread]
         public static void Main()
         {
-            DMCCR game = new DMCCR();
-            game.Run();
+            DMCCR dmccr = new DMCCR();
+            dmccr.Run();
         }
     }
 }

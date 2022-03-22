@@ -7,8 +7,9 @@ namespace DMCCR
         public DMCCR()
         {
             BackgroundColor = new Color(255, 0, 0, 0);
-           Stage stage = new Stage(this);
-            TargetFPS = 60.0f;
+            Stage stage = new Stage(this);
+            //Scene scene = new Scene(this, 256, 144, 0);
+            FPSCounter fPSCounter = new FPSCounter(stage);
         }
         public override string ToString()
         {

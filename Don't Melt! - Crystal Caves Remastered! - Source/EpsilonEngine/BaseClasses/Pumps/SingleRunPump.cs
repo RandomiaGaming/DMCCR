@@ -1,4 +1,4 @@
-﻿//Approved 3/1/2022
+﻿//Approved 3/22/2022
 namespace EpsilonEngine
 {
     public sealed class SingleRunPump
@@ -14,23 +14,22 @@ namespace EpsilonEngine
         #endregion
         #region Private Variables
         private System.Collections.Generic.List<PumpEvent> _pumpEvents = new System.Collections.Generic.List<PumpEvent>();
-        private bool _pumpEmpty = true;
+        private bool _pumpFull;
         #endregion
         #region Public Methods
         public void Invoke()
         {
-            if (_pumpEmpty)
+            if (_pumpFull)
             {
-                return;
-            }
+                int pumpEventsCount = _pumpEvents.Count;
+                for (int i = 0; i < pumpEventsCount; i++)
+                {
+                    _pumpEvents[i].Invoke();
+                }
 
-            int pumpEventsCount = _pumpEvents.Count;
-            for (int i = 0; i < pumpEventsCount; i++)
-            {
-                _pumpEvents[i].Invoke();
+                _pumpEvents = new System.Collections.Generic.List<PumpEvent>();
+                _pumpFull = false;
             }
-
-            _pumpEvents.Clear();
         }
         public void RegisterPumpEvent(PumpEvent pumpEvent)
         {
@@ -49,14 +48,15 @@ namespace EpsilonEngine
             }
 
             _pumpEvents.Add(pumpEvent);
-            _pumpEmpty = false;
+
+            _pumpFull = true;
         }
         #endregion
         #region Internal Methods
         public void RegisterPumpEventUnsafe(PumpEvent pumpEvent)
         {
             _pumpEvents.Add(pumpEvent);
-            _pumpEmpty = false;
+            _pumpFull = true;
         }
         #endregion
         #region Public Overrides

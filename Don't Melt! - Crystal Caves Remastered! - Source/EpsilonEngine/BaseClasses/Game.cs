@@ -4,10 +4,9 @@
     {
         #region Public Variables
         public bool Running { get; private set; } = false;
+        public bool Initialized { get; private set; } = false;
         public bool MarkedForExit { get; private set; } = false;
         public bool Exited { get; private set; } = false;
-
-        public bool Rendering { get; private set; } = false;
 
         public bool KillProcessOnExit = true;
         public bool DestroyChildrenOnExit = false;
@@ -56,7 +55,9 @@
                 if (value == float.PositiveInfinity)
                 {
                     GameInterface.IsFixedTimeStep = false;
-                    _targetFPS = value;
+                    _targetTPF = 0;
+                    GameInterface.TargetElapsedTime = new System.TimeSpan(1);
+                    _targetFPS = float.PositiveInfinity;
                     return;
                 }
                 if (value > 1000000.0f)
@@ -64,8 +65,35 @@
                     throw new System.Exception("TargetFPS must less than 1000000 unless TargetFPS is infinity.");
                 }
                 GameInterface.IsFixedTimeStep = true;
-                GameInterface.TargetElapsedTime = new System.TimeSpan((long)(10000000.0f / value));
+                _targetTPF = 10000000 / (long)value;
+                GameInterface.TargetElapsedTime = new System.TimeSpan(_targetTPF);
                 _targetFPS = value;
+            }
+        }
+        public long TargetTPF
+        {
+            get
+            {
+                return _targetTPF;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new System.Exception("TargetTPF must be greater than or equal to 0.");
+                }
+                if (value == 0)
+                {
+                    GameInterface.IsFixedTimeStep = false;
+                    _targetTPF = 0;
+                    GameInterface.TargetElapsedTime = new System.TimeSpan(1);
+                    _targetFPS = float.PositiveInfinity;
+                    return;
+                }
+                GameInterface.IsFixedTimeStep = true;
+                _targetTPF = value;
+                GameInterface.TargetElapsedTime = new System.TimeSpan(_targetTPF);
+                _targetFPS = 10000000 / _targetTPF;
             }
         }
 
@@ -109,6 +137,9 @@
         internal Microsoft.Xna.Framework.Graphics.SpriteBatch XNASpriteBatch = null;
         #endregion
         #region Private Variables
+        private System.Diagnostics.Stopwatch _gameTimer = new System.Diagnostics.Stopwatch();
+        private long _timeLastFrame;
+
         private System.Collections.Generic.List<GameManager> _gameManagers = new System.Collections.Generic.List<GameManager>();
 
         private System.Collections.Generic.List<Canvas> _canvases = new System.Collections.Generic.List<Canvas>();
@@ -121,21 +152,25 @@
         private Microsoft.Xna.Framework.Rectangle _XNAViewportRect;
 
         private float _targetFPS = float.PositiveInfinity;
+        private long _targetTPF;
 
         private bool _isFullScreen = false;
 
-        private bool _gameCreatedAlready = false;
+        private static bool _gameCreatedAlready = false;
+        private bool Rendering = false;
         #endregion
         #region Constructors
         public Game()
         {
             if (_gameCreatedAlready)
             {
-                throw new System.Exception("cannot create more than one game on a single process.");
+                throw new System.Exception("cannot create another game on this process.");
             }
             _gameCreatedAlready = true;
 
             Profiler.InitializeStart();
+
+            _gameTimer.Restart();
 
             GameInterface = new GameInterface(this);
 
@@ -525,6 +560,18 @@
             {
                 Profiler.UpdateStart();
             }
+
+            long timeNow = _gameTimer.ElapsedTicks;
+
+            long elapsedTicks = timeNow - _timeLastFrame;
+
+            TimeSinceStart = new System.TimeSpan(timeNow);
+
+            DeltaTime = new System.TimeSpan(elapsedTicks);
+
+            CurrentFPS = 10000000 / elapsedTicks;
+
+            _timeLastFrame = timeNow;
 
             CreationPump.Invoke();
 

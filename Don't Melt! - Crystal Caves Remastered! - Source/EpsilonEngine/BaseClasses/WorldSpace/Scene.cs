@@ -194,7 +194,7 @@ namespace EpsilonEngine
                 throw new Exception("texture cannot be null.");
             }
             
-            DrawTextureScreenSpaceUnsafe(texture._XNABase, position.X, position.Y, color.R, color.B, color.B, color.A);
+            DrawTextureScreenSpaceUnsafe(texture._XNABase, new Microsoft.Xna.Framework.Vector2(position.X, position.Y), new Microsoft.Xna.Framework.Color(color.R, color.B, color.B, color.A));
         }
 
         public void MarkForDestruction()
@@ -419,15 +419,10 @@ namespace EpsilonEngine
             _XNAReusableDrawColor.A = a;
             XNASpriteBatch.Draw(texture, _XNAReusableDrawPosition, _XNAReusableDrawColor);
         }
-        internal void DrawTextureScreenSpaceUnsafe(Microsoft.Xna.Framework.Graphics.Texture2D texture, int x, int y, byte r, byte g, byte b, byte a)
+        internal void DrawTextureScreenSpaceUnsafe(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Color color)
         {
-            _XNAReusableDrawPosition.X = x;
-            _XNAReusableDrawPosition.Y = RenderHeight - y - texture.Height;
-            _XNAReusableDrawColor.R = r;
-            _XNAReusableDrawColor.G = g;
-            _XNAReusableDrawColor.B = b;
-            _XNAReusableDrawColor.A = a;
-            XNASpriteBatch.Draw(texture, _XNAReusableDrawPosition, _XNAReusableDrawColor);
+            position.Y = RenderHeight - position.Y - texture.Height;
+            XNASpriteBatch.Draw(texture, position, color);
         }
         
         internal void RemoveSceneManager(SceneManager sceneManager)

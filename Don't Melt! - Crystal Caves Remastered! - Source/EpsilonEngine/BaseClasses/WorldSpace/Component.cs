@@ -17,45 +17,6 @@ namespace EpsilonEngine
         public int RenderPriority { get; private set; } = 0;
         #endregion
         #region Constructors
-        public Component(GameObject gameObject)
-        {
-            if (gameObject is null)
-            {
-                throw new Exception("gameObject cannot be null.");
-            }
-
-            GameObject = gameObject;
-            Scene = GameObject.Scene;
-            Game = Scene.Game;
-
-            GameObject.AddComponent(this);
-
-            Type thisType = GetType();
-
-            MethodInfo updateMethod = thisType.GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (updateMethod.DeclaringType != typeof(Component))
-            {
-                PumpPriorityAttribute pumpPriorityAttribute = updateMethod.GetCustomAttribute<PumpPriorityAttribute>();
-                if (pumpPriorityAttribute is not null)
-                {
-                    UpdatePriority = pumpPriorityAttribute.Priority;
-                }
-                Game.UpdatePump.RegisterPumpEventUnsafe(Update, UpdatePriority);
-                OverridesUpdate = true;
-            }
-
-            MethodInfo renderMethod = thisType.GetMethod("Render", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (renderMethod.DeclaringType != typeof(Component))
-            {
-                PumpPriorityAttribute pumpPriorityAttribute = updateMethod.GetCustomAttribute<PumpPriorityAttribute>();
-                if (pumpPriorityAttribute is not null)
-                {
-                    RenderPriority = pumpPriorityAttribute.Priority;
-                }
-                Scene.RenderPump.RegisterPumpEventUnsafe(Render, RenderPriority);
-                OverridesRender = true;
-            }
-        }
         public Component(GameObject gameObject, int updatePriority, int renderPriority)
         {
             if (gameObject is null)

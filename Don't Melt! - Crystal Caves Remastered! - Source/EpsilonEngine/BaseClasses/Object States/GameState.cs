@@ -1,6 +1,0 @@
-﻿namespace EpsilonEngine
-{
-    class GameState
-    {
-    }
-}

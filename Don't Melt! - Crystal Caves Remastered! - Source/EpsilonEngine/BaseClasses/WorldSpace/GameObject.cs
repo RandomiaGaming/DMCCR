@@ -106,7 +106,7 @@ namespace EpsilonEngine
             MethodInfo renderMethod = thisType.GetMethod("Render", BindingFlags.NonPublic | BindingFlags.Instance);
             if (renderMethod.DeclaringType != typeof(GameObject))
             {
-                PumpPriorityAttribute pumpPriorityAttribute = updateMethod.GetCustomAttribute<PumpPriorityAttribute>();
+                PumpPriorityAttribute pumpPriorityAttribute = renderMethod.GetCustomAttribute<PumpPriorityAttribute>();
                 if (pumpPriorityAttribute is not null)
                 {
                     RenderPriority = pumpPriorityAttribute.Priority;

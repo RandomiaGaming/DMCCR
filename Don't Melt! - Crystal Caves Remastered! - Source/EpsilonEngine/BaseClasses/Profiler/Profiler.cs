@@ -54,23 +54,11 @@ namespace EpsilonEngine
 
         internal static void Print()
         {
-            long currentTime = _stopWatch.ElapsedTicks;
-
             long updateTime = _updateEnd - _updateStart;
 
             long renderTime = _renderEnd - _renderStart;
 
-            long frameTime = currentTime - _lastPrintTime;
-
-            if (frameTime <= 0)
-            {
-                System.Console.WriteLine($"Debug Profiler - Infinity FPS - {frameTime} Tick Frame - {frameTime - updateTime - renderTime} Tick MonoGame Update - {updateTime} Tick Update - {renderTime} Tick Render.");
-                return;
-            }
-
-            System.Console.WriteLine($"Debug Profiler - {10000000 / frameTime} FPS - {frameTime} Tick Frame - {frameTime - updateTime - renderTime} Tick MonoGame Update - {updateTime} Tick Update - {renderTime} Tick Render.");
-
-            _lastPrintTime = _stopWatch.ElapsedTicks;
+            System.Console.WriteLine($"Debug Profiler - {updateTime} Tick Update - {renderTime} Tick Render.");
         }
         #endregion
     }

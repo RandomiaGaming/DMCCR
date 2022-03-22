@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Don%27t Melt! - Crystal Caves Remastered!\AssemblyInfo.cs" />
+    <Compile Include="Don%27t Melt! - Crystal Caves Remastered!\FPSCounter.cs" />
     <Compile Include="Don%27t Melt! - Crystal Caves Remastered!\GoalGate.cs" />
     <Compile Include="Don%27t Melt! - Crystal Caves Remastered!\Checkpoint.cs" />
     <Compile Include="Don%27t Melt! - Crystal Caves Remastered!\DMCCR.cs" />
@@ -87,13 +88,11 @@
     <Compile Include="EpsilonEngine\BaseClasses\Helpers\MathHelper.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\Helpers\RandomnessHelper.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\Modloader.cs" />
-    <Compile Include="EpsilonEngine\BaseClasses\Object States\GameState.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\Profiler\EnableProfilerAttribute.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\Profiler\Profiler.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\Pumps\InverseOrderedPump.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\Pumps\OrderedPump.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\Pumps\PumpEvent.cs" />
-    <Compile Include="EpsilonEngine\BaseClasses\Pumps\PumpPriorityAttribute.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\Pumps\SingleRunPump.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\Pumps\UnorderedPump.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\ScreenSpace\Canvas.cs" />
@@ -179,6 +178,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Stages\LevelRender.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\0.png" />
+    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\1.png" />
+    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\2.png" />
+    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\3.png" />
+    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\4.png" />
+    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\5.png" />
+    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\6.png" />
+    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\7.png" />
+    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\8.png" />
+    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\9.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MonoGame.Framework.DesktopGL.3.8.0.1641\build\MonoGame.Framework.DesktopGL.targets" Condition="Exists('..\packages\MonoGame.Framework.DesktopGL.3.8.0.1641\build\MonoGame.Framework.DesktopGL.targets')" />
