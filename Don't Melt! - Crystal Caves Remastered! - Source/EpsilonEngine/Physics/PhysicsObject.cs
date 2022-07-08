@@ -197,7 +197,7 @@ namespace EpsilonEngine
         }
         #endregion
         #region Constructors
-        public PhysicsObject(PhysicsScene physicsScene, bool isStatic) : base(physicsScene)
+        public PhysicsObject(PhysicsScene physicsScene, bool isStatic) : base(physicsScene, 0, 0)
         {
             if (physicsScene is null)
             {

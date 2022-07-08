@@ -15,8 +15,8 @@ namespace EpsilonEngine
         #region Private Variables
         private System.Collections.Generic.List<PumpEvent> _pumpEvents = new System.Collections.Generic.List<PumpEvent>();
         private PumpEvent[] _pumpEventCache = new PumpEvent[0];
-        private bool _pumpEventCacheInvalid = true;
-        private bool _pumpFull = true;
+        private bool _pumpEventCacheInvalid;
+        private bool _pumpFull;
         #endregion
         #region Public Methods
         public void Invoke()

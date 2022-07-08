@@ -14,7 +14,7 @@ namespace EpsilonEngine
         private bool _physicsLayerCacheValid = true;
         #endregion
         #region Constructors
-        public PhysicsScene(Game game, ushort width, ushort height, int drawPriority) : base(game, width, height, drawPriority)
+        public PhysicsScene(Game game, ushort width, ushort height, int drawPriority) : base(game, width, height, 0, 0, drawPriority)
         {
 
         }

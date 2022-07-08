@@ -43,8 +43,6 @@ namespace EpsilonEngine
                 throw new System.Exception("pumpEvent cannot be null.");
             }
 
-            int insertPosition = 0;
-
             int pumpEventsCount = _pumpEvents.Count;
             for (int i = 0; i < pumpEventsCount; i++)
             {
@@ -52,14 +50,21 @@ namespace EpsilonEngine
                 {
                     throw new System.Exception("pumpEvent has already been added to this pump.");
                 }
-                else if (invokePriority < _invokeOrder[i])
+            }
+
+            for (int i = 0; i < pumpEventsCount; i++)
+            {
+                if (invokePriority > _invokeOrder[i])
                 {
-                    insertPosition = i + 1;
+                    _invokeOrder.Insert(i, invokePriority);
+                    _pumpEvents.Insert(i, pumpEvent);
+
+                    return;
                 }
             }
 
-            _invokeOrder.Insert(insertPosition, invokePriority);
-            _pumpEvents.Insert(insertPosition, pumpEvent);
+            _invokeOrder.Add(invokePriority);
+            _pumpEvents.Add(pumpEvent);
 
             _pumpEventCacheInvalid = true;
             _pumpFull = true;
@@ -97,22 +102,23 @@ namespace EpsilonEngine
         #region Internal Methods
         internal void RegisterPumpEventUnsafe(PumpEvent pumpEvent, int invokePriority)
         {
+            _pumpEventCacheInvalid = true;
+            _pumpFull = true;
+
             int pumpEventsCount = _pumpEvents.Count;
             for (int i = 0; i < pumpEventsCount; i++)
             {
-                if (invokePriority < _invokeOrder[i])
+                if (invokePriority > _invokeOrder[i])
                 {
-                    int insertPosition = i + 1;
-
-                    _invokeOrder.Insert(insertPosition, invokePriority);
-                    _pumpEvents.Insert(insertPosition, pumpEvent);
-
-                    _pumpEventCacheInvalid = true;
-                    _pumpFull = true;
+                    _invokeOrder.Insert(i, invokePriority);
+                    _pumpEvents.Insert(i, pumpEvent);
 
                     return;
                 }
             }
+
+            _invokeOrder.Add(invokePriority);
+            _pumpEvents.Add(pumpEvent);
         }
         internal void UnregisterPumpEventUnsafe(PumpEvent pumpEvent)
         {

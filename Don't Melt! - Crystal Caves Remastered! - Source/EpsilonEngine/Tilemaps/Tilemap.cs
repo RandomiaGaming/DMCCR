@@ -39,7 +39,7 @@
         private Color _color;
         #endregion
         #region Public Constructors
-        public Tilemap(GameObject gameObject, int cellWidth, int cellHeight, int tileWidth, int tileHeight) : base(gameObject)
+        public Tilemap(GameObject gameObject, int cellWidth, int cellHeight, int tileWidth, int tileHeight) : base(gameObject, 0, 0)
         {
             if (cellWidth <= 0)
             {
@@ -82,7 +82,7 @@
             Game.GameInterface.XNAGraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
             Game.GameInterface.XNAGraphicsDevice.SetRenderTarget(null);
         }
-        public Tilemap(GameObject gameObject, int cellWidth, int cellHeight, int tileWidth, int tileHeight, Tile[] data) : base(gameObject)
+        public Tilemap(GameObject gameObject, int cellWidth, int cellHeight, int tileWidth, int tileHeight, Tile[] data) : base(gameObject, 0, 0)
         {
             if (cellWidth <= 0)
             {

@@ -105,7 +105,7 @@ namespace EpsilonEngine
         private Microsoft.Xna.Framework.Color _XNAReusableDrawColor = new Microsoft.Xna.Framework.Color(byte.MaxValue, byte.MaxValue, byte.MaxValue, byte.MaxValue);
         #endregion
         #region Constructors
-        public Scene(Game game, ushort renderWidth, ushort renderHeight, int drawPriority)
+        public Scene(Game game, ushort renderWidth, ushort renderHeight, int updatePriority, int renderPriority, int drawPriority)
         {
             if (game is null)
             {
@@ -139,24 +139,14 @@ namespace EpsilonEngine
             MethodInfo updateMethod = thisType.GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance);
             if (updateMethod.DeclaringType != typeof(Scene))
             {
-                PumpPriorityAttribute pumpPriorityAttribute = updateMethod.GetCustomAttribute<PumpPriorityAttribute>();
-                if (pumpPriorityAttribute is not null)
-                {
-                    UpdatePriority = pumpPriorityAttribute.Priority;
-                }
-                Game.UpdatePump.RegisterPumpEventUnsafe(Update, UpdatePriority);
+                Game.UpdatePump.RegisterPumpEventUnsafe(Update, updatePriority);
                 OverridesUpdate = true;
             }
 
             MethodInfo renderMethod = thisType.GetMethod("Render", BindingFlags.NonPublic | BindingFlags.Instance);
             if (renderMethod.DeclaringType != typeof(Scene))
             {
-                PumpPriorityAttribute pumpPriorityAttribute = updateMethod.GetCustomAttribute<PumpPriorityAttribute>();
-                if (pumpPriorityAttribute is not null)
-                {
-                    RenderPriority = pumpPriorityAttribute.Priority;
-                }
-                RenderPump.RegisterPumpEventUnsafe(Render, RenderPriority);
+                RenderPump.RegisterPumpEventUnsafe(Render, renderPriority);
                 OverridesRender = true;
             }
 

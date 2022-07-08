@@ -87,9 +87,7 @@
     <Compile Include="EpsilonEngine\BaseClasses\Helpers\GradientHelper.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\Helpers\MathHelper.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\Helpers\RandomnessHelper.cs" />
-    <Compile Include="EpsilonEngine\BaseClasses\Modloader.cs" />
-    <Compile Include="EpsilonEngine\BaseClasses\Profiler\EnableProfilerAttribute.cs" />
-    <Compile Include="EpsilonEngine\BaseClasses\Profiler\Profiler.cs" />
+    <Compile Include="EpsilonEngine\BaseClasses\Profiler.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\Pumps\InverseOrderedPump.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\Pumps\OrderedPump.cs" />
     <Compile Include="EpsilonEngine\BaseClasses\Pumps\PumpEvent.cs" />

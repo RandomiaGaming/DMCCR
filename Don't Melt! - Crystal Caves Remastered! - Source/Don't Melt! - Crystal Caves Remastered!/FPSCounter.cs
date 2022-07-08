@@ -14,11 +14,7 @@ namespace DMCCR
         private Texture Font7;
         private Texture Font8;
         private Texture Font9;
-
-        private Texture[] Font;
-
-        System.Diagnostics.Stopwatch Stopwatch = new System.Diagnostics.Stopwatch();
-        public FPSCounter(Scene scene) : base(scene)
+        public FPSCounter(Scene scene) : base(scene, 0, int.MaxValue)
         {
             Font0 = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.0.png"));
             Font1 = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.1.png"));
@@ -30,28 +26,10 @@ namespace DMCCR
             Font7 = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.7.png"));
             Font8 = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.8.png"));
             Font9 = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.9.png"));
-
-            Stopwatch.Start();
-
-            Font = new Texture[]
-            {
-                Font0,
-                Font1,
-                Font2,
-                Font3,
-                Font4,
-                Font5,
-                Font6,
-                Font7,
-                Font8,
-                Font9
-            };
         }
         protected override void Render()
         {
-            int currentFPSInt = (int)Game.CurrentFPS;
-
-            string currentFPSString = currentFPSInt.ToString();
+            string currentFPSString = Game.CurrentFPS.ToString();
 
             char[] currentFPSChars = currentFPSString.ToCharArray();
 
@@ -68,9 +46,9 @@ namespace DMCCR
                 }
                 else if (c == '1')
                 {
-                    Scene.DrawTextureScreenSpaceUnsafe(Font0._XNABase, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
+                    Scene.DrawTextureScreenSpaceUnsafe(Font1._XNABase, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
                 }
-                if (c == '2')
+                else if (c == '2')
                 {
                     Scene.DrawTextureScreenSpaceUnsafe(Font2._XNABase, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
                 }

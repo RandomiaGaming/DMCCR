@@ -8,7 +8,7 @@
         public int PaddingLeft = 0;
         public int PaddingUp = 0;
         public int PaddingDown = 0;
-        public CameraFollower(GameObject gameObject) : base(gameObject)
+        public CameraFollower(GameObject gameObject, int updatePriority) : base(gameObject, updatePriority, 0)
         {
 
         }

@@ -8,4 +8,3 @@ using EpsilonEngine;
 [assembly: AssemblyCompany("RandomiaGaming")]
 [assembly: AssemblyCopyright("Copyright RandomiaGaming 2021")]
 [assembly: AssemblyTrademark("Trademark RandomiaGaming 2021")]
-[assembly: EnableProfiler()]

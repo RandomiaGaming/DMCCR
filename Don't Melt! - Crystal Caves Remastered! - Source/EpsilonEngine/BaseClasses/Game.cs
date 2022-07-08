@@ -3,16 +3,16 @@
     public class Game
     {
         #region Public Variables
-        public bool Running { get; private set; } = false;
-        public bool Initialized { get; private set; } = false;
-        public bool MarkedForExit { get; private set; } = false;
-        public bool Exited { get; private set; } = false;
+        public bool Initialized { get; private set; }
+        public bool MarkedForExit { get; private set; }
+        public bool Exited { get; private set; }
 
         public bool KillProcessOnExit = true;
         public bool DestroyChildrenOnExit = false;
 
-        public readonly bool OverridesUpdate = false;
-        public readonly bool OverridesDraw = false;
+        public readonly bool OverridesUpdate;
+
+        public readonly bool OverridesDraw;
 
         public Color BackgroundColor
         {
@@ -31,10 +31,12 @@
         public int ViewportWidth { get; private set; } = 1920;
         public int ViewportHeight { get; private set; } = 1080;
         public float AspectRatio { get; private set; } = 1.66666663f;
+        public int CurrentFPS { get; private set; }
 
-        public float CurrentFPS { get; private set; }
-        public System.TimeSpan TimeSinceStart { get; private set; }
-        public System.TimeSpan DeltaTime { get; private set; }
+        public float TimeSinceStart { get; private set; }
+        public long TicksSinceStart { get; private set; }
+        public float DeltaTime { get; private set; }
+        public long DeltaTicks { get; private set; }
 
         public float TargetFPS
         {
@@ -138,7 +140,7 @@
         #endregion
         #region Private Variables
         private System.Diagnostics.Stopwatch _gameTimer = new System.Diagnostics.Stopwatch();
-        private long _timeLastFrame;
+        private long _ticksSinceStartLastFrame;
 
         private System.Collections.Generic.List<GameManager> _gameManagers = new System.Collections.Generic.List<GameManager>();
 
@@ -154,13 +156,13 @@
         private float _targetFPS = float.PositiveInfinity;
         private long _targetTPF;
 
-        private bool _isFullScreen = false;
+        private bool _isFullScreen;
 
-        private static bool _gameCreatedAlready = false;
+        private static bool _gameCreatedAlready;
         private bool Rendering = false;
         #endregion
         #region Constructors
-        public Game()
+        public Game(int updatePriority, int drawPriority)
         {
             if (_gameCreatedAlready)
             {
@@ -170,44 +172,21 @@
 
             Profiler.InitializeStart();
 
-            _gameTimer.Restart();
-
             GameInterface = new GameInterface(this);
 
             System.Type thisType = GetType();
 
-            if (thisType.Assembly != typeof(Modloader).Assembly)
-            {
-                Modloader.Load(thisType.Assembly);
-            }
-
             System.Reflection.MethodInfo updateMethod = thisType.GetMethod("Update", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             if (updateMethod.DeclaringType != typeof(Game))
             {
-                PumpPriorityAttribute pumpPriorityAttribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute<PumpPriorityAttribute>(updateMethod);
-                if (pumpPriorityAttribute is null)
-                {
-                    UpdatePump.RegisterPumpEventUnsafe(Update, 0);
-                }
-                else
-                {
-                    UpdatePump.RegisterPumpEventUnsafe(Update, pumpPriorityAttribute.Priority);
-                }
+                UpdatePump.RegisterPumpEventUnsafe(Update, updatePriority);
                 OverridesUpdate = true;
             }
 
             System.Reflection.MethodInfo drawMethod = thisType.GetMethod("Draw", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             if (drawMethod.DeclaringType != typeof(Game))
             {
-                PumpPriorityAttribute pumpPriorityAttribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute<PumpPriorityAttribute>(drawMethod);
-                if (pumpPriorityAttribute is null)
-                {
-                    DrawPump.RegisterPumpEventUnsafe(Draw, 0);
-                }
-                else
-                {
-                    DrawPump.RegisterPumpEventUnsafe(Draw, pumpPriorityAttribute.Priority);
-                }
+                DrawPump.RegisterPumpEventUnsafe(Draw, drawPriority);
                 OverridesDraw = true;
             }
 
@@ -221,12 +200,7 @@
         #region Public Methods
         public void Run()
         {
-            if (Running)
-            {
-                throw new System.Exception("game is already running.");
-            }
-
-            Running = true;
+            _gameTimer.Restart();
 
             GameInterface.Run();
         }
@@ -556,22 +530,19 @@
         private bool _profilerInitialized = false;
         internal void UpdateCallback()
         {
-            if (Modloader.ProfilerEnabled)
-            {
-                Profiler.UpdateStart();
-            }
+            Profiler.UpdateStart();
 
-            long timeNow = _gameTimer.ElapsedTicks;
+            TicksSinceStart = _gameTimer.ElapsedTicks;
 
-            long elapsedTicks = timeNow - _timeLastFrame;
+            DeltaTicks = TicksSinceStart - _ticksSinceStartLastFrame;
 
-            TimeSinceStart = new System.TimeSpan(timeNow);
+            TimeSinceStart = TicksSinceStart / 10000000.0f;
 
-            DeltaTime = new System.TimeSpan(elapsedTicks);
+            DeltaTime = DeltaTicks / 10000000.0f;
 
-            CurrentFPS = 10000000 / elapsedTicks;
+            CurrentFPS = (int)(10000000 / DeltaTicks);
 
-            _timeLastFrame = timeNow;
+            _ticksSinceStartLastFrame = TicksSinceStart;
 
             CreationPump.Invoke();
 
@@ -581,12 +552,9 @@
 
             UpdatePump.Invoke();
 
-            if (Modloader.ProfilerEnabled)
-            {
-                Profiler.UpdateEnd();
+            Profiler.UpdateEnd();
 
-                Profiler.RenderStart();
-            }
+            Profiler.RenderStart();
 
             RenderPump.Invoke();
 
@@ -606,12 +574,9 @@
 
             DestructionPump.Invoke();
 
-            if (Modloader.ProfilerEnabled)
-            {
-                Profiler.RenderEnd();
+            Profiler.RenderEnd();
 
-                Profiler.Print();
-            }
+            Profiler.Print();
 
             if (!_profilerInitialized)
             {
@@ -630,6 +595,13 @@
             {
                 ViewportWidth = GameInterface.XNAGraphicsDevice.Viewport.Width;
                 ViewportHeight = GameInterface.XNAGraphicsDevice.Viewport.Height;
+            }
+
+            if (GameInterface.XNAGraphicsDeviceManager.PreferredBackBufferWidth != ViewportWidth || GameInterface.XNAGraphicsDeviceManager.PreferredBackBufferHeight != ViewportHeight)
+            {
+                GameInterface.XNAGraphicsDeviceManager.PreferredBackBufferWidth = ViewportWidth;
+                GameInterface.XNAGraphicsDeviceManager.PreferredBackBufferHeight = ViewportHeight;
+                GameInterface.XNAGraphicsDeviceManager.ApplyChanges();
             }
 
             AspectRatio = ViewportWidth / (float)ViewportHeight;
@@ -694,8 +666,6 @@
             DrawPump = null;
             OnDestroyPump = null;
             DestructionPump = null;
-
-            Running = false;
 
             Exited = true;
         }

@@ -4,11 +4,11 @@ namespace DMCCR
 {
     public sealed class DMCCR : Game
     {
-        public DMCCR()
+        public DMCCR() : base(0, 0)
         {
             BackgroundColor = new Color(255, 0, 0, 0);
             Stage stage = new Stage(this);
-            //Scene scene = new Scene(this, 256, 144, 0);
+            TargetFPS = 60.0f;
             FPSCounter fPSCounter = new FPSCounter(stage);
         }
         public override string ToString()

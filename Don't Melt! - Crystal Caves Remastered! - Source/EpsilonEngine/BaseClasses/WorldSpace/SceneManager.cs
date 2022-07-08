@@ -16,7 +16,7 @@ namespace EpsilonEngine
         public int RenderPriority { get; private set; } = 0;
         #endregion
         #region Constructors
-        public SceneManager(Scene scene)
+        public SceneManager(Scene scene, int updatePriority, int renderPriority)
         {
             if (scene is null)
             {
@@ -33,24 +33,14 @@ namespace EpsilonEngine
             MethodInfo updateMethod = thisType.GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance);
             if (updateMethod.DeclaringType != typeof(SceneManager))
             {
-                PumpPriorityAttribute pumpPriorityAttribute = updateMethod.GetCustomAttribute<PumpPriorityAttribute>();
-                if (pumpPriorityAttribute is not null)
-                {
-                    UpdatePriority = pumpPriorityAttribute.Priority;
-                }
-                Game.UpdatePump.RegisterPumpEventUnsafe(Update, UpdatePriority);
+                Game.UpdatePump.RegisterPumpEventUnsafe(Update, updatePriority);
                 OverridesUpdate = true;
             }
 
             MethodInfo renderMethod = thisType.GetMethod("Render", BindingFlags.NonPublic | BindingFlags.Instance);
             if (renderMethod.DeclaringType != typeof(SceneManager))
             {
-                PumpPriorityAttribute pumpPriorityAttribute = updateMethod.GetCustomAttribute<PumpPriorityAttribute>();
-                if (pumpPriorityAttribute is not null)
-                {
-                    RenderPriority = pumpPriorityAttribute.Priority;
-                }
-                Scene.RenderPump.RegisterPumpEventUnsafe(Render, RenderPriority);
+                Scene.RenderPump.RegisterPumpEventUnsafe(Render, renderPriority);
                 OverridesRender = true;
             }
         }

@@ -51,6 +51,7 @@ namespace DMCCR
         private bool _leftMouseButtonPressedLastFrame = false;
         private bool _rightMouseButtonPressedLastFrame = false;
         private bool _middleMouseButtonPressedLastFrame = false;
+        private bool _F11PressedLastFrame = false;
         private Point _reusablePoint = new Point(0, 0);
 
         private double GradientProgress = 0.0f;
@@ -103,6 +104,14 @@ namespace DMCCR
             }
             else if (respawnTimer < 0)
             {
+                Microsoft.Xna.Framework.Input.KeyboardState keyboardState = Microsoft.Xna.Framework.Input.Keyboard.GetState();
+                bool F11Pressed = keyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.F11);
+
+                if(F11Pressed && !_F11PressedLastFrame)
+                {
+                    Game.IsFullScreen = !Game.IsFullScreen;
+                }
+
                 Microsoft.Xna.Framework.Input.MouseState mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
 
                 bool leftMouseButtonPressed = mouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed;
@@ -215,6 +224,7 @@ namespace DMCCR
                 _leftMouseButtonPressedLastFrame = leftMouseButtonPressed;
                 _rightMouseButtonPressedLastFrame = rightMouseButtonPressed;
                 _middleMouseButtonPressedLastFrame = middleMouseButtonPressed;
+                _F11PressedLastFrame = F11Pressed;
             }
         }
         public override string ToString()

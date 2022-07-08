@@ -32,7 +32,7 @@ namespace DMCCR
 
             checkPointPhysicsLayer.AddPhysicsObject(player);
 
-           GameObject levelGameObject = new GameObject(this);
+           GameObject levelGameObject = new GameObject(this, 0, 0);
 
             TextureRenderer levelTextureRenderer = new TextureRenderer(levelGameObject, 0);
             levelTextureRenderer.Texture = levelRender;
