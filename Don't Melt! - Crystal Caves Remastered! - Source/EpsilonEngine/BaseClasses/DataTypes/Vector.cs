@@ -1,4 +1,4 @@
-//Approved 3/1/2022
+//Approved 07/09/2022
 namespace EpsilonEngine
 {
     public struct Vector
@@ -19,13 +19,21 @@ namespace EpsilonEngine
         public static readonly Vector DownLeft = new Vector(-1.0f, -1.0f);
         #endregion
         #region Public Varialbes
-        public float X;
-        public float Y;
+        public double X;
+        public double Y;
         #endregion
         #region Public Constructors
-        public Vector(float x, float y)
+        public Vector(double x, double y)
         {
+            if(x == double.NaN || x == double.NegativeInfinity || x == double.PositiveInfinity)
+            {
+                throw new System.Exception("x must be a real number.");
+            }
             X = x;
+            if (y == double.NaN || y == double.NegativeInfinity || y == double.PositiveInfinity)
+            {
+                throw new System.Exception("y must be a real number.");
+            }
             Y = y;
         }
         #endregion
@@ -40,11 +48,8 @@ namespace EpsilonEngine
             {
                 return false;
             }
-            else
-            {
-                Vector a = (Vector)obj;
-                return X == a.X && Y == a.Y;
-            }
+            Vector a = (Vector)obj;
+            return X == a.X && Y == a.Y;
         }
         #endregion
         #region Public Operators
