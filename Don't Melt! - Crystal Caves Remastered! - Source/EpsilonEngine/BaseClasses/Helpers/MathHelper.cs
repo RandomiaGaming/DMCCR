@@ -3,6 +3,7 @@ namespace EpsilonEngine
 {
     public static class MathHelper
     {
+        //rap
         #region Public Constants
         public const double Tau = 6.2831853071795862;
         public const double PI = 3.1415926535897931;
@@ -11,104 +12,102 @@ namespace EpsilonEngine
         public const double SQRT3 = 1.7320508075688772;
         public const double RadToDeg = 57.295779513082323;
         public const double DegToRad = 0.017453292519943295;
-        public const double SinOf45 = 0.70710678118654746;
-        public const double SinOf60 = 0.8660254037844386;
+        public const double Sin45Deg = 0.70710678118654746;
+        public const double SinPIOver4 = 0.70710678118654746;
+        public const double Sin60Deg = 0.8660254037844386;
+        public const double SinPIOver3 = 0.8660254037844386;
         #endregion
         #region Public Static Methods
-        public static double Abs(double value)
+        //map
+        public static double Abs(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (value < 0)
+            if (input < 0)
             {
-                return -value;
+                return -input;
             }
-            return value;
+            return input;
         }
-        public static double ACos(double value)
+        //map
+        public static double ACos(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (value > 1)
+            if (input > 1)
             {
-                throw new System.Exception("value must be less than or equal to 1.");
+                throw new System.Exception("input must be less than or equal to 1.");
             }
-            if (value < -1)
+            if (input < -1)
             {
-                throw new System.Exception("value must be greater than or equal to -1.");
+                throw new System.Exception("input must be greater than or equal to -1.");
             }
-            double output = System.Math.Acos(value) * RadToDeg;
-            if (output < 0)
-            {
-                return 360 + output;
-            }
-            return output;
+            return System.Math.Acos(input);
         }
-        public static double ASin(double value)
+        //map
+        public static double ASin(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (value > 1)
+            if (input > 1)
             {
-                throw new System.Exception("value must be less than or equal to 1.");
+                throw new System.Exception("input must be less than or equal to 1.");
             }
-            if (value < -1)
+            if (input < -1)
             {
-                throw new System.Exception("value must be greater than or equal to -1.");
+                throw new System.Exception("input must be greater than or equal to -1.");
             }
-            double output = System.Math.Asin(value) * RadToDeg;
-            if (output < 0)
-            {
-                return 360 + output;
-            }
-            return output;
+            return System.Math.Asin(input);
         }
-        public static double ATan(double value)
+        //map
+        public static double ATan(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            double output = System.Math.Atan(value) * RadToDeg;
-            if (output < 0)
-            {
-                return 360 + output;
-            }
-            return output;
+            return System.Math.Atan(input);
         }
-        public static double Cbrt(double value)
+        //map
+        public static double Cbrt(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return System.Math.Pow(value, 0.33333333333333331);
+            if (input < 0)
+            {
+                return -System.Math.Pow(-input, 0.33333333333333331);
+            }
+            return System.Math.Pow(input, 0.33333333333333331);
         }
-        public static double Ceil(double value)
+        //map
+        public static double Ceil(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return System.Math.Ceiling(value);
+            return System.Math.Ceiling(input);
         }
-        public static double Clamp(double value, double min, double max)
+        //map
+        public static double Clamp(double input, double min, double max)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (min == double.NaN || min == double.PositiveInfinity || min == double.NegativeInfinity)
+            if (min is double.NaN || min is double.PositiveInfinity || min is double.NegativeInfinity)
             {
                 throw new System.Exception("min must be a real number.");
             }
-            if (max == double.NaN || max == double.PositiveInfinity || max == double.NegativeInfinity)
+            if (max is double.NaN || max is double.PositiveInfinity || max is double.NegativeInfinity)
             {
                 throw new System.Exception("max must be a real number.");
             }
@@ -116,43 +115,45 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("min cannot be greater than max.");
             }
-            if (value > max)
+            if (input > max)
             {
                 return max;
             }
-            else if (value < min)
+            else if (input < min)
             {
                 return min;
             }
-            return value;
+            return input;
         }
-        public static double Clamp01(double value)
+        //map
+        public static double Clamp01(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (value > 1)
+            if (input > 1)
             {
                 return 1;
             }
-            else if (value < 0)
+            else if (input < 0)
             {
                 return 0;
             }
-            return value;
+            return input;
         }
-        public static double LoopClamp(double value, double min, double max)
+        //map
+        public static double LoopClamp(double input, double min, double max)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (min == double.NaN || min == double.PositiveInfinity || min == double.NegativeInfinity)
+            if (min is double.NaN || min is double.PositiveInfinity || min is double.NegativeInfinity)
             {
                 throw new System.Exception("min must be a real number.");
             }
-            if (max == double.NaN || max == double.PositiveInfinity || max == double.NegativeInfinity)
+            if (max is double.NaN || max is double.PositiveInfinity || max is double.NegativeInfinity)
             {
                 throw new System.Exception("max must be a real number.");
             }
@@ -164,49 +165,95 @@ namespace EpsilonEngine
             {
                 return min;
             }
-            double loopCount = (value - min) / (max - min);
-            if (loopCount > 0)
-            {
-                loopCount = System.Math.Floor(loopCount);
-            }
-            else
-            {
-                loopCount = -System.Math.Floor(-loopCount);
-            }
-            return value - (loopCount * (max - min));
+            double span = max - min;
+            return input - (System.Math.Floor((input - min) / span) * span);
         }
-        public static double LoopClamp01(double value)
+        //map
+        public static double LoopClamp01(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            double loopCount = value;
-            if (loopCount > 0)
-            {
-                loopCount = System.Math.Floor(loopCount);
-            }
-            else
-            {
-                loopCount = -System.Math.Floor(-loopCount);
-            }
-            return value - loopCount;
+            return input - System.Math.Floor(input);
         }
-        public static double Cos(double value)
+        //map
+        public static double PingPongClamp(double input, double min, double max)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return System.Math.Cos(value * DegToRad);
+            if (min is double.NaN || min is double.PositiveInfinity || min is double.NegativeInfinity)
+            {
+                throw new System.Exception("min must be a real number.");
+            }
+            if (max is double.NaN || max is double.PositiveInfinity || max is double.NegativeInfinity)
+            {
+                throw new System.Exception("max must be a real number.");
+            }
+            if (min > max)
+            {
+                throw new System.Exception("min cannot be greater than max.");
+            }
+            if (min == max)
+            {
+                return min;
+            }
+            double loopCount = System.Math.Floor(input / (max - min));
+            if (input < 0)
+            {
+                if (loopCount % 2 == -1)
+                {
+                    return max - (input - (loopCount * (max - min)));
+                }
+                return min + (input - (loopCount * (max - min)));
+            }
+            else if (loopCount % 2 == 1)
+            {
+                return max - (input - (loopCount * (max - min)));
+            }
+            return min + (input - (loopCount * (max - min)));
         }
+        //map
+        public static double PingPongClamp01(double input)
+        {
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
+            {
+                throw new System.Exception("input must be a real number.");
+            }
+            double loopCount = System.Math.Floor(input);
+            if (input < 0)
+            {
+                if (loopCount % 2 == -1)
+                {
+                    return 1 - input + loopCount;
+                }
+                return input - loopCount;
+            }
+            else if (loopCount % 2 == 1)
+            {
+                return 1 - input + loopCount;
+            }
+            return input - loopCount;
+        }
+        //map
+        public static double Cos(double input)
+        {
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
+            {
+                throw new System.Exception("input must be a real number.");
+            }
+            return System.Math.Cos(input);
+        }
+        //map
         public static double Rem(double dividend, double divisor)
         {
-            if (dividend == double.NaN || dividend == double.PositiveInfinity || dividend == double.NegativeInfinity)
+            if (dividend is double.NaN || dividend is double.PositiveInfinity || dividend is double.NegativeInfinity)
             {
                 throw new System.Exception("dividend must be a real number.");
             }
-            if (divisor == double.NaN || divisor == double.PositiveInfinity || divisor == double.NegativeInfinity)
+            if (divisor is double.NaN || divisor is double.PositiveInfinity || divisor is double.NegativeInfinity)
             {
                 throw new System.Exception("divisor must be a real number.");
             }
@@ -225,49 +272,53 @@ namespace EpsilonEngine
             }
             return dividend - (quotient * divisor);
         }
-        public static double Exp(double value)
+        //map
+        public static double Exp(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return System.Math.Exp(value);
+            return System.Math.Exp(input);
         }
-        public static double Floor(double value)
+        //map
+        public static double Floor(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return System.Math.Floor(value);
+            return System.Math.Floor(input);
         }
-        public static double Ln(double value)
+        //map
+        public static double Ln(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (value < 0)
+            if (input < 0)
             {
-                throw new System.Exception("value must be greater than or equal to 0.");
+                throw new System.Exception("input must be greater than or equal to 0.");
             }
-            return System.Math.Log(value);
+            return System.Math.Log(input);
         }
-        public static double Log(double value, double logBase)
+        //map
+        public static double Log(double input, double logBase)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (logBase == double.NaN || logBase == double.PositiveInfinity || logBase == double.NegativeInfinity)
+            if (logBase is double.NaN || logBase is double.PositiveInfinity || logBase is double.NegativeInfinity)
             {
                 throw new System.Exception("logBase must be a real number.");
             }
-            if (value < 0)
+            if (input < 0)
             {
-                throw new System.Exception("value must be greater than or equal to 0.");
+                throw new System.Exception("input must be greater than or equal to 0.");
             }
-            if(logBase == 1)
+            if (logBase == 1)
             {
                 throw new System.Exception("logBase must not be 1.");
             }
@@ -275,39 +326,42 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("logBase must be greater than 0.");
             }
-            return System.Math.Log(value, logBase);
+            return System.Math.Log(input, logBase);
         }
-        public static double Log2(double value)
+        //map
+        public static double Log2(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (value < 0)
+            if (input < 0)
             {
-                throw new System.Exception("value must be greater than or equal to 0.");
+                throw new System.Exception("input must be greater than or equal to 0.");
             }
-            return System.Math.Log(value, 2);
+            return System.Math.Log(input, 2);
         }
-        public static double Log10(double value)
+        //map
+        public static double Log10(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (value < 0)
+            if (input < 0)
             {
-                throw new System.Exception("value must be greater than or equal to 0.");
+                throw new System.Exception("input must be greater than or equal to 0.");
             }
-            return System.Math.Log(value, 10);
+            return System.Math.Log(input, 10);
         }
+        //map
         public static double Max(double a, double b)
         {
-            if (a == double.NaN || a == double.PositiveInfinity || a == double.NegativeInfinity)
+            if (a is double.NaN || a is double.PositiveInfinity || a is double.NegativeInfinity)
             {
                 throw new System.Exception("a must be a real number.");
             }
-            if (b == double.NaN || b == double.PositiveInfinity || b == double.NegativeInfinity)
+            if (b is double.NaN || b is double.PositiveInfinity || b is double.NegativeInfinity)
             {
                 throw new System.Exception("b must be a real number.");
             }
@@ -317,13 +371,14 @@ namespace EpsilonEngine
             }
             return a;
         }
+        //map
         public static double Min(double a, double b)
         {
-            if (a == double.NaN || a == double.PositiveInfinity || a == double.NegativeInfinity)
+            if (a is double.NaN || a is double.PositiveInfinity || a is double.NegativeInfinity)
             {
                 throw new System.Exception("a must be a real number.");
             }
-            if (b == double.NaN || b == double.PositiveInfinity || b == double.NegativeInfinity)
+            if (b is double.NaN || b is double.PositiveInfinity || b is double.NegativeInfinity)
             {
                 throw new System.Exception("b must be a real number.");
             }
@@ -333,303 +388,466 @@ namespace EpsilonEngine
             }
             return a;
         }
-        public static double Pow(double value, double power)
+        //map
+        public static double Pow(double powBase, double exponent)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (powBase is double.NaN || powBase is double.PositiveInfinity || powBase is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("powBase must be a real number.");
             }
-            if (power == double.NaN || power == double.PositiveInfinity || power == double.NegativeInfinity)
+            if (exponent is double.NaN || exponent is double.PositiveInfinity || exponent is double.NegativeInfinity)
             {
-                throw new System.Exception("power must be a real number.");
+                throw new System.Exception("exponent must be a real number.");
             }
-            if(value < 0 && power != System.Math.Floor(power))
+            if (powBase < 0 && exponent != System.Math.Floor(exponent))
             {
-                throw new System.Exception("When value is less than 0 power must be an integer.");
+                throw new System.Exception("If powBase is less than 0 then exponent must be an integer.");
             }
-            return System.Math.Pow(value, power);
+            return System.Math.Pow(powBase, exponent);
         }
-        public static double Recip(double value)
+        //map
+        public static double Recip(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (value == 0)
+            if (input == 0)
             {
-                throw new System.Exception("value cannot be 0.");
+                throw new System.Exception("input cannot be 0.");
             }
-            return 1 / value;
+            return 1 / input;
         }
-        public static double Round(double value)
+        //map
+        public static double Round(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return System.Math.Round(value);
+            return System.Math.Round(input);
         }
-        public static double Sign(double value)
+        //map
+        public static double Sign(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (value == 0)
+            if (input == 0)
             {
                 return 0;
             }
-            else if (value < 0)
+            else if (input < 0)
             {
                 return -1;
             }
-            return 0;
+            return 1;
         }
-        public static double Sin(double value)
+        //map
+        public static double Sin(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return System.Math.Sin(value * DegToRad);
+            return System.Math.Sin(input);
         }
-        public static bool IsInt(double value)
+        //map
+        public static bool IsInt(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return value == System.Math.Floor(value);
+            return input == System.Math.Floor(input);
         }
-        public static double Sqrt(double value)
+        //map
+        public static double Sqrt(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return System.Math.Sqrt(value);
+            return System.Math.Sqrt(input);
         }
-        public static double Tan(double value)
+        //map
+        public static double Tan(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return System.Math.Tan(value * DegToRad);
+            return System.Math.Tan(input);
         }
-        public static bool Approx(double a, double b)
+        //map
+        public static double ConstInterp(double input, double min, double max)
         {
-            if (a == double.NaN || a == double.PositiveInfinity || a == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("a must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (b == double.NaN || b == double.PositiveInfinity || b == double.NegativeInfinity)
+            if (min is double.NaN || min is double.PositiveInfinity || min is double.NegativeInfinity)
             {
-                throw new System.Exception("b must be a real number.");
+                throw new System.Exception("min must be a real number.");
             }
-            double difference = a - b;
-            if (difference <= double.Epsilon && difference >= -double.Epsilon)
+            if (max is double.NaN || max is double.PositiveInfinity || max is double.NegativeInfinity)
             {
-                return true;
+                throw new System.Exception("max must be a real number.");
             }
-            return false;
+            if (min > max)
+            {
+                throw new System.Exception("min cannot be greater than max.");
+            }
+            return min + (System.Math.Floor(input + 0.5) * (max - min));
         }
-        public static bool Within(double value, double tollerance)
+        //map
+        public static double ConstLoopInterp(double input, double min, double max)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (tollerance == double.NaN || tollerance == double.PositiveInfinity || tollerance == double.NegativeInfinity)
+            if (min is double.NaN || min is double.PositiveInfinity || min is double.NegativeInfinity)
             {
-                throw new System.Exception("tollerance must be a real number.");
+                throw new System.Exception("min must be a real number.");
             }
-            if (tollerance < 0)
+            if (max is double.NaN || max is double.PositiveInfinity || max is double.NegativeInfinity)
             {
-                throw new System.Exception("tollerance must be greater than or equal to 0.");
+                throw new System.Exception("max must be a real number.");
             }
-            if (value <= tollerance && value >= -tollerance)
+            if (min > max)
             {
-                return true;
+                throw new System.Exception("min cannot be greater than max.");
             }
-            return false;
+            if (input < 0)
+            {
+                if ((-2 * input) % 2 <= 1)
+                {
+                    return min;
+                }
+                else
+                {
+                    return max;
+                }
+            }
+            else if ((2 * input) % 2 <= 1)
+            {
+                return min;
+            }
+            else
+            {
+                return max;
+            }
         }
-        public static bool DifWithin(double a, double b, double tollerance)
+        //map
+        public static double ConstPingPongInterp(double input, double min, double max)
         {
-            if (a == double.NaN || a == double.PositiveInfinity || a == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("a must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (b == double.NaN || b == double.PositiveInfinity || b == double.NegativeInfinity)
+            if (min is double.NaN || min is double.PositiveInfinity || min is double.NegativeInfinity)
             {
-                throw new System.Exception("b must be a real number.");
+                throw new System.Exception("min must be a real number.");
             }
-            if (tollerance == double.NaN || tollerance == double.PositiveInfinity || tollerance == double.NegativeInfinity)
+            if (max is double.NaN || max is double.PositiveInfinity || max is double.NegativeInfinity)
             {
-                throw new System.Exception("tollerance must be a real number.");
+                throw new System.Exception("max must be a real number.");
             }
-            if (tollerance < 0)
+            if (min > max)
             {
-                throw new System.Exception("tollerance must be greater than or equal to 0.");
+                throw new System.Exception("min cannot be greater than max.");
             }
-            double difference = a - b;
-            if (difference <= tollerance && difference >= -tollerance)
+            if (input < 0)
             {
-                return true;
+                if ((-(input - 0.5)) % 2 <= 1)
+                {
+                    return min;
+                }
+                else
+                {
+                    return max;
+                }
             }
-            return false;
+            else if ((input + 0.5) % 2 <= 1)
+            {
+                return min;
+            }
+            else
+            {
+                return max;
+            }
         }
-        public static double LinInterp(double t, double a, double b)
+        //map
+        public static double LinInterp(double input, double min, double max)
         {
-            if (t == double.NaN || t == double.PositiveInfinity || t == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("t must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (a == double.NaN || a == double.PositiveInfinity || a == double.NegativeInfinity)
+            if (min is double.NaN || min is double.PositiveInfinity || min is double.NegativeInfinity)
             {
-                throw new System.Exception("a must be a real number.");
+                throw new System.Exception("min must be a real number.");
             }
-            if (b == double.NaN || b == double.PositiveInfinity || b == double.NegativeInfinity)
+            if (max is double.NaN || max is double.PositiveInfinity || max is double.NegativeInfinity)
             {
-                throw new System.Exception("b must be a real number.");
+                throw new System.Exception("max must be a real number.");
             }
-            return a + ((b - a) * t);
+            if (min > max)
+            {
+                throw new System.Exception("min cannot be greater than max.");
+            }
+            return min + (input * (max - min));
         }
-        public static double InverseLinInterp(double s, double a, double b)
+        //map
+        public static double LinLoopInterp(double input, double min, double max)
         {
-            if (s == double.NaN || s == double.PositiveInfinity || s == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("s must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (a == double.NaN || a == double.PositiveInfinity || a == double.NegativeInfinity)
+            if (min is double.NaN || min is double.PositiveInfinity || min is double.NegativeInfinity)
             {
-                throw new System.Exception("a must be a real number.");
+                throw new System.Exception("min must be a real number.");
             }
-            if (b == double.NaN || b == double.PositiveInfinity || b == double.NegativeInfinity)
+            if (max is double.NaN || max is double.PositiveInfinity || max is double.NegativeInfinity)
             {
-                throw new System.Exception("b must be a real number.");
+                throw new System.Exception("max must be a real number.");
             }
-            return (s - a) / (b - a);
+            if (min > max)
+            {
+                throw new System.Exception("min cannot be greater than max.");
+            }
+            input = input - System.Math.Floor(input);
+            return min + (input * (max - min));
         }
-        public static double Csc(double value)
+        //map
+        public static double LinPingPongInterp(double input, double min, double max)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return 1 / System.Math.Sin(value * DegToRad);
+            if (min is double.NaN || min is double.PositiveInfinity || min is double.NegativeInfinity)
+            {
+                throw new System.Exception("min must be a real number.");
+            }
+            if (max is double.NaN || max is double.PositiveInfinity || max is double.NegativeInfinity)
+            {
+                throw new System.Exception("max must be a real number.");
+            }
+            if (min > max)
+            {
+                throw new System.Exception("min cannot be greater than max.");
+            }
+            if (min == max)
+            {
+                return min;
+            }
+            double loopCount = System.Math.Floor(input);
+            if (input < 0)
+            {
+                if (loopCount % 2 == -1)
+                {
+                    return max - ((input - loopCount) * (max - min));
+                }
+                return min + ((input - loopCount) * (max - min));
+            }
+            else if (loopCount % 2 == 1)
+            {
+                return max - ((input - loopCount) * (max - min));
+            }
+            return min + ((input - loopCount) * (max - min));
         }
-        public static double Sec(double value)
+        //map
+        public static double SinInterp(double input, double min, double max)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return 1 / System.Math.Cos(value * DegToRad);
+            if (min is double.NaN || min is double.PositiveInfinity || min is double.NegativeInfinity)
+            {
+                throw new System.Exception("min must be a real number.");
+            }
+            if (max is double.NaN || max is double.PositiveInfinity || max is double.NegativeInfinity)
+            {
+                throw new System.Exception("max must be a real number.");
+            }
+            if (min > max)
+            {
+                throw new System.Exception("min cannot be greater than max.");
+            }
+            double range = max - min;
+            double halfRange = range / 2;
+            double inputFloor = System.Math.Floor(input);
+            return (halfRange * System.Math.Sin((input - inputFloor - 0.5) * PI)) + halfRange + min + (inputFloor * range);
         }
-        public static double Cot(double value)
+        //map
+        public static double SinLoopInterp(double input, double min, double max)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return 1 / System.Math.Tan(value * DegToRad);
+            if (min is double.NaN || min is double.PositiveInfinity || min is double.NegativeInfinity)
+            {
+                throw new System.Exception("min must be a real number.");
+            }
+            if (max is double.NaN || max is double.PositiveInfinity || max is double.NegativeInfinity)
+            {
+                throw new System.Exception("max must be a real number.");
+            }
+            if (min > max)
+            {
+                throw new System.Exception("min cannot be greater than max.");
+            }
+            double range = max - min;
+            double halfRange = range / 2;
+            double inputFloor = System.Math.Floor(input);
+            return (halfRange * System.Math.Sin((input - inputFloor - 0.5) * PI)) + halfRange + min;
         }
-        public static double ACsc(double value)
+        //map
+        public static double SinPingPongInterp(double input, double min, double max)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if(value < -1)
+            if (min is double.NaN || min is double.PositiveInfinity || min is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be greater than or equal to -1.");
+                throw new System.Exception("min must be a real number.");
             }
-            if (value > 1)
+            if (max is double.NaN || max is double.PositiveInfinity || max is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be less than or equal to 1.");
+                throw new System.Exception("max must be a real number.");
             }
-            double output = System.Math.Asin(1 / value) * RadToDeg;
+            if (min > max)
+            {
+                throw new System.Exception("min cannot be greater than max.");
+            }
+            double range = max - min;
+            double halfRange = range / 2;
+            double inputFloor = System.Math.Floor(input);
+            return (halfRange * System.Math.Sin((input - 0.5) * PI)) + halfRange + min;
+        }
+        //map
+        public static double Csc(double input)
+        {
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
+            {
+                throw new System.Exception("input must be a real number.");
+            }
+            return 1 / System.Math.Sin(input);
+        }
+        //map
+        public static double Sec(double input)
+        {
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
+            {
+                throw new System.Exception("input must be a real number.");
+            }
+            return 1 / System.Math.Cos(input);
+        }
+        //map
+        public static double Cot(double input)
+        {
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
+            {
+                throw new System.Exception("input must be a real number.");
+            }
+            return 1 / System.Math.Tan(input);
+        }
+        //map
+        public static double ACsc(double input)
+        {
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
+            {
+                throw new System.Exception("input must be a real number.");
+            }
+            if (input < 1 && input > -1)
+            {
+                throw new System.Exception("input must be less than or equal to -1 or greater than or equal to 1.");
+            }
+            return System.Math.Asin(1 / input);
+        }
+        //map
+        public static double ASec(double input)
+        {
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
+            {
+                throw new System.Exception("input must be a real number.");
+            }
+            if (input < 1 && input > -1)
+            {
+                throw new System.Exception("input must be less than or equal to -1 or greater than or equal to 1.");
+            }
+            return System.Math.Acos(1 / input);
+        }
+        //map
+        public static double ACot(double input)
+        {
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
+            {
+                throw new System.Exception("input must be a real number.");
+            }
+            double output = System.Math.Atan(1 / input);
             if (output < 0)
             {
-                return 360 + output;
+                return 180 + output;
             }
             return output;
         }
-        public static double ASec(double value)
+        //map
+        public static double Fact(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (value < -1)
+            if (input < 0)
             {
-                throw new System.Exception("value must be greater than or equal to -1.");
+                throw new System.Exception("input must be greater than or equal to 0.");
             }
-            if (value > 1)
+            if (input != System.Math.Floor(input))
             {
-                throw new System.Exception("value must be less than or equal to 1.");
-            }
-            double output = System.Math.Acos(1 / value) * RadToDeg;
-            if (output < 0)
-            {
-                return 360 + output;
-            }
-            return output;
-        }
-        public static double ACot(double value)
-        {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
-            {
-                throw new System.Exception("value must be a real number.");
-            }
-            return 1 / (System.Math.Tan(value * PI) * RadToDeg);
-        }
-        public static double Fact(double value)
-        {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
-            {
-                throw new System.Exception("value must be a real number.");
-            }
-            if (value < 0)
-            {
-                throw new System.Exception("value must be greater than or equal to 0.");
-            }
-            if (value != System.Math.Floor(value))
-            {
-                throw new System.Exception("value must be an integer.");
+                throw new System.Exception("input must be an integer.");
             }
             double output = 1;
-            while (value > 0)
+            while (input > 0)
             {
-                output *= value;
-                value--;
+                output *= input;
+                input--;
             }
             return output;
         }
-        public static double Sqr(double value)
+        //map
+        public static double Sqr(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return value * value;
+            return input * input;
         }
-        public static double Cube(double value)
+        //map
+        public static double Cube(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            return value * value * value;
+            return input * input * input;
         }
+        //map
         public static double MinMag(double a, double b)
         {
-            if (a == double.NaN || a == double.PositiveInfinity || a == double.NegativeInfinity)
+            if (a is double.NaN || a is double.PositiveInfinity || a is double.NegativeInfinity)
             {
                 throw new System.Exception("a must be a real number.");
             }
-            if (b == double.NaN || b == double.PositiveInfinity || b == double.NegativeInfinity)
+            if (b is double.NaN || b is double.PositiveInfinity || b is double.NegativeInfinity)
             {
                 throw new System.Exception("b must be a real number.");
             }
@@ -663,13 +881,14 @@ namespace EpsilonEngine
             }
             return a;
         }
+        //map
         public static double MaxMag(double a, double b)
         {
-            if (a == double.NaN || a == double.PositiveInfinity || a == double.NegativeInfinity)
+            if (a is double.NaN || a is double.PositiveInfinity || a is double.NegativeInfinity)
             {
                 throw new System.Exception("a must be a real number.");
             }
-            if (b == double.NaN || b == double.PositiveInfinity || b == double.NegativeInfinity)
+            if (b is double.NaN || b is double.PositiveInfinity || b is double.NegativeInfinity)
             {
                 throw new System.Exception("b must be a real number.");
             }
@@ -703,70 +922,92 @@ namespace EpsilonEngine
             }
             return a;
         }
-        public static double CeilMag(double value)
+        //map
+        public static double CeilMag(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (value < 0)
+            if (input < 0)
             {
-                return -System.Math.Ceiling(-value);
+                return -System.Math.Ceiling(-input);
             }
-            return System.Math.Ceiling(value);
+            return System.Math.Ceiling(input);
         }
-        public static double FloorMag(double value)
+        //map
+        public static double FloorMag(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            if (value < 0)
+            if (input < 0)
             {
-                return -System.Math.Floor(-value);
+                return -System.Math.Floor(-input);
             }
-            return System.Math.Floor(value);
+            return System.Math.Floor(input);
         }
+        //map
         public static bool IsRealNumber(double input)
         {
-            if (input == double.NaN || input == double.PositiveInfinity || input == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 return false;
             }
             return true;
         }
+        //map
         public static double RadToDegAcc(double input)
         {
-            if (!IsRealNumber(input))
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return (input * 180) / PI;
         }
+        //map
         public static double DegToRadAcc(double input)
         {
-            if (!IsRealNumber(input))
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
-            return (input * PI) / 180.0;
+            return (input * PI) / 180;
         }
-        public static double VectorAngle(Vector vector)
+        //Stuff Below is non approved...
+        public static double AngleDif(double a, double b)
         {
-            double output = System.Math.Atan2(vector.X, vector.Y) * RadToDeg;
-            if (output < 0)
+            double dif = a - b;
+
+            double difLoopCount = dif / Tau;
+            if (difLoopCount > 0)
             {
-                return 360 + output;
+                difLoopCount = System.Math.Floor(difLoopCount);
             }
-            return output;
+            else
+            {
+                difLoopCount = -System.Math.Floor(-difLoopCount);
+            }
+            dif = dif - (difLoopCount * Tau);
+
+            if (dif < 0)
+            {
+                dif = Tau + dif;
+            }
+            if (dif > PI)
+            {
+                dif = Tau - dif;
+            }
+            return dif;
         }
-        public static double AngleClamp(double value)
+        public static double AngleClamp(double input)
         {
-            if (value == double.NaN || value == double.PositiveInfinity || value == double.NegativeInfinity)
+            if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
-                throw new System.Exception("value must be a real number.");
+                throw new System.Exception("input must be a real number.");
             }
-            double loopCount = value / 360;
+            double loopCount = input / 360;
             if (loopCount > 0)
             {
                 loopCount = System.Math.Floor(loopCount);
@@ -775,32 +1016,11 @@ namespace EpsilonEngine
             {
                 loopCount = -System.Math.Floor(-loopCount);
             }
-            return value - (loopCount * 360);
+            return input - (loopCount * 360);
         }
-        public static double VectorMag(Vector input)
-        {
-            return System.Math.Sqrt((input.X * input.X) + (input.Y * input.Y));
-        }
-        public static Vector ClampUnitCircle(Vector input)
-        {
-            double distance = System.Math.Sqrt((input.X * input.X) + (input.Y * input.Y));
-            return new Vector(input.X / distance, input.Y / distance);
-        }
-        //SinInterp
-        //ConstInterp
-        //PingPong
-        //AngleDif
-        public static double AngleDif(double a, double b)
-        {
-            degreeA = DegreeClamp(degreeA);
-            degreeB = DegreeClamp(degreeB);
-            double Output = Math.Abs(degreeA - degreeB);
-            if (Output > 180)
-            {
-                Output = 360 - Output;
-            }
-            return Math.Abs(Output);
-        }
+
+        //Stuff below belongs in GeometryHelper..
+        /*
         //CartisianToPolar
         //PolarToCartisian
         //Rotate Vector
@@ -817,161 +1037,20 @@ namespace EpsilonEngine
         //DistanceToTri
         //ClosestPointInCircle
         //DistanceToCircle
+        public static double VectorAngle(Vector vector)
+        {
+            return System.Math.Atan2(vector.Y, vector.X);
+        }
+        public static double VectorMag(Vector input)
+        {
+            return System.Math.Sqrt((input.X * input.X) + (input.Y * input.Y));
+        }
+        public static Vector ClampUnitCircle(Vector input)
+        {
+            double distance = System.Math.Sqrt((input.X * input.X) + (input.Y * input.Y));
+            return new Vector(input.X / distance, input.Y / distance);
+        }
+        */
         #endregion
-        /*
-
-public static Vector VectorFromDirection(double direction, double magnitude)
-{
-    return new Vector(Math.Cos(direction * DegToRad), Math.Sin(direction * DegToRad)) * magnitude;
-}
-public static Vector VectorFromDirection(double direction)
-{
-    return VectorFromDirection(direction, 1);
-}
-
-public static Vector RotateVector(Vector input, double rotation)
-{
-    double ca = Math.Cos(rotation * DegToRad);
-    double sa = Math.Sin(rotation * DegToRad);
-    return new Vector(ca * input.x - sa * input.y, sa * input.x + ca * input.y);
-}
-public static double VectorDirection(Vector inputVector)
-{
-    inputVector = ClampUnitCircle(inputVector);
-    double Output = RadiansToDegrees(Math.Atan(Math.Abs(inputVector.x) / Math.Abs(inputVector.y)));
-    if (inputVector.x >= 0 && inputVector.y >= 0)
-    {
-        return 90 - Output;
-    }
-    else if (inputVector.x < 0 && inputVector.y >= 0)
-    {
-        return 90 + Output;
-    }
-    else if (inputVector.x < 0 && inputVector.y < 0)
-    {
-        return 180 + (90 - Output);
-    }
-    else if (inputVector.x >= 0 && inputVector.y < 0)
-    {
-        return 270 + Output;
-    }
-    else
-    {
-        return Output;
-    }
-}
-public static double VectorMagnitude(Vector inputVector)
-{
-    return Math.Sqrt((inputVector.x * inputVector.x) + (inputVector.y * inputVector.y));
-}
-//Tringulation and Polygons
-public static List<List<Vector>> Triangulate(List<Vector> polygonPoints)
-{
-    List<List<Vector>> Output = new List<List<Vector>>();
-    while (polygonPoints.Count > 3)
-    {
-        int First_Convex_Vertice = -1;
-        for (int i = 0; i < polygonPoints.Count; i++)
-        {
-            if (!VerticeConcave(polygonPoints, i))
-            {
-                First_Convex_Vertice = i;
-                break;
-            }
-        }
-        if (First_Convex_Vertice >= 0 && First_Convex_Vertice < polygonPoints.Count)
-        {
-            Vector Point_A;
-            Vector Point_B = polygonPoints[First_Convex_Vertice];
-            Vector Point_C;
-            if (First_Convex_Vertice - 1 < 0)
-            {
-                Point_A = polygonPoints[polygonPoints.Count - 1];
-            }
-            else
-            {
-                Point_A = polygonPoints[First_Convex_Vertice - 1];
-            }
-            if (First_Convex_Vertice + 1 >= polygonPoints.Count)
-            {
-                Point_C = polygonPoints[0];
-            }
-            else
-            {
-                Point_C = polygonPoints[First_Convex_Vertice + 1];
-            }
-            Output.Add(new List<Vector>() { Point_A, Point_B, Point_C });
-            polygonPoints.RemoveAt(First_Convex_Vertice);
-        }
-        else
-        {
-            Output.Add(polygonPoints);
-            return Output;
-        }
-    }
-    Output.Add(polygonPoints);
-    return Output;
-}
-public static bool PolygonConcave(List<Vector> polygonPoints)
-{
-    for (int i = 0; i < polygonPoints.Count; i++)
-    {
-        if (VerticeConcave(polygonPoints, i))
-        {
-            return true;
-        }
-    }
-    return false;
-}
-public static bool VerticeConcave(List<Vector> polygonPoints, int pointIndex)
-{
-    Vector Point_A;
-    Vector Point_B = polygonPoints[pointIndex];
-    Vector Point_C;
-    if (pointIndex - 1 < 0)
-    {
-        Point_A = polygonPoints[polygonPoints.Count - 1];
-    }
-    else
-    {
-        Point_A = polygonPoints[pointIndex - 1];
-    }
-    if (pointIndex + 1 >= polygonPoints.Count)
-    {
-        Point_C = polygonPoints[0];
-    }
-    else
-    {
-        Point_C = polygonPoints[pointIndex + 1];
-    }
-    double Degree_AB = VectorDirection(new Vector(Point_A.x - Point_B.x, Point_A.y - Point_B.y));
-    double Degree_BC = VectorDirection(new Vector(Point_C.x - Point_B.x, Point_C.y - Point_B.y));
-    if (Degree_BC > Degree_AB && Degree_BC - Degree_AB > 180)
-    {
-        return true;
-    }
-    else if (Degree_BC < Degree_AB && (360 - Degree_AB) + Degree_BC > 180)
-    {
-        return true;
-    }
-    return false;
-}
-//Lines and Stuff
-public static double DistanceToLine(Vector a, Vector b, Vector p)
-{
-    return Distance(ClosestPointOnLine(a, b, p), p);
-}
-public static Vector ClosestPointOnLine(Vector lineStart, Vector lineEnd, Vector targetPoint)
-{
-    Vector line = (lineEnd - lineStart);
-    double len = VectorMagnitude(line);
-    line = ClampUnitCircle(line);
-
-    Vector v = targetPoint - lineStart;
-    double d = v.x * line.x + v.y * line.y;
-    d = Clamp(d, 0f, len);
-    return lineStart + line * d;
-}
- */
     }
 }
