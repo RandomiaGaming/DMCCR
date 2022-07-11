@@ -14,7 +14,7 @@ namespace EpsilonEngine
         public static readonly Bounds DownLeft = new Bounds(-1.0f, -1.0f, 0.0f, 0.0f);
         #endregion
         #region Public Variables
-        public float MinX
+        public double MinX
         {
             get
             {
@@ -36,7 +36,7 @@ namespace EpsilonEngine
                 Size = new Vector(Width, Height);
             }
         }
-        public float MinY
+        public double MinY
         {
             get
             {
@@ -58,7 +58,7 @@ namespace EpsilonEngine
                 Size = new Vector(Width, Height);
             }
         }
-        public float MaxX
+        public double MaxX
         {
             get
             {
@@ -80,7 +80,7 @@ namespace EpsilonEngine
                 Size = new Vector(Width, Height);
             }
         }
-        public float MaxY
+        public double MaxY
         {
             get
             {
@@ -150,20 +150,20 @@ namespace EpsilonEngine
                 Size = new Vector(Width, Height);
             }
         }
-        public float Width { get; private set; }
-        public float Height { get; private set; }
+        public double Width { get; private set; }
+        public double Height { get; private set; }
         public Vector Size { get; private set; }
         #endregion
         #region Private Variables
-        private float _minX;
-        private float _minY;
-        private float _maxX;
-        private float _maxY;
+        private double _minX;
+        private double _minY;
+        private double _maxX;
+        private double _maxY;
         private Vector _min;
         private Vector _max;
         #endregion
         #region Public Constructors
-        public Bounds(float minX, float minY, float maxX, float maxY)
+        public Bounds(double minX, double minY, double maxX, double maxY)
         {
             if (minX > maxX)
             {

@@ -15,10 +15,10 @@ namespace DMCCR
 
         public FacingDirection FacingDirection = FacingDirection.Left;
 
-        public const float JumpForce = 15f * 16f / 60f;
-        public const float WallJumpForce = 15f * 16f / 60f;
-        public const float MoveForce = 10f * 16f / 60f;
-        public const float GravityForce = 9.8f * 16f * 1.5f / 60f / 60f;
+        public const double JumpForce = 15f * 16f / 60f;
+        public const double WallJumpForce = 15f * 16f / 60f;
+        public const double MoveForce = 10f * 16f / 60f;
+        public const double GravityForce = 9.8f * 16f * 1.5f / 60f / 60f;
 
         private ParticleSystem deathParticles;
         public Player(Stage stagePlayer, PhysicsLayer physicsLayer) : base(stagePlayer, false)

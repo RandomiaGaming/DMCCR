@@ -30,15 +30,15 @@
 
         public int ViewportWidth { get; private set; } = 1920;
         public int ViewportHeight { get; private set; } = 1080;
-        public float AspectRatio { get; private set; } = 1.66666663f;
+        public double AspectRatio { get; private set; } = 1.66666663f;
         public int CurrentFPS { get; private set; }
 
-        public float TimeSinceStart { get; private set; }
+        public double TimeSinceStart { get; private set; }
         public long TicksSinceStart { get; private set; }
-        public float DeltaTime { get; private set; }
+        public double DeltaTime { get; private set; }
         public long DeltaTicks { get; private set; }
 
-        public float TargetFPS
+        public double TargetFPS
         {
             get
             {
@@ -50,16 +50,16 @@
                 {
                     throw new System.Exception("TargetFPS must be greater than 0.");
                 }
-                if (value == float.NaN)
+                if (value == double.NaN)
                 {
                     throw new System.Exception("TargetFPS must be a real number or infinity.");
                 }
-                if (value == float.PositiveInfinity)
+                if (value == double.PositiveInfinity)
                 {
                     GameInterface.IsFixedTimeStep = false;
                     _targetTPF = 0;
                     GameInterface.TargetElapsedTime = new System.TimeSpan(1);
-                    _targetFPS = float.PositiveInfinity;
+                    _targetFPS = double.PositiveInfinity;
                     return;
                 }
                 if (value > 1000000.0f)
@@ -89,7 +89,7 @@
                     GameInterface.IsFixedTimeStep = false;
                     _targetTPF = 0;
                     GameInterface.TargetElapsedTime = new System.TimeSpan(1);
-                    _targetFPS = float.PositiveInfinity;
+                    _targetFPS = double.PositiveInfinity;
                     return;
                 }
                 GameInterface.IsFixedTimeStep = true;
@@ -153,7 +153,7 @@
 
         private Microsoft.Xna.Framework.Rectangle _XNAViewportRect;
 
-        private float _targetFPS = float.PositiveInfinity;
+        private double _targetFPS = double.PositiveInfinity;
         private long _targetTPF;
 
         private bool _isFullScreen;
@@ -604,7 +604,7 @@
                 GameInterface.XNAGraphicsDeviceManager.ApplyChanges();
             }
 
-            AspectRatio = ViewportWidth / (float)ViewportHeight;
+            AspectRatio = ViewportWidth / (double)ViewportHeight;
 
             _XNAViewportRect = new Microsoft.Xna.Framework.Rectangle(0, 0, ViewportWidth, ViewportHeight);
 

@@ -10,10 +10,10 @@ namespace EpsilonEngine
         private Element[] _childCache = new Element[0];
         private bool _childCacheValid = true;
 
-        private float _localMinX = 0f;
-        private float _localMinY = 0f;
-        private float _localMaxX = 1f;
-        private float _localMaxY = 1f;
+        private double _localMinX = 0f;
+        private double _localMinY = 0f;
+        private double _localMaxX = 1f;
+        private double _localMaxY = 1f;
         #endregion
         #region Properties
         public bool IsDestroyed { get; private set; } = false;
@@ -23,7 +23,7 @@ namespace EpsilonEngine
         public Canvas Canvas { get; private set; } = null;
         public Element Parent { get; private set; } = null;
 
-        public float LocalMinX
+        public double LocalMinX
         {
             get
             {
@@ -35,7 +35,7 @@ namespace EpsilonEngine
                 RecalculateWorldX();
             }
         }
-        public float LocalMinY
+        public double LocalMinY
         {
             get
             {
@@ -47,7 +47,7 @@ namespace EpsilonEngine
                 RecalculateWorldY();
             }
         }
-        public float LocalMaxX
+        public double LocalMaxX
         {
             get
             {
@@ -59,7 +59,7 @@ namespace EpsilonEngine
                 RecalculateWorldX();
             }
         }
-        public float LocalMaxY
+        public double LocalMaxY
         {
             get
             {
@@ -110,10 +110,10 @@ namespace EpsilonEngine
             }
         }
 
-        public float WorldMinX { get; private set; } = 0f;
-        public float WorldMinY { get; private set; } = 0f;
-        public float WorldMaxX { get; private set; } = 1f;
-        public float WorldMaxY { get; private set; } = 1f;
+        public double WorldMinX { get; private set; } = 0f;
+        public double WorldMinY { get; private set; } = 0f;
+        public double WorldMaxX { get; private set; } = 1f;
+        public double WorldMaxY { get; private set; } = 1f;
         public Vector WorldMin
         {
             get
@@ -415,8 +415,8 @@ namespace EpsilonEngine
             }
             else
             {
-                WorldMinX = MathHelper.Lerp(LocalMinX, Parent.WorldMinX, Parent.WorldMaxX);
-                WorldMaxX = MathHelper.Lerp(LocalMaxX, Parent.WorldMinX, Parent.WorldMaxX);
+                WorldMinX = MathHelper.LinInterp(LocalMinX, Parent.WorldMinX, Parent.WorldMaxX);
+                WorldMaxX = MathHelper.LinInterp(LocalMaxX, Parent.WorldMinX, Parent.WorldMaxX);
             }
 
             ScreenMinX = (int)(WorldMinX * Game.ViewportWidth);
@@ -436,8 +436,8 @@ namespace EpsilonEngine
             }
             else
             {
-                WorldMinY = MathHelper.Lerp(LocalMinY, Parent.WorldMinY, Parent.WorldMaxY);
-                WorldMaxY = MathHelper.Lerp(LocalMaxY, Parent.WorldMinY, Parent.WorldMaxY);
+                WorldMinY = MathHelper.LinInterp(LocalMinY, Parent.WorldMinY, Parent.WorldMaxY);
+                WorldMaxY = MathHelper.LinInterp(LocalMaxY, Parent.WorldMinY, Parent.WorldMaxY);
             }
 
             ScreenMinY = (int)(WorldMinY * Game.ViewportHeight);

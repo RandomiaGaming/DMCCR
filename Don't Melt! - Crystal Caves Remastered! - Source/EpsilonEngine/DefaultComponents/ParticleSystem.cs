@@ -9,16 +9,16 @@ namespace EpsilonEngine
             public int positionX;
             public int positionY;
 
-            public float subPixelX;
-            public float subPixelY;
+            public double subPixelX;
+            public double subPixelY;
 
-            public float velocityX;
-            public float velocityY;
+            public double velocityX;
+            public double velocityY;
 
             public long deathTime;
 
             public byte brightness;
-            public Particle(int positionX, int positionY, float velocityX, float velocityY, long deathTime, byte brightness)
+            public Particle(int positionX, int positionY, double velocityX, double velocityY, long deathTime, byte brightness)
             {
                 this.positionX = positionX;
                 this.positionY = positionY;
@@ -37,11 +37,11 @@ namespace EpsilonEngine
         private List<Particle> _particles = new List<Particle>();
         private Texture _particleTexture = null;
 
-        public float particleSpeed = 0.1f;
+        public double particleSpeed = 0.1f;
         public int particleLifeTime = 100;
 
-        public float EmissionRate = 0;
-        private float _timer = 0;
+        public double EmissionRate = 0;
+        private double _timer = 0;
 
         private Microsoft.Xna.Framework.Vector2 _XNAPositionCache = Microsoft.Xna.Framework.Vector2.Zero;
         public ParticleSystem(GameObject gameObject, Texture particleTexture, int renderPriority) : base(gameObject, 0, renderPriority)
@@ -67,8 +67,8 @@ namespace EpsilonEngine
             while (_timer >= 1)
             {
                 _timer--;
-                double rot = RandomnessHelper.NextFloat(0, MathHelper.PIFloat * 2.0f);
-                _particles.Add(new Particle(0, 0, (float)Math.Cos(rot) * particleSpeed, (float)Math.Sin(rot) * particleSpeed, particleLifeTime, (byte)RandomnessHelper.NextInt(175, 255)));
+                double rot = RandomnessHelper.NextDouble(0, MathHelper.Tau);
+                _particles.Add(new Particle(0, 0, (double)Math.Cos(rot) * particleSpeed, (double)Math.Sin(rot) * particleSpeed, particleLifeTime, (byte)RandomnessHelper.NextInt(175, 255)));
             }
             for (int i = 0; i < _particles.Count; i++)
             {
@@ -89,8 +89,8 @@ namespace EpsilonEngine
                     particle.positionX += moveX;
                     particle.positionY += moveY;
 
-                    particle.subPixelX -= (float)moveX;
-                    particle.subPixelY -= (float)moveY;
+                    particle.subPixelX -= (double)moveX;
+                    particle.subPixelY -= (double)moveY;
                 }
                 particle.deathTime--;
             }

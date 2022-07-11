@@ -1,4 +1,4 @@
-﻿//Approved 07/05/2022
+﻿//Approved 07/11/2022
 namespace EpsilonEngine
 {
     public static class RandomnessHelper
@@ -36,26 +36,6 @@ namespace EpsilonEngine
                 return min;
             }
             return RNG.Next(min, max + 1);
-        }
-        public static float NextFloat(float min, float max)
-        {
-            if (min == float.NaN || min == float.PositiveInfinity || min == float.NegativeInfinity)
-            {
-                throw new System.Exception("min must be a real number.");
-            }
-            if (max == float.NaN || max == float.PositiveInfinity || max == float.NegativeInfinity)
-            {
-                throw new System.Exception("max must be a real number.");
-            }
-            if (min >= max)
-            {
-                throw new System.Exception("max must be greater than or equal to min.");
-            }
-            if (min == max)
-            {
-                return min;
-            }
-            return ((float)RNG.NextDouble() * (max - min)) + min;
         }
         public static double NextDouble(double min, double max)
         {

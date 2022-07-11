@@ -65,7 +65,7 @@ namespace EpsilonEngine
 
         public ushort RenderWidth { get; private set; } = 256;
         public ushort RenderHeight { get; private set; } = 144;
-        public float RenderAspectRatio { get; private set; } = 16f / 9f;
+        public double RenderAspectRatio { get; private set; } = 16f / 9f;
 
         public Color BackgroundColor
         {
@@ -126,7 +126,7 @@ namespace EpsilonEngine
             }
             RenderHeight = renderHeight;
 
-            RenderAspectRatio = RenderWidth / (float)RenderHeight;
+            RenderAspectRatio = RenderWidth / (double)RenderHeight;
 
             XNARenderTarget = new Microsoft.Xna.Framework.Graphics.RenderTarget2D(Game.GameInterface.XNAGraphicsDevice, renderWidth, renderHeight);
 

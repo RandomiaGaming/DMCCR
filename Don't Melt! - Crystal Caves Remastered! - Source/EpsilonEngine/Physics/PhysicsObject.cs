@@ -19,8 +19,8 @@ namespace EpsilonEngine
         public PhysicsLayer CollisionPhysicsLayers = null;
         public bool IsStatic { get; private set; } = true;
         //Velocity is the objects move speed over time in pixels per frame.
-        public float VelocityX { get; set; } = 0f;
-        public float VelocityY { get; set; } = 0f;
+        public double VelocityX { get; set; } = 0f;
+        public double VelocityY { get; set; } = 0f;
         public Vector Velocity
         {
             get
@@ -34,8 +34,8 @@ namespace EpsilonEngine
             }
         }
         //Subpixel stores how close the object is to moving another pixel.
-        public float SubPixelX { get; private set; } = 0f;
-        public float SubPixelY { get; private set; } = 0f;
+        public double SubPixelX { get; private set; } = 0f;
+        public double SubPixelY { get; private set; } = 0f;
         public Vector SubPixel
         {
             get
@@ -44,10 +44,10 @@ namespace EpsilonEngine
             }
         }
         //Bounciness is the percentage of the objects velocity that is reflected in a collision. Negative values indicate a traditional bounce.
-        public float BouncynessUp { get; set; } = 0f;
-        public float BouncynessLeft { get; set; } = 0f;
-        public float BouncynessRight { get; set; } = 0f;
-        public float BouncynessDown { get; set; } = 0f;
+        public double BouncynessUp { get; set; } = 0f;
+        public double BouncynessLeft { get; set; } = 0f;
+        public double BouncynessRight { get; set; } = 0f;
+        public double BouncynessDown { get; set; } = 0f;
         //LocalColliderRect stores the colliders local shape. This will not change with the objects position.
         public int LocalColliderBoundsMinX { get; private set; } = 0;
         public int LocalColliderBoundsMinY { get; private set; } = 0;
