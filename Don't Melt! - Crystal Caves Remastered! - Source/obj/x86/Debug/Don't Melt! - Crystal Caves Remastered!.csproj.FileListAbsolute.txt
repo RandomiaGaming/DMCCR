@@ -8,3 +8,13 @@ D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal
 D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Debug\Don't Melt! - Crystal Caves Remastered!.csproj.CopyComplete
 D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Debug\DMCCR.exe
 D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Debug\DMCCR.pdb
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Debug\Don't Melt! - Crystal Caves Remastered!.csproj.AssemblyReference.cache
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Debug\Don't Melt! - Crystal Caves Remastered!.csproj.CoreCompileInputs.cache
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Debug\DMCCR.exe
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Debug\DMCCR.pdb
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Debug\DMCCR.exe.config
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Debug\DMCCR.exe
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Debug\DMCCR.pdb
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Debug\MonoGame.Framework.dll
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Debug\MonoGame.Framework.xml
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Debug\Don't Melt! - Crystal Caves Remastered!.csproj.CopyComplete

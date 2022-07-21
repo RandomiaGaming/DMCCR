@@ -19,9 +19,9 @@ namespace DMCCR
         {
             _dontmelt = dontmelt;
 
-           Texture levelRender = new Texture(dontmelt, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Stages.LevelRender.png"));
+           Texture levelRender = new Texture(dontmelt, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.MapData.LevelRender.png"));
 
-           Texture levelTexture = new Texture(dontmelt, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Stages.Level.png"));
+           Texture levelTexture = new Texture(dontmelt, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.MapData.Level.png"));
 
             PhysicsLayer playerPhysicsLayer = new PhysicsLayer(this);
 

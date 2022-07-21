@@ -152,9 +152,6 @@
     <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Soundtrack\Don%27t Melt! - Mythic!.mp3" />
     <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Soundtrack\Don%27t Melt! - Normal!.mp3" />
     <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Soundtrack\Don%27t Melt! - Peaceful!.mp3" />
-    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Stages\Expert.txt" />
-    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Stages\Hard.txt" />
-    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Stages\Normal.txt" />
     <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\Air.png" />
     <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\Checkpoint Locked.png" />
     <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\Checkpoint Unlocked.png" />
@@ -169,15 +166,6 @@
     <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\PlayerRight.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Stages\Expert.png" />
-    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Stages\Hard.png" />
-    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Stages\Level.png" />
-    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Stages\Normal.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Stages\LevelRender.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\0.png" />
     <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\1.png" />
     <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\2.png" />
@@ -188,6 +176,10 @@
     <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\7.png" />
     <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\8.png" />
     <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\Textures\9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\MapData\Level.png" />
+    <EmbeddedResource Include="Don%27t Melt! - Crystal Caves Remastered!\MapData\LevelRender.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MonoGame.Framework.DesktopGL.3.8.0.1641\build\MonoGame.Framework.DesktopGL.targets" Condition="Exists('..\packages\MonoGame.Framework.DesktopGL.3.8.0.1641\build\MonoGame.Framework.DesktopGL.targets')" />

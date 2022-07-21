@@ -3,7 +3,6 @@ namespace EpsilonEngine
 {
     public static class MathHelper
     {
-        //rap
         #region Public Constants
         public const double Tau = 6.2831853071795862;
         public const double PI = 3.1415926535897931;
@@ -17,7 +16,8 @@ namespace EpsilonEngine
         public const double Sin60Deg = 0.8660254037844386;
         public const double SinPIOver3 = 0.8660254037844386;
         #endregion
-        #region Public Static Methods        public static double Abs(double input)
+        #region Public Static Methods
+        public static double Abs(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -28,7 +28,8 @@ namespace EpsilonEngine
                 return -input;
             }
             return input;
-        }        public static double ACos(double input)
+        }
+        public static double ACos(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -43,7 +44,8 @@ namespace EpsilonEngine
                 throw new System.Exception("input must be greater than or equal to -1.");
             }
             return System.Math.Acos(input);
-        }        public static double ASin(double input)
+        }
+        public static double ASin(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -58,14 +60,16 @@ namespace EpsilonEngine
                 throw new System.Exception("input must be greater than or equal to -1.");
             }
             return System.Math.Asin(input);
-        }        public static double ATan(double input)
+        }
+        public static double ATan(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return System.Math.Atan(input);
-        }        public static double Cbrt(double input)
+        }
+        public static double Cbrt(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -76,14 +80,16 @@ namespace EpsilonEngine
                 return -System.Math.Pow(-input, 0.33333333333333331);
             }
             return System.Math.Pow(input, 0.33333333333333331);
-        }        public static double Ceil(double input)
+        }
+        public static double Ceil(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return System.Math.Ceiling(input);
-        }        public static double Clamp(double input, double min, double max)
+        }
+        public static double Clamp(double input, double min, double max)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -110,7 +116,8 @@ namespace EpsilonEngine
                 return min;
             }
             return input;
-        }        public static double Clamp01(double input)
+        }
+        public static double Clamp01(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -125,7 +132,8 @@ namespace EpsilonEngine
                 return 0;
             }
             return input;
-        }        public static double LoopClamp(double input, double min, double max)
+        }
+        public static double LoopClamp(double input, double min, double max)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -149,14 +157,16 @@ namespace EpsilonEngine
             }
             double span = max - min;
             return input - (System.Math.Floor((input - min) / span) * span);
-        }        public static double LoopClamp01(double input)
+        }
+        public static double LoopClamp01(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return input - System.Math.Floor(input);
-        }        public static double PingPongClamp(double input, double min, double max)
+        }
+        public static double PingPongClamp(double input, double min, double max)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -192,7 +202,8 @@ namespace EpsilonEngine
                 return max - (input - (loopCount * (max - min)));
             }
             return min + (input - (loopCount * (max - min)));
-        }        public static double PingPongClamp01(double input)
+        }
+        public static double PingPongClamp01(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -212,14 +223,16 @@ namespace EpsilonEngine
                 return 1 - input + loopCount;
             }
             return input - loopCount;
-        }        public static double Cos(double input)
+        }
+        public static double Cos(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return System.Math.Cos(input);
-        }        public static double Rem(double dividend, double divisor)
+        }
+        public static double Rem(double dividend, double divisor)
         {
             if (dividend is double.NaN || dividend is double.PositiveInfinity || dividend is double.NegativeInfinity)
             {
@@ -243,21 +256,24 @@ namespace EpsilonEngine
                 quotient = System.Math.Floor(quotient);
             }
             return dividend - (quotient * divisor);
-        }        public static double Exp(double input)
+        }
+        public static double Exp(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return System.Math.Exp(input);
-        }        public static double Floor(double input)
+        }
+        public static double Floor(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return System.Math.Floor(input);
-        }        public static double Ln(double input)
+        }
+        public static double Ln(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -268,7 +284,8 @@ namespace EpsilonEngine
                 throw new System.Exception("input must be greater than or equal to 0.");
             }
             return System.Math.Log(input);
-        }        public static double Log(double input, double logBase)
+        }
+        public static double Log(double input, double logBase)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -291,7 +308,8 @@ namespace EpsilonEngine
                 throw new System.Exception("logBase must be greater than 0.");
             }
             return System.Math.Log(input, logBase);
-        }        public static double Log2(double input)
+        }
+        public static double Log2(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -302,7 +320,8 @@ namespace EpsilonEngine
                 throw new System.Exception("input must be greater than or equal to 0.");
             }
             return System.Math.Log(input, 2);
-        }        public static double Log10(double input)
+        }
+        public static double Log10(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -313,7 +332,8 @@ namespace EpsilonEngine
                 throw new System.Exception("input must be greater than or equal to 0.");
             }
             return System.Math.Log(input, 10);
-        }        public static double Max(double a, double b)
+        }
+        public static double Max(double a, double b)
         {
             if (a is double.NaN || a is double.PositiveInfinity || a is double.NegativeInfinity)
             {
@@ -328,7 +348,8 @@ namespace EpsilonEngine
                 return b;
             }
             return a;
-        }        public static double Min(double a, double b)
+        }
+        public static double Min(double a, double b)
         {
             if (a is double.NaN || a is double.PositiveInfinity || a is double.NegativeInfinity)
             {
@@ -343,7 +364,8 @@ namespace EpsilonEngine
                 return b;
             }
             return a;
-        }        public static double Pow(double powBase, double exponent)
+        }
+        public static double Pow(double powBase, double exponent)
         {
             if (powBase is double.NaN || powBase is double.PositiveInfinity || powBase is double.NegativeInfinity)
             {
@@ -358,7 +380,8 @@ namespace EpsilonEngine
                 throw new System.Exception("If powBase is less than 0 then exponent must be an integer.");
             }
             return System.Math.Pow(powBase, exponent);
-        }        public static double Recip(double input)
+        }
+        public static double Recip(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -369,14 +392,16 @@ namespace EpsilonEngine
                 throw new System.Exception("input cannot be 0.");
             }
             return 1 / input;
-        }        public static double Round(double input)
+        }
+        public static double Round(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return System.Math.Round(input);
-        }        public static double Sign(double input)
+        }
+        public static double Sign(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -391,35 +416,40 @@ namespace EpsilonEngine
                 return -1;
             }
             return 1;
-        }        public static double Sin(double input)
+        }
+        public static double Sin(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return System.Math.Sin(input);
-        }        public static bool IsInt(double input)
+        }
+        public static bool IsInt(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return input == System.Math.Floor(input);
-        }        public static double Sqrt(double input)
+        }
+        public static double Sqrt(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return System.Math.Sqrt(input);
-        }        public static double Tan(double input)
+        }
+        public static double Tan(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return System.Math.Tan(input);
-        }        public static double ConstInterp(double input, double min, double max)
+        }
+        public static double ConstInterp(double input, double min, double max)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -438,7 +468,8 @@ namespace EpsilonEngine
                 throw new System.Exception("min cannot be greater than max.");
             }
             return min + (System.Math.Floor(input + 0.5) * (max - min));
-        }        public static double ConstLoopInterp(double input, double min, double max)
+        }
+        public static double ConstLoopInterp(double input, double min, double max)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -475,7 +506,8 @@ namespace EpsilonEngine
             {
                 return max;
             }
-        }        public static double ConstPingPongInterp(double input, double min, double max)
+        }
+        public static double ConstPingPongInterp(double input, double min, double max)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -512,7 +544,8 @@ namespace EpsilonEngine
             {
                 return max;
             }
-        }        public static double LinInterp(double input, double min, double max)
+        }
+        public static double LinInterp(double input, double min, double max)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -531,7 +564,8 @@ namespace EpsilonEngine
                 throw new System.Exception("min cannot be greater than max.");
             }
             return min + (input * (max - min));
-        }        public static double LinLoopInterp(double input, double min, double max)
+        }
+        public static double LinLoopInterp(double input, double min, double max)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -551,7 +585,8 @@ namespace EpsilonEngine
             }
             input = input - System.Math.Floor(input);
             return min + (input * (max - min));
-        }        public static double LinPingPongInterp(double input, double min, double max)
+        }
+        public static double LinPingPongInterp(double input, double min, double max)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -587,7 +622,8 @@ namespace EpsilonEngine
                 return max - ((input - loopCount) * (max - min));
             }
             return min + ((input - loopCount) * (max - min));
-        }        public static double SinInterp(double input, double min, double max)
+        }
+        public static double SinInterp(double input, double min, double max)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -609,7 +645,8 @@ namespace EpsilonEngine
             double halfRange = range / 2;
             double inputFloor = System.Math.Floor(input);
             return (halfRange * System.Math.Sin((input - inputFloor - 0.5) * PI)) + halfRange + min + (inputFloor * range);
-        }        public static double SinLoopInterp(double input, double min, double max)
+        }
+        public static double SinLoopInterp(double input, double min, double max)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -631,7 +668,8 @@ namespace EpsilonEngine
             double halfRange = range / 2;
             double inputFloor = System.Math.Floor(input);
             return (halfRange * System.Math.Sin((input - inputFloor - 0.5) * PI)) + halfRange + min;
-        }        public static double SinPingPongInterp(double input, double min, double max)
+        }
+        public static double SinPingPongInterp(double input, double min, double max)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -653,28 +691,32 @@ namespace EpsilonEngine
             double halfRange = range / 2;
             double inputFloor = System.Math.Floor(input);
             return (halfRange * System.Math.Sin((input - 0.5) * PI)) + halfRange + min;
-        }        public static double Csc(double input)
+        }
+        public static double Csc(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return 1 / System.Math.Sin(input);
-        }        public static double Sec(double input)
+        }
+        public static double Sec(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return 1 / System.Math.Cos(input);
-        }        public static double Cot(double input)
+        }
+        public static double Cot(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return 1 / System.Math.Tan(input);
-        }        public static double ACsc(double input)
+        }
+        public static double ACsc(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -685,7 +727,8 @@ namespace EpsilonEngine
                 throw new System.Exception("input must be less than or equal to -1 or greater than or equal to 1.");
             }
             return System.Math.Asin(1 / input);
-        }        public static double ASec(double input)
+        }
+        public static double ASec(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -696,14 +739,16 @@ namespace EpsilonEngine
                 throw new System.Exception("input must be less than or equal to -1 or greater than or equal to 1.");
             }
             return System.Math.Acos(1 / input);
-        }        public static double ACot(double input)
+        }
+        public static double ACot(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return System.Math.Atan(1 / input);
-        }        public static double Fact(double input)
+        }
+        public static double Fact(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -724,21 +769,24 @@ namespace EpsilonEngine
                 input--;
             }
             return output;
-        }        public static double Sqr(double input)
+        }
+        public static double Sqr(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return input * input;
-        }        public static double Cube(double input)
+        }
+        public static double Cube(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return input * input * input;
-        }        public static double MinMag(double a, double b)
+        }
+        public static double MinMag(double a, double b)
         {
             if (a is double.NaN || a is double.PositiveInfinity || a is double.NegativeInfinity)
             {
@@ -777,7 +825,8 @@ namespace EpsilonEngine
                 return b;
             }
             return a;
-        }        public static double MaxMag(double a, double b)
+        }
+        public static double MaxMag(double a, double b)
         {
             if (a is double.NaN || a is double.PositiveInfinity || a is double.NegativeInfinity)
             {
@@ -816,7 +865,8 @@ namespace EpsilonEngine
                 return b;
             }
             return a;
-        }        public static double CeilMag(double input)
+        }
+        public static double CeilMag(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -827,7 +877,8 @@ namespace EpsilonEngine
                 return -System.Math.Ceiling(-input);
             }
             return System.Math.Ceiling(input);
-        }        public static double FloorMag(double input)
+        }
+        public static double FloorMag(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
@@ -838,57 +889,55 @@ namespace EpsilonEngine
                 return -System.Math.Floor(-input);
             }
             return System.Math.Floor(input);
-        }        public static bool IsRealNumber(double input)
+        }
+        public static bool IsRealNumber(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 return false;
             }
             return true;
-        }        public static double RadToDegAcc(double input)
+        }
+        public static double RadToDegAcc(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return (input * 180) / PI;
-        }        public static double DegToRadAcc(double input)
+        }
+        public static double DegToRadAcc(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
             return (input * PI) / 180;
-        }        public static double AngleClamp(double input)
+        }
+        public static double AngleClamp(double input)
         {
             if (input is double.NaN || input is double.PositiveInfinity || input is double.NegativeInfinity)
             {
                 throw new System.Exception("input must be a real number.");
             }
-            return input - (System.Math.Floor(input / Tau) * Tau);
+            return input - (System.Math.Floor((input + PI) / Tau) * Tau);
+        }
+        public static double AngleNonLoopDif(double a, double b)
+        {
+            double dif = a - b;
+            if (dif < 0)
+            {
+                dif = -dif;
+            }
+            return dif - (System.Math.Floor((dif + PI) / Tau) * Tau);
         }
         //Stuff Below is non approved...
-        public static double AngleDif(double a, double b)
+        public static double AngleLoopDif(double a, double b)
         {
-            double dif = a - b;            double difLoopCount = dif / Tau;
-            if (difLoopCount > 0)
-            {
-                difLoopCount = System.Math.Floor(difLoopCount);
-            }
-            else
-            {
-                difLoopCount = -System.Math.Floor(-difLoopCount);
-            }
-            dif = dif - (difLoopCount * Tau);            if (dif < 0)
-            {
-                dif = Tau + dif;
-            }
-            if (dif > PI)
-            {
-                dif = Tau - dif;
-            }
-            return dif;
-        }
+            double dif = a - b;
+            return dif - (System.Math.Floor((dif + PI) / Tau) * Tau);
+        }
+
         //Stuff below belongs in GeometryHelper..
         /*
         //CartisianToPolar
