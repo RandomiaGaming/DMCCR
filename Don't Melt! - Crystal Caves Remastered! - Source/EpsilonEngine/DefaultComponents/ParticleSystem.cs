@@ -110,7 +110,7 @@ namespace EpsilonEngine
                 _XNAPositionCache.X = positionX;
                 _XNAPositionCache.Y = positionY;
 
-                Scene.XNASpriteBatch.Draw(_particleTexture._XNABase, _XNAPositionCache, new Microsoft.Xna.Framework.Color(particle.brightness, particle.brightness, particle.brightness, byte.MaxValue));
+                Scene.XNASpriteBatch.Draw(_particleTexture._XNATexture, _XNAPositionCache, new Microsoft.Xna.Framework.Color(particle.brightness, particle.brightness, particle.brightness, byte.MaxValue));
             }
         }
     }

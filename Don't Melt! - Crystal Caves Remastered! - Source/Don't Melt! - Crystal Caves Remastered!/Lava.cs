@@ -3,9 +3,9 @@ namespace DMCCR
 {
     public sealed class Lava : PhysicsObject
     {
-        public Lava(Stage stagePlayer, Rectangle colliderShape) : base(stagePlayer, true)
+        public Lava(Stage stagePlayer, Rect colliderShape) : base(stagePlayer, true)
         {
-            SetColliderShape(new Rectangle[1] { colliderShape });
+            SetColliderShape(new Rect[1] { colliderShape });
         }
         public override string ToString()
         {

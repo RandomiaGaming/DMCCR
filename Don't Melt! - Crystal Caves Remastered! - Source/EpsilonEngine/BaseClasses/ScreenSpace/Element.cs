@@ -103,10 +103,10 @@ namespace EpsilonEngine
             }
             set
             {
-                LocalMinX = value.MinX;
-                LocalMinY = value.MinY;
-                LocalMaxX = value.MaxX;
-                LocalMaxY = value.MaxY;
+                LocalMinX = value._minX;
+                LocalMinY = value._minY;
+                LocalMaxX = value._maxX;
+                LocalMaxY = value._maxY;
             }
         }
 
@@ -154,11 +154,11 @@ namespace EpsilonEngine
                 return new Point(ScreenMaxX, ScreenMaxY);
             }
         }
-        public Rectangle ScreenRect
+        public Rect ScreenRect
         {
             get
             {
-                return new Rectangle(ScreenMinX, ScreenMinY, ScreenMaxX, ScreenMaxY);
+                return new Rect(ScreenMinX, ScreenMinY, ScreenMaxX, ScreenMaxY);
             }
         }
         #endregion

@@ -170,7 +170,7 @@ namespace EpsilonEngine
                 throw new Exception("texture cannot be null.");
             }
             
-            DrawTextureWorldSpaceUnsafe(texture._XNABase, position.X, position.Y, color.R, color.B, color.B, color.A);
+            DrawTextureWorldSpaceUnsafe(texture._XNATexture, position.X, position.Y, color.R, color.B, color.B, color.A);
         }
         public void DrawTextureScreenSpace(Texture texture, Point position, Color color)
         {
@@ -184,7 +184,7 @@ namespace EpsilonEngine
                 throw new Exception("texture cannot be null.");
             }
             
-            DrawTextureScreenSpaceUnsafe(texture._XNABase, new Microsoft.Xna.Framework.Vector2(position.X, position.Y), new Microsoft.Xna.Framework.Color(color.R, color.B, color.B, color.A));
+            DrawTextureScreenSpaceUnsafe(texture._XNATexture, new Microsoft.Xna.Framework.Vector2(position.X, position.Y), new Microsoft.Xna.Framework.Color(color.R, color.B, color.B, color.A));
         }
 
         public void MarkForDestruction()

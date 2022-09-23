@@ -34,7 +34,7 @@
                 {
                     return;
                 }
-                Scene.XNASpriteBatch.Draw(Texture._XNABase, new Microsoft.Xna.Framework.Vector2(positionX, positionY), _XNAColorCache);
+                Scene.XNASpriteBatch.Draw(Texture._XNATexture, new Microsoft.Xna.Framework.Vector2(positionX, positionY), _XNAColorCache);
             }
         }
         public override string ToString()

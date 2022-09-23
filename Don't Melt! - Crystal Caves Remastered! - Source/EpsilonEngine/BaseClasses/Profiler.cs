@@ -52,13 +52,13 @@ namespace EpsilonEngine
             _renderEnd = _stopWatch.ElapsedTicks;
         }
 
-        internal static void Print()
+        internal static void Print(int currentFPS)
         {
             long updateTime = _updateEnd - _updateStart;
 
             long renderTime = _renderEnd - _renderStart;
 
-            System.Console.WriteLine($"Debug Profiler - {updateTime} Tick Update - {renderTime} Tick Render.");
+            System.Console.WriteLine($"Debug Profiler - {updateTime} Tick Update - {renderTime} Tick Render - {currentFPS} Real FPS - {10000000 / (updateTime + renderTime)} Theoretical FPS.");
         }
         #endregion
     }

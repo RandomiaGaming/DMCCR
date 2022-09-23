@@ -1,38 +1,32 @@
-﻿//Approved 3/22/2022
+﻿//Approved 09/22/2022
 namespace EpsilonEngine
 {
     public sealed class UnorderedPump
     {
         #region Public Variables
-        public int EventCount
-        {
-            get
-            {
-                return _pumpEvents.Count;
-            }
-        }
+        public int EventCount => _pumpEvents.Count;
         #endregion
         #region Private Variables
         private System.Collections.Generic.List<PumpEvent> _pumpEvents = new System.Collections.Generic.List<PumpEvent>();
         private PumpEvent[] _pumpEventCache = new PumpEvent[0];
-        private bool _pumpEventCacheInvalid;
-        private bool _pumpFull;
+        private bool _pumpEventCacheDirty = false;
+        private bool _pumpEmpty = true;
         #endregion
         #region Public Methods
         public void Invoke()
         {
-            if (_pumpFull)
+            if (_pumpEmpty)
             {
-                if (_pumpEventCacheInvalid)
-                {
-                    _pumpEventCache = _pumpEvents.ToArray();
-                    _pumpEventCacheInvalid = false;
-                }
-
-                foreach (PumpEvent pumpEvent in _pumpEventCache)
-                {
-                    pumpEvent.Invoke();
-                }
+                return;
+            }
+            if (_pumpEventCacheDirty)
+            {
+                _pumpEventCache = _pumpEvents.ToArray();
+                _pumpEventCacheDirty = false;
+            }
+            foreach (PumpEvent pumpEvent in _pumpEventCache)
+            {
+                pumpEvent.Invoke();
             }
         }
         public void RegisterPumpEvent(PumpEvent pumpEvent)
@@ -41,20 +35,16 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("pumpEvent cannot be null.");
             }
-
-            int pumpEventsCount = _pumpEvents.Count;
-            for (int i = 0; i < pumpEventsCount; i++)
+            for (int i = 0; i < _pumpEvents.Count; i++)
             {
                 if (pumpEvent == _pumpEvents[i])
                 {
                     throw new System.Exception("pumpEvent has already been added to this pump.");
                 }
             }
-
             _pumpEvents.Add(pumpEvent);
-
-            _pumpEventCacheInvalid = true;
-            _pumpFull = true;
+            _pumpEventCacheDirty = true;
+            _pumpEmpty = false;
         }
         public bool UnregisterPumpEvent(PumpEvent pumpEvent)
         {
@@ -62,26 +52,19 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("pumpEvent cannot be null.");
             }
-
-            int pumpEventsCount = _pumpEvents.Count;
-
-            for (int i = 0; i < pumpEventsCount; i++)
+            for (int i = 0; i < _pumpEvents.Count; i++)
             {
                 if (pumpEvent == _pumpEvents[i])
                 {
                     _pumpEvents.RemoveAt(i);
-
-                    _pumpEventCacheInvalid = true;
-
-                    if (pumpEventsCount == 0)
+                    _pumpEventCacheDirty = true;
+                    if (_pumpEvents.Count is 0)
                     {
-                        _pumpFull = false;
+                        _pumpEmpty = true;
                     }
-
                     return true;
                 }
             }
-
             return false;
         }
         #endregion
@@ -89,26 +72,21 @@ namespace EpsilonEngine
         internal void RegisterPumpEventUnsafe(PumpEvent pumpEvent)
         {
             _pumpEvents.Add(pumpEvent);
-
-            _pumpEventCacheInvalid = true;
-            _pumpFull = true;
+            _pumpEventCacheDirty = true;
+            _pumpEmpty = false;
         }
         internal void UnregisterPumpEventUnsafe(PumpEvent pumpEvent)
         {
-            int pumpEventsCount = _pumpEvents.Count;
-            for (int i = 0; i < pumpEventsCount; i++)
+            for (int i = 0; i < _pumpEvents.Count; i++)
             {
                 if (pumpEvent == _pumpEvents[i])
                 {
                     _pumpEvents.RemoveAt(i);
-
-                    _pumpEventCacheInvalid = true;
-
-                    if (pumpEventsCount == 0)
+                    _pumpEventCacheDirty = true;
+                    if (_pumpEvents.Count is 0)
                     {
-                        _pumpFull = false;
+                        _pumpEmpty = true;
                     }
-
                     return;
                 }
             }
@@ -117,7 +95,7 @@ namespace EpsilonEngine
         #region Public Overrides
         public override string ToString()
         {
-            return $"EpsilonEngine.UnorderedPump({EventCount})";
+            return $"EpsilonEngine.UnorderedPump({_pumpEvents.Count})";
         }
         #endregion
     }

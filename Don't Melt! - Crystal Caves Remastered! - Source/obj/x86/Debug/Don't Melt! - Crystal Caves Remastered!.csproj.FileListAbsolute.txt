@@ -18,3 +18,4 @@ D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Cr
 D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Debug\MonoGame.Framework.dll
 D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Debug\MonoGame.Framework.xml
 D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Debug\Don't Melt! - Crystal Caves Remastered!.csproj.CopyComplete
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Debug\Don't Melt! - Crystal Caves Remastered!.csproj.SuggestedBindingRedirects.cache

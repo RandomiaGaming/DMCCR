@@ -144,7 +144,7 @@
                     int y = (_heightMinusOne - (i / TileWidth)) * CellHeight;
                     y = (TileHeight * CellHeight) - y - CellHeight;
 
-                    _XNASpriteBatch.Draw(tile.Texture._XNABase, new Microsoft.Xna.Framework.Vector2(x, y), new Microsoft.Xna.Framework.Color(tile.Color.R, tile.Color.G, tile.Color.B, tile.Color.A));
+                    _XNASpriteBatch.Draw(tile.Texture._XNATexture, new Microsoft.Xna.Framework.Vector2(x, y), new Microsoft.Xna.Framework.Color(tile.Color.R, tile.Color.G, tile.Color.B, tile.Color.A));
                 }
             }
 
@@ -230,14 +230,14 @@
                 return;
             }
 
-            int halfDataLength = _dataLength / 2;
+            int halfDataLength = _dataLength >> 1;
 
             int i = 1;
 
             while (i < halfDataLength)
             {
                 System.Array.Copy(_tileData, 0, _tileData, i, i);
-                i = i * 2;
+                i = i << 1;
             }
 
             if (i != _dataLength)
@@ -265,7 +265,7 @@
                     int y = (_heightMinusOne - (i / TileWidth)) * CellHeight;
                     y = (TileHeight * CellHeight) - y - CellHeight;
 
-                    _XNASpriteBatch.Draw(tile.Texture._XNABase, new Microsoft.Xna.Framework.Vector2(x, y), new Microsoft.Xna.Framework.Color(tile.Color.R, tile.Color.G, tile.Color.B, tile.Color.A));
+                    _XNASpriteBatch.Draw(tile.Texture._XNATexture, new Microsoft.Xna.Framework.Vector2(x, y), new Microsoft.Xna.Framework.Color(tile.Color.R, tile.Color.G, tile.Color.B, tile.Color.A));
                 }
             }
 

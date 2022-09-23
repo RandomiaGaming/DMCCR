@@ -6,3 +6,12 @@ D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal
 D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Release\Don't Melt! - Crystal Caves Remastered!.csproj.CoreCompileInputs.cache
 D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Release\Don't Melt! - Crystal Caves Remastered!.csproj.CopyComplete
 D:\C# Windows Apps\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Release\DMCCR.exe
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Release\Don't Melt! - Crystal Caves Remastered!.csproj.AssemblyReference.cache
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Release\Don't Melt! - Crystal Caves Remastered!.csproj.SuggestedBindingRedirects.cache
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Release\Don't Melt! - Crystal Caves Remastered!.csproj.CoreCompileInputs.cache
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Release\DMCCR.exe
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Release\DMCCR.exe.config
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Release\DMCCR.exe
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Release\MonoGame.Framework.dll
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\bin\Release\MonoGame.Framework.xml
+D:\Programming Projects\Don't Melt! - Crystal Caves Remastered!\Don't Melt! - Crystal Caves Remastered! - Source\obj\x86\Release\Don't Melt! - Crystal Caves Remastered!.csproj.CopyComplete

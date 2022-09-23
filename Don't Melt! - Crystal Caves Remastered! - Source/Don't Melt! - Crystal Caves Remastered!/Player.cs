@@ -37,7 +37,7 @@ namespace DMCCR
             deathParticles.particleLifeTime = 25;
             deathParticles.particleSpeed = 2;
 
-            SetColliderShape(new Rectangle[1] { new Rectangle(0, 0, 11, 11) });
+            SetColliderShape(new Rect[1] { new Rect(0, 0, 11, 11) });
 
             LogCollisionsUp = true;
             LogCollisionsRight = true;
@@ -54,20 +54,20 @@ namespace DMCCR
         private bool _F11PressedLastFrame = false;
         private Point _reusablePoint = new Point(0, 0);
 
-        private double GradientProgress = 0.0f;
+        private double GradientProgress = 0.0;
         private void CameraUpdate()
         {
-            _reusablePoint.X = PositionX + 6 - (Scene.RenderWidth / 2);
-            _reusablePoint.Y = PositionY + 6 - (Scene.RenderHeight / 2);
+            _reusablePoint.X = PositionX + 6 - (Scene.RenderWidth >> 1);
+            _reusablePoint.Y = PositionY + 6 - (Scene.RenderHeight >> 1);
             Scene.CameraPosition = _reusablePoint;
         }
         protected override void Update()
         {
             Game.BackgroundColor = GradientHelper.SampleLightHueGradient(GradientProgress, 100);
             GradientProgress += 1.0 / (10.0 * 60.0 * 10.0);
-            if (GradientProgress > 1.0f)
+            if (GradientProgress > 1.0)
             {
-                GradientProgress = 0.0f;
+                GradientProgress = 0.0;
             }
 
             if (respawnTimer > 35)

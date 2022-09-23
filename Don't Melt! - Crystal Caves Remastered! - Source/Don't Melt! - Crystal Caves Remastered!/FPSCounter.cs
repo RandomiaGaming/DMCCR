@@ -42,43 +42,43 @@ namespace DMCCR
 
                 if (c == '0')
                 {
-                    Scene.DrawTextureScreenSpaceUnsafe(Font0._XNABase, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
+                    Scene.DrawTextureScreenSpaceUnsafe(Font0._XNATexture, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
                 }
                 else if (c == '1')
                 {
-                    Scene.DrawTextureScreenSpaceUnsafe(Font1._XNABase, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
+                    Scene.DrawTextureScreenSpaceUnsafe(Font1._XNATexture, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
                 }
                 else if (c == '2')
                 {
-                    Scene.DrawTextureScreenSpaceUnsafe(Font2._XNABase, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
+                    Scene.DrawTextureScreenSpaceUnsafe(Font2._XNATexture, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
                 }
                 else if (c == '3')
                 {
-                    Scene.DrawTextureScreenSpaceUnsafe(Font3._XNABase, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
+                    Scene.DrawTextureScreenSpaceUnsafe(Font3._XNATexture, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
                 }
                 else if (c == '4')
                 {
-                    Scene.DrawTextureScreenSpaceUnsafe(Font4._XNABase, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
+                    Scene.DrawTextureScreenSpaceUnsafe(Font4._XNATexture, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
                 }
                 else if (c == '5')
                 {
-                    Scene.DrawTextureScreenSpaceUnsafe(Font5._XNABase, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
+                    Scene.DrawTextureScreenSpaceUnsafe(Font5._XNATexture, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
                 }
                 else if (c == '6')
                 {
-                    Scene.DrawTextureScreenSpaceUnsafe(Font6._XNABase, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
+                    Scene.DrawTextureScreenSpaceUnsafe(Font6._XNATexture, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
                 }
                 else if (c == '7')
                 {
-                    Scene.DrawTextureScreenSpaceUnsafe(Font7._XNABase, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
+                    Scene.DrawTextureScreenSpaceUnsafe(Font7._XNATexture, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
                 }
                 else if (c == '8')
                 {
-                    Scene.DrawTextureScreenSpaceUnsafe(Font8._XNABase, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
+                    Scene.DrawTextureScreenSpaceUnsafe(Font8._XNATexture, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
                 }
                 else
                 {
-                    Scene.DrawTextureScreenSpaceUnsafe(Font9._XNABase, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
+                    Scene.DrawTextureScreenSpaceUnsafe(Font9._XNATexture, new Microsoft.Xna.Framework.Vector2(offset, 0), Microsoft.Xna.Framework.Color.White);
                 }
 
                 offset += 11;

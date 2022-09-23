@@ -11,8 +11,8 @@ namespace EpsilonEngine
         public List<PhysicsObject> _collisionsLeft = new List<PhysicsObject>();
         public List<PhysicsObject> _overlaps = new List<PhysicsObject>();
 
-        private Rectangle[] _localColliderShapes = new Rectangle[0];
-        private Rectangle[] _worldColliderShapes = new Rectangle[0];
+        private Rect[] _localColliderShapes = new Rect[0];
+        private Rect[] _worldColliderShapes = new Rect[0];
         #endregion
         #region Properties
         public PhysicsScene PhysicsScene { get; private set; } = null;
@@ -53,13 +53,13 @@ namespace EpsilonEngine
         public int LocalColliderBoundsMinY { get; private set; } = 0;
         public int LocalColliderBoundsMaxX { get; private set; } = 0;
         public int LocalColliderBoundsMaxY { get; private set; } = 0;
-        public Rectangle LocalColliderBounds { get; private set; } = new Rectangle(0, 0, 0, 0);
+        public Rect LocalColliderBounds { get; private set; } = new Rect(0, 0, 0, 0);
         //WorldColliderRect stores the colliders world shape. This will change with the objects position.
         public int ColliderBoundsMinX { get; private set; } = 0;
         public int ColliderBoundsMinY { get; private set; } = 0;
         public int ColliderBoundsMaxX { get; private set; } = 0;
         public int ColliderBoundsMaxY { get; private set; } = 0;
-        public Rectangle ColliderBounds { get; private set; } = new Rectangle(0, 0, 0, 0);
+        public Rect ColliderBounds { get; private set; } = new Rect(0, 0, 0, 0);
         //SolidSides stores on which side the object blocks other objects from moving.
         public bool SolidUp { get; set; } = true;
         public bool SolidDown { get; set; } = true;
@@ -225,7 +225,7 @@ namespace EpsilonEngine
         #endregion
         #region Methods
         private bool _moving = false;
-        public void SetColliderShape(Rectangle[] colliderShape)
+        public void SetColliderShape(Rect[] colliderShape)
         {
             if (colliderShape is null)
             {
@@ -234,8 +234,8 @@ namespace EpsilonEngine
 
             int shapesLength = colliderShape.Length;
 
-            _localColliderShapes = new Rectangle[shapesLength];
-            _worldColliderShapes = new Rectangle[shapesLength];
+            _localColliderShapes = new Rect[shapesLength];
+            _worldColliderShapes = new Rect[shapesLength];
 
             LocalColliderBoundsMinX = int.MaxValue;
             LocalColliderBoundsMinY = int.MaxValue;
@@ -245,39 +245,39 @@ namespace EpsilonEngine
 
             for (int i = 0; i < shapesLength; i++)
             {
-                Rectangle safeLocalShape = colliderShape[i];
+                Rect safeLocalShape = colliderShape[i];
 
-                _localColliderShapes[i] = new Rectangle(safeLocalShape.MinX, safeLocalShape.MinY, safeLocalShape.MaxX, safeLocalShape.MaxY);
-                _worldColliderShapes[i] = new Rectangle(safeLocalShape.MinX + PositionX, safeLocalShape.MinY + PositionY, safeLocalShape.MaxX + PositionX, safeLocalShape.MaxY + PositionY);
+                _localColliderShapes[i] = new Rect(safeLocalShape._minX, safeLocalShape._minY, safeLocalShape._maxX, safeLocalShape._maxY);
+                _worldColliderShapes[i] = new Rect(safeLocalShape._minX + PositionX, safeLocalShape._minY + PositionY, safeLocalShape._maxX + PositionX, safeLocalShape._maxY + PositionY);
 
-                if (safeLocalShape.MinX < LocalColliderBoundsMinX)
+                if (safeLocalShape._minX < LocalColliderBoundsMinX)
                 {
-                    LocalColliderBoundsMinX = safeLocalShape.MinX;
+                    LocalColliderBoundsMinX = safeLocalShape._minX;
                 }
-                if (safeLocalShape.MinY < LocalColliderBoundsMinY)
+                if (safeLocalShape._minY < LocalColliderBoundsMinY)
                 {
-                    LocalColliderBoundsMinY = safeLocalShape.MinY;
+                    LocalColliderBoundsMinY = safeLocalShape._minY;
                 }
-                if (safeLocalShape.MaxX > LocalColliderBoundsMaxX)
+                if (safeLocalShape._maxX > LocalColliderBoundsMaxX)
                 {
-                    LocalColliderBoundsMaxX = safeLocalShape.MaxX;
+                    LocalColliderBoundsMaxX = safeLocalShape._maxX;
                 }
-                if (safeLocalShape.MaxY > LocalColliderBoundsMaxY)
+                if (safeLocalShape._maxY > LocalColliderBoundsMaxY)
                 {
-                    LocalColliderBoundsMaxY = safeLocalShape.MaxY;
+                    LocalColliderBoundsMaxY = safeLocalShape._maxY;
                 }
             }
-            LocalColliderBounds = new Rectangle(LocalColliderBoundsMinX, LocalColliderBoundsMinY, LocalColliderBoundsMaxX, LocalColliderBoundsMaxY);
+            LocalColliderBounds = new Rect(LocalColliderBoundsMinX, LocalColliderBoundsMinY, LocalColliderBoundsMaxX, LocalColliderBoundsMaxY);
 
             ColliderBoundsMinX = LocalColliderBoundsMinX + PositionX;
             ColliderBoundsMinY = LocalColliderBoundsMinY + PositionY;
             ColliderBoundsMaxX = LocalColliderBoundsMaxX + PositionX;
             ColliderBoundsMaxY = LocalColliderBoundsMaxY + PositionY;
-            ColliderBounds = new Rectangle(ColliderBoundsMinX, ColliderBoundsMinY, ColliderBoundsMaxX, ColliderBoundsMaxY);
+            ColliderBounds = new Rect(ColliderBoundsMinX, ColliderBoundsMinY, ColliderBoundsMaxX, ColliderBoundsMaxY);
         }
-        public Rectangle[] GetColliderShape()
+        public Rect[] GetColliderShape()
         {
-            return (Rectangle[])_localColliderShapes.Clone();
+            return (Rect[])_localColliderShapes.Clone();
         }
         public Point PhysicsMove(Point moveDistance)
         {
@@ -424,9 +424,9 @@ namespace EpsilonEngine
                     }
                     else if (collisionPhysicsObject.ColliderBoundsMinY > ColliderBoundsMaxY)
                     {
-                        foreach (Rectangle thisColliderShape in _worldColliderShapes)
+                        foreach (Rect thisColliderShape in _worldColliderShapes)
                         {
-                            foreach (Rectangle otherColliderShape in collisionPhysicsObject._worldColliderShapes)
+                            foreach (Rect otherColliderShape in collisionPhysicsObject._worldColliderShapes)
                             {
 
                             }
@@ -661,14 +661,14 @@ namespace EpsilonEngine
             int localColliderShapesLength = _localColliderShapes.Length;
             for (int i = 0; i < localColliderShapesLength; i++)
             {
-                Rectangle localShape = _localColliderShapes[i];
-                _worldColliderShapes[i] = new Rectangle(PositionX + localShape.MinX, PositionY + localShape.MinY, PositionX + localShape.MaxX, PositionY + localShape.MaxY);
+                Rect localShape = _localColliderShapes[i];
+                _worldColliderShapes[i] = new Rect(PositionX + localShape._minX, PositionY + localShape._minY, PositionX + localShape._maxX, PositionY + localShape._maxY);
             }
             ColliderBoundsMinX = PositionX + LocalColliderBoundsMinX;
             ColliderBoundsMinY = PositionY + LocalColliderBoundsMinY;
             ColliderBoundsMaxX = PositionX + LocalColliderBoundsMaxX;
             ColliderBoundsMaxY = PositionY + LocalColliderBoundsMaxY;
-            ColliderBounds = new Rectangle(ColliderBoundsMinX, ColliderBoundsMinY, ColliderBoundsMaxX, ColliderBoundsMaxY);
+            ColliderBounds = new Rect(ColliderBoundsMinX, ColliderBoundsMinY, ColliderBoundsMaxX, ColliderBoundsMaxY);
         }
         private void PhysicsUpdate()
         {

@@ -16,7 +16,7 @@ namespace DMCCR
 
             textureRenderer.Texture = goalGateTexture;
 
-            SetColliderShape(new Rectangle[1] { new Rectangle(0, 0, 15, 31) });
+            SetColliderShape(new Rect[1] { new Rect(0, 0, 15, 31) });
 
             CollisionPhysicsLayers = physicsLayer;
 

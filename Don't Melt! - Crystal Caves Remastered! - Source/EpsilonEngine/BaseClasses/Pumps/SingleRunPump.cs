@@ -1,35 +1,28 @@
-﻿//Approved 3/22/2022
+﻿//Approved 09/22/2022
 namespace EpsilonEngine
 {
     public sealed class SingleRunPump
     {
         #region Public Variables
-        public int EventCount
-        {
-            get
-            {
-                return _pumpEvents.Count;
-            }
-        }
+        public int EventCount => _pumpEvents.Count;
         #endregion
         #region Private Variables
         private System.Collections.Generic.List<PumpEvent> _pumpEvents = new System.Collections.Generic.List<PumpEvent>();
-        private bool _pumpFull;
+        private bool _pumpEmpty = true;
         #endregion
         #region Public Methods
         public void Invoke()
         {
-            if (_pumpFull)
+            if (_pumpEmpty)
             {
-                int pumpEventsCount = _pumpEvents.Count;
-                for (int i = 0; i < pumpEventsCount; i++)
-                {
-                    _pumpEvents[i].Invoke();
-                }
-
-                _pumpEvents = new System.Collections.Generic.List<PumpEvent>();
-                _pumpFull = false;
+                return;
             }
+            for (int i = 0; i < _pumpEvents.Count; i++)
+            {
+                _pumpEvents[i].Invoke();
+            }
+            _pumpEvents = new System.Collections.Generic.List<PumpEvent>();
+            _pumpEmpty = true;
         }
         public void RegisterPumpEvent(PumpEvent pumpEvent)
         {
@@ -37,32 +30,28 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("pumpEvent cannot be null.");
             }
-
-            int pumpEventsCount = _pumpEvents.Count;
-            for (int i = 0; i < pumpEventsCount; i++)
+            for (int i = 0; i < _pumpEvents.Count; i++)
             {
                 if (pumpEvent == _pumpEvents[i])
                 {
                     throw new System.Exception("pumpEvent has already been added to this pump.");
                 }
             }
-
             _pumpEvents.Add(pumpEvent);
-
-            _pumpFull = true;
+            _pumpEmpty = false;
         }
         #endregion
         #region Internal Methods
         public void RegisterPumpEventUnsafe(PumpEvent pumpEvent)
         {
             _pumpEvents.Add(pumpEvent);
-            _pumpFull = true;
+            _pumpEmpty = true;
         }
         #endregion
         #region Public Overrides
         public override string ToString()
         {
-            return $"EpsilonEngine.SingleRunPump({EventCount})";
+            return $"EpsilonEngine.SingleRunPump({_pumpEvents.Count})";
         }
         #endregion
     }

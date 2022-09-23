@@ -1,9 +1,8 @@
-﻿//Approved 3/1/2022
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 { 
     public static class GradientHelper
     {
-        #region Public Methods
+        #region Public Static Methods
         public static Color SampleHueGradient(double sample)
         {
             if (sample < 0)

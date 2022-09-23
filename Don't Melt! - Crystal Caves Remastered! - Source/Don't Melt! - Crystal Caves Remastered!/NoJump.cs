@@ -5,7 +5,7 @@ namespace DMCCR
     {
         public NoJump(Stage stagePlayer) : base(stagePlayer, true)
         {
-            SetColliderShape(new Rectangle[1] { new Rectangle(0, 0, 15, 15) });
+            SetColliderShape(new Rect[1] { new Rect(0, 0, 15, 15) });
         }
         public override string ToString()
         {

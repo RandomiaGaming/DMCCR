@@ -1,4 +1,4 @@
-﻿//Approved 07/11/2022
+﻿//Approved 09/22/2022
 namespace EpsilonEngine
 {
     public static class MathHelper
@@ -7,14 +7,16 @@ namespace EpsilonEngine
         public const double Tau = 6.2831853071795862;
         public const double PI = 3.1415926535897931;
         public const double E = 2.7182818284590451;
-        public const double SQRT2 = 1.4142135623730952;
-        public const double SQRT3 = 1.7320508075688772;
-        public const double RadToDeg = 57.295779513082323;
-        public const double DegToRad = 0.017453292519943295;
-        public const double Sin45Deg = 0.70710678118654746;
-        public const double SinPIOver4 = 0.70710678118654746;
-        public const double Sin60Deg = 0.8660254037844386;
-        public const double SinPIOver3 = 0.8660254037844386;
+        public const double Sqrt2 = 1.4142135623731;
+        public const double Sqrt3 = 1.73205080756888;
+        public const double Cbrt2 = 1.25992104989487;
+        public const double Cbrt3 = 1.44224957030741;
+        public const double RadToDeg = 57.2957795130823;
+        public const double DegToRad = 0.0174532925199433;
+        public const double Sin45Deg = 0.707106781186547;
+        public const double SinPIOver4 = 0.707106781186547;
+        public const double Sin60Deg = 0.866025403784439;
+        public const double SinPIOver3 = 0.866025403784439;
         #endregion
         #region Public Static Methods
         public static double Abs(double input)
@@ -23,7 +25,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input < 0)
+            if (input < 0.0)
             {
                 return -input;
             }
@@ -35,11 +37,11 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input > 1)
+            if (input > 1.0)
             {
                 throw new System.Exception("input must be less than or equal to 1.");
             }
-            if (input < -1)
+            if (input < -1.0)
             {
                 throw new System.Exception("input must be greater than or equal to -1.");
             }
@@ -51,11 +53,11 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input > 1)
+            if (input > 1.0)
             {
                 throw new System.Exception("input must be less than or equal to 1.");
             }
-            if (input < -1)
+            if (input < -1.0)
             {
                 throw new System.Exception("input must be greater than or equal to -1.");
             }
@@ -75,7 +77,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input < 0)
+            if (input < 0.0)
             {
                 return -System.Math.Pow(-input, 0.33333333333333331);
             }
@@ -123,13 +125,13 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input > 1)
+            if (input > 1.0)
             {
-                return 1;
+                return 1.0;
             }
-            else if (input < 0)
+            else if (input < 0.0)
             {
-                return 0;
+                return 0.0;
             }
             return input;
         }
@@ -189,15 +191,15 @@ namespace EpsilonEngine
                 return min;
             }
             double loopCount = System.Math.Floor(input / (max - min));
-            if (input < 0)
+            if (input < 0.0)
             {
-                if (loopCount % 2 == -1)
+                if (loopCount % 2.0 == -1.0)
                 {
                     return max - (input - (loopCount * (max - min)));
                 }
                 return min + (input - (loopCount * (max - min)));
             }
-            else if (loopCount % 2 == 1)
+            else if (loopCount % 2.0 == 1.0)
             {
                 return max - (input - (loopCount * (max - min)));
             }
@@ -210,17 +212,17 @@ namespace EpsilonEngine
                 throw new System.Exception("input must be a real number.");
             }
             double loopCount = System.Math.Floor(input);
-            if (input < 0)
+            if (input < 0.0)
             {
-                if (loopCount % 2 == -1)
+                if (loopCount % 2.0 == -1.0)
                 {
-                    return 1 - input + loopCount;
+                    return 1.0 - input + loopCount;
                 }
                 return input - loopCount;
             }
-            else if (loopCount % 2 == 1)
+            else if (loopCount % 2.0 == 1.0)
             {
-                return 1 - input + loopCount;
+                return 1.0 - input + loopCount;
             }
             return input - loopCount;
         }
@@ -242,12 +244,12 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("divisor must be a real number.");
             }
-            if (divisor == 0)
+            if (divisor == 0.0)
             {
                 throw new System.Exception("divisor cannot be 0.");
             }
             double quotient = dividend / divisor;
-            if (quotient < 0)
+            if (quotient < 0.0)
             {
                 quotient = -System.Math.Floor(-quotient);
             }
@@ -279,7 +281,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input < 0)
+            if (input < 0.0)
             {
                 throw new System.Exception("input must be greater than or equal to 0.");
             }
@@ -295,15 +297,15 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("logBase must be a real number.");
             }
-            if (input < 0)
+            if (input < 0.0)
             {
                 throw new System.Exception("input must be greater than or equal to 0.");
             }
-            if (logBase == 1)
+            if (logBase == 1.0)
             {
-                throw new System.Exception("logBase must not be 1.");
+                throw new System.Exception("logBase cannot be 1.");
             }
-            if (logBase <= 0)
+            if (logBase <= 0.0)
             {
                 throw new System.Exception("logBase must be greater than 0.");
             }
@@ -315,11 +317,11 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input < 0)
+            if (input < 0.0)
             {
                 throw new System.Exception("input must be greater than or equal to 0.");
             }
-            return System.Math.Log(input, 2);
+            return System.Math.Log(input, 2.0);
         }
         public static double Log10(double input)
         {
@@ -327,11 +329,11 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input < 0)
+            if (input < 0.0)
             {
                 throw new System.Exception("input must be greater than or equal to 0.");
             }
-            return System.Math.Log(input, 10);
+            return System.Math.Log(input, 10.0);
         }
         public static double Max(double a, double b)
         {
@@ -375,7 +377,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("exponent must be a real number.");
             }
-            if (powBase < 0 && exponent != System.Math.Floor(exponent))
+            if (powBase < 0.0 && exponent != System.Math.Floor(exponent))
             {
                 throw new System.Exception("If powBase is less than 0 then exponent must be an integer.");
             }
@@ -387,11 +389,11 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input == 0)
+            if (input == 0.0)
             {
                 throw new System.Exception("input cannot be 0.");
             }
-            return 1 / input;
+            return 1.0 / input;
         }
         public static double Round(double input)
         {
@@ -407,15 +409,15 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input == 0)
+            if (input is 0.0)
             {
-                return 0;
+                return 0.0;
             }
-            else if (input < 0)
+            else if (input < 0.0)
             {
-                return -1;
+                return -1.0;
             }
-            return 1;
+            return 1.0;
         }
         public static double Sin(double input)
         {
@@ -487,9 +489,9 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("min cannot be greater than max.");
             }
-            if (input < 0)
+            if (input < 0.0)
             {
-                if ((-2 * input) % 2 <= 1)
+                if (-2.0 * input % 2.0 <= 1.0)
                 {
                     return min;
                 }
@@ -498,7 +500,7 @@ namespace EpsilonEngine
                     return max;
                 }
             }
-            else if ((2 * input) % 2 <= 1)
+            else if (2.0 * input % 2.0 <= 1.0)
             {
                 return min;
             }
@@ -525,9 +527,9 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("min cannot be greater than max.");
             }
-            if (input < 0)
+            if (input < 0.0)
             {
-                if ((-(input - 0.5)) % 2 <= 1)
+                if ((0.5 - input) % 2.0 <= 1.0)
                 {
                     return min;
                 }
@@ -536,7 +538,7 @@ namespace EpsilonEngine
                     return max;
                 }
             }
-            else if ((input + 0.5) % 2 <= 1)
+            else if ((input + 0.5) % 2.0 <= 1.0)
             {
                 return min;
             }
@@ -609,15 +611,15 @@ namespace EpsilonEngine
                 return min;
             }
             double loopCount = System.Math.Floor(input);
-            if (input < 0)
+            if (input < 0.0)
             {
-                if (loopCount % 2 == -1)
+                if (loopCount % 2.0 == -1.0)
                 {
                     return max - ((input - loopCount) * (max - min));
                 }
                 return min + ((input - loopCount) * (max - min));
             }
-            else if (loopCount % 2 == 1)
+            else if (loopCount % 2.0 == 1.0)
             {
                 return max - ((input - loopCount) * (max - min));
             }
@@ -642,7 +644,7 @@ namespace EpsilonEngine
                 throw new System.Exception("min cannot be greater than max.");
             }
             double range = max - min;
-            double halfRange = range / 2;
+            double halfRange = range / 2.0;
             double inputFloor = System.Math.Floor(input);
             return (halfRange * System.Math.Sin((input - inputFloor - 0.5) * PI)) + halfRange + min + (inputFloor * range);
         }
@@ -665,7 +667,7 @@ namespace EpsilonEngine
                 throw new System.Exception("min cannot be greater than max.");
             }
             double range = max - min;
-            double halfRange = range / 2;
+            double halfRange = range / 2.0;
             double inputFloor = System.Math.Floor(input);
             return (halfRange * System.Math.Sin((input - inputFloor - 0.5) * PI)) + halfRange + min;
         }
@@ -688,8 +690,7 @@ namespace EpsilonEngine
                 throw new System.Exception("min cannot be greater than max.");
             }
             double range = max - min;
-            double halfRange = range / 2;
-            double inputFloor = System.Math.Floor(input);
+            double halfRange = range / 2.0;
             return (halfRange * System.Math.Sin((input - 0.5) * PI)) + halfRange + min;
         }
         public static double Csc(double input)
@@ -698,7 +699,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            return 1 / System.Math.Sin(input);
+            return 1.0 / System.Math.Sin(input);
         }
         public static double Sec(double input)
         {
@@ -706,7 +707,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            return 1 / System.Math.Cos(input);
+            return 1.0 / System.Math.Cos(input);
         }
         public static double Cot(double input)
         {
@@ -714,7 +715,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            return 1 / System.Math.Tan(input);
+            return 1.0 / System.Math.Tan(input);
         }
         public static double ACsc(double input)
         {
@@ -722,11 +723,11 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input < 1 && input > -1)
+            if (input < 1.0 && input > -1.0)
             {
                 throw new System.Exception("input must be less than or equal to -1 or greater than or equal to 1.");
             }
-            return System.Math.Asin(1 / input);
+            return System.Math.Asin(1.0 / input);
         }
         public static double ASec(double input)
         {
@@ -734,11 +735,11 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input < 1 && input > -1)
+            if (input < 1.0 && input > -1.0)
             {
                 throw new System.Exception("input must be less than or equal to -1 or greater than or equal to 1.");
             }
-            return System.Math.Acos(1 / input);
+            return System.Math.Acos(1.0 / input);
         }
         public static double ACot(double input)
         {
@@ -746,7 +747,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            return System.Math.Atan(1 / input);
+            return System.Math.Atan(1.0 / input);
         }
         public static double Fact(double input)
         {
@@ -754,7 +755,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input < 0)
+            if (input < 0.0)
             {
                 throw new System.Exception("input must be greater than or equal to 0.");
             }
@@ -762,8 +763,8 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be an integer.");
             }
-            double output = 1;
-            while (input > 0)
+            double output = 1.0;
+            while (input > 0.0)
             {
                 output *= input;
                 input--;
@@ -796,7 +797,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("b must be a real number.");
             }
-            if (a >= 0 && b >= 0)
+            if (a >= 0.0 && b >= 0.0)
             {
                 if (a > b)
                 {
@@ -804,7 +805,7 @@ namespace EpsilonEngine
                 }
                 return a;
             }
-            else if (a < 0 && b < 0)
+            else if (a < 0.0 && b < 0.0)
             {
                 if (a < b)
                 {
@@ -812,7 +813,7 @@ namespace EpsilonEngine
                 }
                 return a;
             }
-            else if (a >= 0 && b < 0)
+            else if (a >= 0.0 && b < 0.0)
             {
                 if (a > -b)
                 {
@@ -836,7 +837,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("b must be a real number.");
             }
-            if (a >= 0 && b >= 0)
+            if (a >= 0.0 && b >= 0.0)
             {
                 if (a < b)
                 {
@@ -844,7 +845,7 @@ namespace EpsilonEngine
                 }
                 return a;
             }
-            else if (a < 0 && b < 0)
+            else if (a < 0.0 && b < 0.0)
             {
                 if (a > b)
                 {
@@ -852,7 +853,7 @@ namespace EpsilonEngine
                 }
                 return a;
             }
-            else if (a >= 0 && b < 0)
+            else if (a >= 0.0 && b < 0.0)
             {
                 if (a < -b)
                 {
@@ -872,7 +873,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input < 0)
+            if (input < 0.0)
             {
                 return -System.Math.Ceiling(-input);
             }
@@ -884,7 +885,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            if (input < 0)
+            if (input < 0.0)
             {
                 return -System.Math.Floor(-input);
             }
@@ -904,7 +905,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            return (input * 180) / PI;
+            return (input * 180.0) / PI;
         }
         public static double DegToRadAcc(double input)
         {
@@ -912,7 +913,7 @@ namespace EpsilonEngine
             {
                 throw new System.Exception("input must be a real number.");
             }
-            return (input * PI) / 180;
+            return (input * PI) / 180.0;
         }
         public static double AngleClamp(double input)
         {
@@ -931,45 +932,46 @@ namespace EpsilonEngine
             }
             return dif - (System.Math.Floor((dif + PI) / Tau) * Tau);
         }
-        //Stuff Below is non approved...
-        public static double AngleLoopDif(double a, double b)
-        {
-            double dif = a - b;
-            return dif - (System.Math.Floor((dif + PI) / Tau) * Tau);
-        }
-
-        //Stuff below belongs in GeometryHelper..
+        #endregion
+        #region Under Construction
         /*
-        //CartisianToPolar
-        //PolarToCartisian
-        //Rotate Vector
-        public static Vector RotateVector(Vector input, double rotation)
-        {
-            double ca = System.Math.Cos((rotation * PI) / 180);
-            double sa = System.Math.Sin(rotation * DegToRad);
-            return new Vector(ca * input.X - sa * input.Y, sa * input.X + ca * input.Y);
-        }
-        //DisToLine
-        //ClosestPointOnLine
-        //PointInTri
-        //ClosestPointInTri
-        //DistanceToTri
-        //ClosestPointInCircle
-        //DistanceToCircle
-        public static double VectorAngle(Vector vector)
-        {
-            return System.Math.Atan2(vector.Y, vector.X);
-        }
-        public static double VectorMag(Vector input)
-        {
-            return System.Math.Sqrt((input.X * input.X) + (input.Y * input.Y));
-        }
-        public static Vector ClampUnitCircle(Vector input)
-        {
-            double distance = System.Math.Sqrt((input.X * input.X) + (input.Y * input.Y));
-            return new Vector(input.X / distance, input.Y / distance);
-        }
-        */
+                public static double AngleLoopDif(double a, double b)
+                {
+                    double dif = a - b;
+                    return dif - (System.Math.Floor((dif + PI) / Tau) * Tau);
+                }
+
+                //Stuff below belongs in GeometryHelper..
+                //CartisianToPolar
+                //PolarToCartisian
+                //Rotate Vector
+                public static Vector RotateVector(Vector input, double rotation)
+                {
+                    double ca = System.Math.Cos((rotation * PI) / 180);
+                    double sa = System.Math.Sin(rotation * DegToRad);
+                    return new Vector(ca * input.X - sa * input.Y, sa * input.X + ca * input.Y);
+                }
+                //DisToLine
+                //ClosestPointOnLine
+                //PointInTri
+                //ClosestPointInTri
+                //DistanceToTri
+                //ClosestPointInCircle
+                //DistanceToCircle
+                public static double VectorAngle(Vector vector)
+                {
+                    return System.Math.Atan2(vector.Y, vector.X);
+                }
+                public static double VectorMag(Vector input)
+                {
+                    return System.Math.Sqrt((input.X * input.X) + (input.Y * input.Y));
+                }
+                public static Vector ClampUnitCircle(Vector input)
+                {
+                    double distance = System.Math.Sqrt((input.X * input.X) + (input.Y * input.Y));
+                    return new Vector(input.X / distance, input.Y / distance);
+                }
+                */
         #endregion
     }
 }

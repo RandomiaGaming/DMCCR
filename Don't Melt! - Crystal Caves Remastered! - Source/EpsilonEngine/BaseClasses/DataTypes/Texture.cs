@@ -1,23 +1,15 @@
-﻿//Approved 3/1/2022
+﻿//Approved 09/22/2022
 namespace EpsilonEngine
 {
     public sealed class Texture
     {
         #region Public Variables
         public readonly Game Game;
-
         public readonly int Width;
         public readonly int Height;
         #endregion
         #region Internal Variables
-        internal Microsoft.Xna.Framework.Graphics.Texture2D _XNABase = null;
-        #endregion
-        #region Private Variables
-        private int _heightMinusOne;
-        private int _dataLength;
-
-        private Microsoft.Xna.Framework.Color[] _XNAColorData;
-        private Color[] _colorData;
+        internal Microsoft.Xna.Framework.Graphics.Texture2D _XNATexture;
         #endregion
         #region Public Constructors
         public Texture(Game game, int width, int height)
@@ -27,28 +19,17 @@ namespace EpsilonEngine
                 throw new System.Exception("game cannot be null.");
             }
             Game = game;
-
             if (width <= 0)
             {
                 throw new System.Exception("width must be greater than 0.");
             }
             Width = width;
-
             if (height <= 0)
             {
                 throw new System.Exception("height must be greater than 0.");
             }
             Height = height;
-
-            _heightMinusOne = Height - 1;
-
-            _XNABase = new Microsoft.Xna.Framework.Graphics.Texture2D(Game.GameInterface.GraphicsDevice, Width, Height);
-
-            _dataLength = Width * Height;
-
-            _XNAColorData = new Microsoft.Xna.Framework.Color[_dataLength];
-
-            _colorData = new Color[_dataLength];
+            _XNATexture = new Microsoft.Xna.Framework.Graphics.Texture2D(Game.GameInterface.GraphicsDevice, Width, Height);
         }
         public Texture(Game game, int width, int height, Color[] data)
         {
@@ -57,294 +38,217 @@ namespace EpsilonEngine
                 throw new System.Exception("game cannot be null.");
             }
             Game = game;
-
             if (width <= 0)
             {
                 throw new System.Exception("width must be greater than 0.");
             }
             Width = width;
-
             if (height <= 0)
             {
                 throw new System.Exception("height must be greater than 0.");
             }
             Height = height;
-
-            _heightMinusOne = Height - 1;
-
-            _XNABase = new Microsoft.Xna.Framework.Graphics.Texture2D(Game.GameInterface.GraphicsDevice, Width, Height);
-
-            _dataLength = Width * Height;
-
             if (data is null)
             {
                 throw new System.Exception("data cannot be null.");
             }
-            if (data.Length != _dataLength)
+            if (data.Length != width * height)
             {
                 throw new System.Exception("data.Length must be equal to width times height.");
             }
-
-            _colorData = (Color[])data.Clone();
-
-            _XNAColorData = new Microsoft.Xna.Framework.Color[_dataLength];
-
-            for (int i = 0; i < _dataLength; i++)
-            {
-                Color color = _colorData[i];
-                _XNAColorData[i] = new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
-            }
-
-            _XNABase.SetData(_XNAColorData);
+            _XNATexture = new Microsoft.Xna.Framework.Graphics.Texture2D(Game.GameInterface.GraphicsDevice, Width, Height);
+            _XNATexture.SetData<Color>(data);
         }
-        public Texture(Game game, string sourceFilePath)
+        public Texture(Game game, int width, int height, byte[] data)
         {
             if (game is null)
             {
                 throw new System.Exception("game cannot be null.");
             }
             Game = game;
-
-            if (sourceFilePath is null)
-            {
-                throw new System.Exception("sourceFilePath cannot be null.");
-            }
-            if (!System.IO.File.Exists(sourceFilePath))
-            {
-                throw new System.Exception("sourceFilePath does not exist.");
-            }
-
-            try
-            {
-                _XNABase = Microsoft.Xna.Framework.Graphics.Texture2D.FromFile(Game.GameInterface.GraphicsDevice, sourceFilePath);
-            }
-            catch
-            {
-                throw new System.Exception("texture could not be loaded from filePath.");
-            }
-
-            Width = _XNABase.Width;
-            Height = _XNABase.Height;
-
-            if (Width <= 0)
+            if (width <= 0)
             {
                 throw new System.Exception("width must be greater than 0.");
             }
-
-            if (Height <= 0)
+            Width = width;
+            if (height <= 0)
             {
                 throw new System.Exception("height must be greater than 0.");
             }
-
-            _heightMinusOne = Height - 1;
-
-            _dataLength = Width * Height;
-
-            _XNAColorData = new Microsoft.Xna.Framework.Color[_dataLength];
-
-            _colorData = new Color[_dataLength];
-
-            _XNABase.GetData(_XNAColorData);
-
-            for (int i = 0; i < _dataLength; i++)
+            Height = height;
+            if (data is null)
             {
-                Microsoft.Xna.Framework.Color color = _XNAColorData[i];
-                _colorData[i] = new Color(color.R, color.G, color.B, color.A);
+                throw new System.Exception("data cannot be null.");
             }
+            if (data.Length != (width * height) << 2)
+            {
+                throw new System.Exception("data.Length must be equal to width times height times 4.");
+            }
+            _XNATexture = new Microsoft.Xna.Framework.Graphics.Texture2D(Game.GameInterface.GraphicsDevice, Width, Height);
+            _XNATexture.SetData<byte>(data);
         }
-        public Texture(Game game, System.IO.Stream sourceStream)
+        public Texture(Game game, int width, int height, System.IO.Stream data)
         {
             if (game is null)
             {
                 throw new System.Exception("game cannot be null.");
             }
             Game = game;
-
-            if (sourceStream is null)
+            if (width <= 0)
             {
-                throw new System.Exception("sourceStream cannot be null.");
+                throw new System.Exception("width must be greater than 0.");
             }
-            if (!sourceStream.CanRead)
+            Width = width;
+            if (height <= 0)
             {
-                throw new System.Exception("sourceStream must be readable.");
+                throw new System.Exception("height must be greater than 0.");
             }
+            Height = height;
+            if (data is null)
+            {
+                throw new System.Exception("data cannot be null.");
+            }
+            int dataBytesLength = (width * height) << 2;
+            if (data.Position - data.Length != dataBytesLength)
+            {
+                throw new System.Exception("Starting at data.Position there must be at least width times height times 4 bytes of data before the end of the stream.");
+            }
+            _XNATexture = new Microsoft.Xna.Framework.Graphics.Texture2D(Game.GameInterface.GraphicsDevice, Width, Height);
+            byte[] dataBytes = new byte[dataBytesLength];
+            data.Read(dataBytes, 0, dataBytesLength);
+            _XNATexture.SetData<byte>(dataBytes);
+        }
 
+        public Texture(Game game, string filePath)
+        {
+            if (game is null)
+            {
+                throw new System.Exception("game cannot be null.");
+            }
+            Game = game;
+            if (filePath is null)
+            {
+                throw new System.Exception("filePath cannot be null.");
+            }
+            if(filePath is "")
+            {
+                throw new System.Exception("filePath cannot be empty.");
+            }
+            if (!System.IO.File.Exists(filePath))
+            {
+                throw new System.Exception("filePath does not exist.");
+            }
+            Microsoft.Xna.Framework.Graphics.Texture2D xnaBase;
             try
             {
-                _XNABase = Microsoft.Xna.Framework.Graphics.Texture2D.FromStream(Game.GameInterface.GraphicsDevice, sourceStream);
+                xnaBase = Microsoft.Xna.Framework.Graphics.Texture2D.FromFile(Game.GameInterface.GraphicsDevice, filePath);
             }
             catch
             {
                 throw new System.Exception("texture could not be loaded from filePath.");
             }
-
-            Width = _XNABase.Width;
-            Height = _XNABase.Height;
-
-            if (Width <= 0)
+            if(xnaBase is null)
+            {
+                throw new System.Exception("texture could not be loaded from filePath.");
+            }
+            _XNATexture = xnaBase;
+            if (xnaBase.Width <= 0)
             {
                 throw new System.Exception("width must be greater than 0.");
             }
-
-            if (Height <= 0)
+            Width = xnaBase.Width;
+            if (xnaBase.Height <= 0)
             {
                 throw new System.Exception("height must be greater than 0.");
             }
-
-            _heightMinusOne = Height - 1;
-
-            _dataLength = Width * Height;
-
-            _XNAColorData = new Microsoft.Xna.Framework.Color[_dataLength];
-
-            _colorData = new Color[_dataLength];
-
-            _XNABase.GetData(_XNAColorData);
-
-            for (int i = 0; i < _dataLength; i++)
+            Height = xnaBase.Height;
+        }
+        public Texture(Game game, byte[] encodedBytes)
+        {
+            if (game is null)
             {
-                Microsoft.Xna.Framework.Color color = _XNAColorData[i];
-                _colorData[i] = new Color(color.R, color.G, color.B, color.A);
+                throw new System.Exception("game cannot be null.");
             }
+            Game = game;
+            if (encodedBytes is null)
+            {
+                throw new System.Exception("encodedBytes cannot be null.");
+            }
+            if (encodedBytes.Length is 0)
+            {
+                throw new System.Exception("encodedBytes cannot be empty.");
+            }
+            System.IO.MemoryStream stream = new System.IO.MemoryStream(encodedBytes);
+            Microsoft.Xna.Framework.Graphics.Texture2D xnaBase;
+            try
+            {
+                xnaBase = Microsoft.Xna.Framework.Graphics.Texture2D.FromStream(Game.GameInterface.GraphicsDevice, stream);
+            }
+            catch
+            {
+                throw new System.Exception("texture could not be loaded from bytes.");
+            }
+            if (xnaBase is null)
+            {
+                throw new System.Exception("texture could not be loaded from bytes.");
+            }
+            _XNATexture = xnaBase;
+            if (xnaBase.Width <= 0)
+            {
+                throw new System.Exception("width must be greater than 0.");
+            }
+            Width = xnaBase.Width;
+            if (xnaBase.Height <= 0)
+            {
+                throw new System.Exception("height must be greater than 0.");
+            }
+            Height = xnaBase.Height;
+        }
+        public Texture(Game game, System.IO.Stream encodedStream)
+        {
+            if (game is null)
+            {
+                throw new System.Exception("game cannot be null.");
+            }
+            Game = game;
+            if (encodedStream is null)
+            {
+                throw new System.Exception("encodedStream cannot be null.");
+            }
+            if (!encodedStream.CanRead)
+            {
+                throw new System.Exception("encodedStream must be readable.");
+            }
+            Microsoft.Xna.Framework.Graphics.Texture2D xnaBase;
+            try
+            {
+                xnaBase = Microsoft.Xna.Framework.Graphics.Texture2D.FromStream(Game.GameInterface.GraphicsDevice, encodedStream);
+            }
+            catch
+            {
+                throw new System.Exception("texture could not be loaded from stream.");
+            }
+            if (xnaBase is null)
+            {
+                throw new System.Exception("texture could not be loaded from stream.");
+            }
+            _XNATexture = xnaBase;
+            if (xnaBase.Width <= 0)
+            {
+                throw new System.Exception("width must be greater than 0.");
+            }
+            Width = xnaBase.Width;
+            if (xnaBase.Height <= 0)
+            {
+                throw new System.Exception("height must be greater than 0.");
+            }
+            Height = xnaBase.Height;
         }
         #endregion
         #region Public Overrides
         public override string ToString()
         {
             return $"EpsilonEngine.Texture({Width}, {Height})";
-        }
-        #endregion
-        #region Public Methods
-        public void SetPixel(int x, int y, Color color)
-        {
-            if (x < 0)
-            {
-                throw new System.Exception("x must be greater than or equal to 0.");
-            }
-            if (x >= Width)
-            {
-                throw new System.Exception("x must be less than width.");
-            }
-
-            if (y < 0)
-            {
-                throw new System.Exception("y must be greater than or equal to 0.");
-            }
-            if (y >= Height)
-            {
-                throw new System.Exception("y must be less than height.");
-            }
-
-            int targetIndex = ((_heightMinusOne - y) * Width) + x;
-
-            _colorData[targetIndex] = color;
-
-            _XNAColorData[targetIndex] = new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
-        }
-        public Color GetPixel(int x, int y)
-        {
-            if (x < 0)
-            {
-                throw new System.Exception("x must be greater than or equal to 0.");
-            }
-            if (x >= Width)
-            {
-                throw new System.Exception("x must be less than width.");
-            }
-
-            if (y < 0)
-            {
-                throw new System.Exception("y must be greater than or equal to 0.");
-            }
-            if (y >= Height)
-            {
-                throw new System.Exception("y must be less than height.");
-            }
-
-            return _colorData[((_heightMinusOne - y) * Width) + x];
-        }
-        public void SetData(Color[] data)
-        {
-            if (data is null)
-            {
-                throw new System.Exception("data cannot be null.");
-            }
-            if (data.Length != _dataLength)
-            {
-                throw new System.Exception("data.Length must be equal to width times height.");
-            }
-
-            _colorData = (Color[])data.Clone();
-
-            for (int i = 0; i < _dataLength; i++)
-            {
-                Color color = _colorData[i];
-                _XNAColorData[i] = new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
-            }
-        }
-        public Color[] GetData()
-        {
-            return (Color[])_colorData.Clone();
-        }
-        public void Clear(Color color)
-        {
-            _colorData[0] = color;
-
-            _XNAColorData[0] = new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
-
-            if (_dataLength == 1)
-            {
-                return;
-            }
-
-            int halfDataLength = _dataLength / 2;
-
-            int i = 1;
-
-            while (i < halfDataLength)
-            {
-                System.Array.Copy(_colorData, 0, _colorData, i, i);
-                System.Array.Copy(_XNAColorData, 0, _XNAColorData, i, i);
-                i = i * 2;
-            }
-
-            if (i != _dataLength)
-            {
-                System.Array.Copy(_colorData, 0, _colorData, i, _dataLength - i);
-                System.Array.Copy(_XNAColorData, 0, _XNAColorData, i, _dataLength - i);
-            }
-        }
-        public void Apply()
-        {
-            _XNABase.SetData(_XNAColorData);
-        }
-        #endregion
-        #region Internal Methods
-        public void SetPixelUnsafe(int x, int y, Color color)
-        {
-            int targetIndex = ((_heightMinusOne - y) * Width) + x;
-
-            _colorData[targetIndex] = color;
-
-            _XNAColorData[targetIndex] = new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
-        }
-        public Color GetPixelUnsafe(int x, int y)
-        {
-            return _colorData[((_heightMinusOne - y) * Width) + x];
-        }
-        public void SetDataUnsafe(Color[] data)
-        {
-            _colorData = data;
-
-            for (int i = 0; i < _dataLength; i++)
-            {
-                Color color = _colorData[i];
-                _XNAColorData[i] = new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
-            }
-        }
-        public Color[] GetDataUnsafe()
-        {
-            return _colorData;
         }
         #endregion
     }

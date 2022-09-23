@@ -62,7 +62,7 @@
                     _targetFPS = double.PositiveInfinity;
                     return;
                 }
-                if (value > 1000000.0f)
+                if (value > 1000000.0)
                 {
                     throw new System.Exception("TargetFPS must less than 1000000 unless TargetFPS is infinity.");
                 }
@@ -154,14 +154,14 @@
         private Microsoft.Xna.Framework.Rectangle _XNAViewportRect;
 
         private double _targetFPS = double.PositiveInfinity;
-        private long _targetTPF;
+        private long _targetTPF = 0;
 
         private bool _isFullScreen;
 
         private static bool _gameCreatedAlready;
         private bool Rendering = false;
         #endregion
-        #region Constructors
+        #region Public Constructors
         public Game(int updatePriority, int drawPriority)
         {
             if (_gameCreatedAlready)
@@ -523,7 +523,7 @@
                 throw new System.Exception("texture cannot be null.");
             }
 
-            DrawTextureUnsafe(texture._XNABase);
+            DrawTextureUnsafe(texture._XNATexture);
         }
         #endregion
         #region Internal Methods
@@ -536,9 +536,9 @@
 
             DeltaTicks = TicksSinceStart - _ticksSinceStartLastFrame;
 
-            TimeSinceStart = TicksSinceStart / 10000000.0f;
+            TimeSinceStart = TicksSinceStart / 10000000.0;
 
-            DeltaTime = DeltaTicks / 10000000.0f;
+            DeltaTime = DeltaTicks / 10000000.0;
 
             CurrentFPS = (int)(10000000 / DeltaTicks);
 
@@ -576,12 +576,14 @@
 
             Profiler.RenderEnd();
 
-            Profiler.Print();
-
             if (!_profilerInitialized)
             {
                 Profiler.InitializeEnd();
                 _profilerInitialized = true;
+            }
+            else
+            {
+                Profiler.Print(CurrentFPS);
             }
         }
         internal void ResizeCallback()

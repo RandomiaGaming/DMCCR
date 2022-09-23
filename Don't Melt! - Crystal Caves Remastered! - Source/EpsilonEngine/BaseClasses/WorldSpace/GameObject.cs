@@ -119,7 +119,7 @@ namespace EpsilonEngine
                 throw new Exception("texture cannot be null.");
             }
 
-            DrawTextureLocalSpaceUnsafe(texture._XNABase, position.X, position.Y, color.R, color.B, color.B, color.A);
+            DrawTextureLocalSpaceUnsafe(texture._XNATexture, position.X, position.Y, color.R, color.B, color.B, color.A);
         }
        
         public void Destroy()
