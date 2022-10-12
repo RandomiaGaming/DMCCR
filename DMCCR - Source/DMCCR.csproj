@@ -1,0 +1,99 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Don%27t Melt! - Crystal Caves Remastered!\AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Dont Melt Icon.ico" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Hi-res Icon.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\MapData\Level.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\MapData\LevelRender.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Soundtrack\Don%27t Melt - Rain Drops!.mp3" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Soundtrack\Don%27t Melt! - Beach!.mp3" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Soundtrack\Don%27t Melt! - Calm!.mp3" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Soundtrack\Don%27t Melt! - Dubstep!.mp3" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Soundtrack\Don%27t Melt! - Expert!.mp3" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Soundtrack\Don%27t Melt! - Funky!.mp3" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Soundtrack\Don%27t Melt! - Hard!.mp3" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Soundtrack\Don%27t Melt! - Mythic!.mp3" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Soundtrack\Don%27t Melt! - Normal!.mp3" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Soundtrack\Don%27t Melt! - Peaceful!.mp3" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\0.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\1.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\2.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\3.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\4.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\5.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\6.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\7.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\8.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\9.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\Air.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\Checkpoint Locked.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\Checkpoint Unlocked.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\Death Particle Texture.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\Game Icon.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\GoalGate.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\Ground.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\Lava.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\LavaSpriteSheet.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\NoJump.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\PlayerLeft.png" />
+    <None Remove="Don%27t Melt! - Crystal Caves Remastered!\Textures\PlayerRight.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Don't Melt! - Crystal Caves Remastered!\Dont Melt Icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Hi-res Icon.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\MapData\Level.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\MapData\LevelRender.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Soundtrack\Don't Melt - Rain Drops!.mp3" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Soundtrack\Don't Melt! - Beach!.mp3" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Soundtrack\Don't Melt! - Calm!.mp3" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Soundtrack\Don't Melt! - Dubstep!.mp3" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Soundtrack\Don't Melt! - Expert!.mp3" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Soundtrack\Don't Melt! - Funky!.mp3" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Soundtrack\Don't Melt! - Hard!.mp3" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Soundtrack\Don't Melt! - Mythic!.mp3" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Soundtrack\Don't Melt! - Normal!.mp3" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Soundtrack\Don't Melt! - Peaceful!.mp3" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\0.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\1.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\2.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\3.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\4.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\5.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\6.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\7.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\8.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\9.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\Air.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\Checkpoint Locked.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\Checkpoint Unlocked.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\Death Particle Texture.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\Game Icon.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\GoalGate.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\Ground.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\Lava.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\LavaSpriteSheet.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\NoJump.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\PlayerLeft.png" />
+    <EmbeddedResource Include="Don't Melt! - Crystal Caves Remastered!\Textures\PlayerRight.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
+  </ItemGroup>
+
+</Project>
