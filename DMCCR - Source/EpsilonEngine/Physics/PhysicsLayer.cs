@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public sealed class PhysicsLayer
     {
@@ -8,7 +6,7 @@ namespace EpsilonEngine
         internal PhysicsObject[] _physicsObjectCache = new PhysicsObject[0];
         #endregion
         #region Private Variables
-        private List<PhysicsObject> _physicsObjects = new List<PhysicsObject>();
+        private System.Collections.Generic.List<PhysicsObject> _physicsObjects = new System.Collections.Generic.List<PhysicsObject>();
         private bool _physicsObjectCacheValid = true;
         #endregion
         #region Properties
@@ -23,7 +21,7 @@ namespace EpsilonEngine
         {
             if (physicsScene is null)
             {
-                throw new Exception("physicsScene cannot be null.");
+                throw new System.Exception("physicsScene cannot be null.");
             }
 
             PhysicsScene = physicsScene;
@@ -62,7 +60,7 @@ namespace EpsilonEngine
         {
             if (index < 0 || index >= _physicsObjectCache.Length)
             {
-                throw new Exception("index was out of range.");
+                throw new System.Exception("index was out of range.");
             }
 
             return _physicsObjectCache[index];
@@ -71,12 +69,12 @@ namespace EpsilonEngine
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(PhysicsObject)))
             {
-                throw new Exception("type must be equal to PhysicsObject or be assignable from PhysicsObject.");
+                throw new System.Exception("type must be equal to PhysicsObject or be assignable from PhysicsObject.");
             }
 
             foreach (PhysicsObject physicsObject in _physicsObjectCache)
@@ -101,23 +99,23 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<PhysicsObject> GetPhysicsObjects()
+        public System.Collections.Generic.List<PhysicsObject> GetPhysicsObjects()
         {
-            return new List<PhysicsObject>(_physicsObjectCache);
+            return new System.Collections.Generic.List<PhysicsObject>(_physicsObjectCache);
         }
-        public List<PhysicsObject> GetPhysicsObjects(Type type)
+        public System.Collections.Generic.List<PhysicsObject> GetPhysicsObjects(Type type)
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(PhysicsObject)))
             {
-                throw new Exception("type must be equal to PhysicsObject or be assignable from PhysicsObject.");
+                throw new System.Exception("type must be equal to PhysicsObject or be assignable from PhysicsObject.");
             }
 
-            List<PhysicsObject> output = new List<PhysicsObject>();
+            System.Collections.Generic.List<PhysicsObject> output = new System.Collections.Generic.List<PhysicsObject>();
 
             foreach (PhysicsObject physicsObject in _physicsObjectCache)
             {
@@ -129,9 +127,9 @@ namespace EpsilonEngine
 
             return output;
         }
-        public List<T> GetPhysicsObjects<T>() where T : PhysicsObject
+        public System.Collections.Generic.List<T> GetPhysicsObjects<T>() where T : PhysicsObject
         {
-            List<T> output = new List<T>();
+            System.Collections.Generic.List<T> output = new System.Collections.Generic.List<T>();
 
             foreach (PhysicsObject physicsObject in _physicsObjectCache)
             {
@@ -163,9 +161,9 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<PhysicsObject> GetPhysicsObjectsUnsafe(Type type)
+        public System.Collections.Generic.List<PhysicsObject> GetPhysicsObjectsUnsafe(Type type)
         {
-            List<PhysicsObject> output = new List<PhysicsObject>();
+            System.Collections.Generic.List<PhysicsObject> output = new System.Collections.Generic.List<PhysicsObject>();
 
             foreach (PhysicsObject physicsObject in _physicsObjectCache)
             {
@@ -191,11 +189,11 @@ namespace EpsilonEngine
         {
             if (physicsObject is null)
             {
-                throw new Exception("physicsObject cannot be null.");
+                throw new System.Exception("physicsObject cannot be null.");
             }
             if (physicsObject.PhysicsScene != PhysicsScene)
             {
-                throw new Exception("physicsObject belongs to a different PhysicsScene.");
+                throw new System.Exception("physicsObject belongs to a different PhysicsScene.");
             }
 
             _physicsObjectCacheValid = false;
@@ -209,17 +207,17 @@ namespace EpsilonEngine
                 }
             }
 
-            throw new Exception("physicsObject was not present on this PhysicsLayer.");
+            throw new System.Exception("physicsObject was not present on this PhysicsLayer.");
         }
         public void AddPhysicsObject(PhysicsObject physicsObject)
         {
             if (physicsObject is null)
             {
-                throw new Exception("physicsObject cannot be null.");
+                throw new System.Exception("physicsObject cannot be null.");
             }
             if (physicsObject.PhysicsScene != PhysicsScene)
             {
-                throw new Exception("physicsObject belongs to a different PhysicsScene.");
+                throw new System.Exception("physicsObject belongs to a different PhysicsScene.");
             }
 
             int physicsObjectsCount = _physicsObjects.Count;
@@ -227,7 +225,7 @@ namespace EpsilonEngine
             {
                 if(_physicsObjects[i] == physicsObject)
                 {
-                    throw new Exception("physicsObject was already added to this PhysicsLayer.");
+                    throw new System.Exception("physicsObject was already added to this PhysicsLayer.");
                 }
             }
 

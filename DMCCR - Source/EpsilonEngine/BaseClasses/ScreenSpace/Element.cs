@@ -1,12 +1,9 @@
-﻿using System;
-using System.Reflection;
-using System.Collections.Generic;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public class Element
     {
         #region Variables
-        private List<Element> _children = new List<Element>();
+        private System.Collections.Generic.List<Element> _children = new System.Collections.Generic.List<Element>();
         private Element[] _childCache = new Element[0];
         private bool _childCacheValid = true;
 
@@ -167,7 +164,7 @@ namespace EpsilonEngine
         {
             if (canvas is null)
             {
-                throw new Exception("canvas cannot be null.");
+                throw new System.Exception("canvas cannot be null.");
             }
 
             Canvas = canvas;
@@ -199,7 +196,7 @@ namespace EpsilonEngine
         {
             if (canvas is null)
             {
-                throw new Exception("canvas cannot be null.");
+                throw new System.Exception("canvas cannot be null.");
             }
 
             Canvas = canvas;
@@ -265,7 +262,7 @@ namespace EpsilonEngine
         {
             if (index < 0 || index >= _childCache.Length)
             {
-                throw new Exception("index was out of range.");
+                throw new System.Exception("index was out of range.");
             }
 
             return _childCache[index];
@@ -274,12 +271,12 @@ namespace EpsilonEngine
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(Element)))
             {
-                throw new Exception("type must be equal to Element or be assignable from Element.");
+                throw new System.Exception("type must be equal to Element or be assignable from Element.");
             }
 
             foreach (Element child in _childCache)
@@ -304,23 +301,23 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<Element> GetChildren()
+        public System.Collections.Generic.List<Element> GetChildren()
         {
-            return new List<Element>(_childCache);
+            return new System.Collections.Generic.List<Element>(_childCache);
         }
-        public List<Element> GetChildren(Type type)
+        public System.Collections.Generic.List<Element> GetChildren(Type type)
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(Element)))
             {
-                throw new Exception("type must be equal to Element or be assignable from Element.");
+                throw new System.Exception("type must be equal to Element or be assignable from Element.");
             }
 
-            List<Element> output = new List<Element>();
+            System.Collections.Generic.List<Element> output = new System.Collections.Generic.List<Element>();
 
             foreach (Element child in _childCache)
             {
@@ -332,9 +329,9 @@ namespace EpsilonEngine
 
             return output;
         }
-        public List<T> GetChildren<T>() where T : Element
+        public System.Collections.Generic.List<T> GetChildren<T>() where T : Element
         {
-            List<T> output = new List<T>();
+            System.Collections.Generic.List<T> output = new System.Collections.Generic.List<T>();
 
             foreach (Element child in _childCache)
             {
@@ -366,9 +363,9 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<Element> GetChildrenUnsafe(Type type)
+        public System.Collections.Generic.List<Element> GetChildrenUnsafe(Type type)
         {
-            List<Element> output = new List<Element>();
+            System.Collections.Generic.List<Element> output = new System.Collections.Generic.List<Element>();
 
             foreach (Element child in _childCache)
             {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public abstract class GameManager
     {
@@ -20,7 +18,7 @@ namespace EpsilonEngine
         {
             if (game is null)
             {
-                throw new Exception("game cannot be null.");
+                throw new System.Exception("game cannot be null.");
             }
 
             Game = game;
@@ -51,12 +49,12 @@ namespace EpsilonEngine
         {
             if (MarkedForDestruction)
             {
-                throw new Exception("gameManager has already been marked for destruction.");
+                throw new System.Exception("gameManager has already been marked for destruction.");
             }
 
             if (Destroyed)
             {
-                throw new Exception("gameManager has already been destroyed.");
+                throw new System.Exception("gameManager has already been destroyed.");
             }
 
             Game.OnDestroyPump.RegisterPumpEventUnsafe(OnDestroy);

@@ -1,5 +1,4 @@
-﻿using System;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public sealed class Collision
     {
@@ -13,19 +12,19 @@ namespace EpsilonEngine
         {
             if (thisPhysicsObject is null)
             {
-                throw new Exception("thisPhysicsObject cannot be null.");
+                throw new System.Exception("thisPhysicsObject cannot be null.");
             }
             ThisPhysicsObject = thisPhysicsObject;
 
             if (otherPhysicsObject is null)
             {
-                throw new Exception("otherPhysicsObject cannot be null.");
+                throw new System.Exception("otherPhysicsObject cannot be null.");
             }
             OtherPhysicsObject = otherPhysicsObject;
 
             if (sideInfo == DirectionInfo.False)
             {
-                throw new Exception("sideInfo cannot be false.");
+                throw new System.Exception("sideInfo cannot be false.");
             }
             SideInfo = sideInfo;
         }

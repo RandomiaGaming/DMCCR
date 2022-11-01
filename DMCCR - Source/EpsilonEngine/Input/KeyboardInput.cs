@@ -1,8 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public static class KeyboardInput
     {

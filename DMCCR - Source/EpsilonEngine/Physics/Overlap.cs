@@ -1,5 +1,4 @@
-﻿using System;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public sealed class Overlap
     {
@@ -12,13 +11,13 @@ namespace EpsilonEngine
         {
             if (thisPhysicsObject is null)
             {
-                throw new Exception("thisPhysicsObject cannot be null.");
+                throw new System.Exception("thisPhysicsObject cannot be null.");
             }
             ThisPhysicsObject = thisPhysicsObject;
 
             if (otherPhysicsObject is null)
             {
-                throw new Exception("otherPhysicsObject cannot be null.");
+                throw new System.Exception("otherPhysicsObject cannot be null.");
             }
             OtherPhysicsObject = otherPhysicsObject;
         }

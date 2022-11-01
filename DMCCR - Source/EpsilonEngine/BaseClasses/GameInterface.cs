@@ -1,14 +1,12 @@
-﻿using System;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     internal sealed class GameInterface : Microsoft.Xna.Framework.Game
     {
         #region Internal Variables
-        internal Game Game { get; private set; } = null;
-
-        internal Microsoft.Xna.Framework.GraphicsDeviceManager XNAGraphicsDeviceManager { get; private set; } = null;
-        internal Microsoft.Xna.Framework.Graphics.GraphicsDevice XNAGraphicsDevice { get; private set; } = null;
-        internal Microsoft.Xna.Framework.GameWindow XNAGameWindow { get; private set; } = null;
+        internal Game Game = null;
+        internal Microsoft.Xna.Framework.GraphicsDeviceManager XNAGraphicsDeviceManager = null;
+        internal Microsoft.Xna.Framework.Graphics.GraphicsDevice XNAGraphicsDevice = null;
+        internal Microsoft.Xna.Framework.GameWindow XNAGameWindow = null;
         #endregion
         #region Constructors
         internal GameInterface(Game game)
@@ -39,9 +37,9 @@ namespace EpsilonEngine
             XNAGameWindow.Position = new Microsoft.Xna.Framework.Point(XNAGraphicsDevice.Adapter.CurrentDisplayMode.Width / 4, XNAGraphicsDevice.Adapter.CurrentDisplayMode.Height / 4);
             XNAGameWindow.Title = "EpsilonEngine";
 
-            InactiveSleepTime = new TimeSpan(0);
-            TargetElapsedTime = new TimeSpan(10000000 / 60);
-            MaxElapsedTime = new TimeSpan(10000000 / 60);
+            InactiveSleepTime = new System.TimeSpan(0);
+            TargetElapsedTime = new System.TimeSpan(10000000 / 60);
+            MaxElapsedTime = new System.TimeSpan(10000000 / 60);
             IsFixedTimeStep = false;
             IsMouseVisible = true;
 
@@ -49,7 +47,7 @@ namespace EpsilonEngine
         }
         #endregion
         #region Private Methods
-        private void ResizeCallback(object sender, EventArgs e)
+        private void ResizeCallback(object sender, System.EventArgs e)
         {
             Game.ResizeCallback();
         }
@@ -63,7 +61,7 @@ namespace EpsilonEngine
         {
             return $"EpsilonEngine.GameInterface()";
         }
-        protected sealed override void OnExiting(object sender, EventArgs args)
+        protected sealed override void OnExiting(object sender, System.EventArgs args)
         {
             Game.ExitCallback();
         }

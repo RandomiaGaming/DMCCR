@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public sealed class ParticleSystem : Component
     {
@@ -34,7 +32,7 @@ namespace EpsilonEngine
                 this.brightness = brightness;
             }
         }
-        private List<Particle> _particles = new List<Particle>();
+        private System.Collections.Generic.List<Particle> _particles = new System.Collections.Generic.List<Particle>();
         private Texture _particleTexture = null;
 
         public double particleSpeed = 0.1f;
@@ -48,7 +46,7 @@ namespace EpsilonEngine
         {
             if (particleTexture is null)
             {
-                throw new Exception("particleTexture cannot be null.");
+                throw new System.Exception("particleTexture cannot be null.");
             }
 
             _particleTexture = particleTexture;

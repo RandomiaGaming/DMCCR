@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public class PhysicsObject : GameObject
     {
         #region Variables
-        public List<PhysicsObject> _collisionsUp = new List<PhysicsObject>();
-        public List<PhysicsObject> _collisionsRight = new List<PhysicsObject>();
-        public List<PhysicsObject> _collisionsDown = new List<PhysicsObject>();
-        public List<PhysicsObject> _collisionsLeft = new List<PhysicsObject>();
-        public List<PhysicsObject> _overlaps = new List<PhysicsObject>();
+        public System.Collections.Generic.List<PhysicsObject> _collisionsUp = new System.Collections.Generic.List<PhysicsObject>();
+        public System.Collections.Generic.List<PhysicsObject> _collisionsRight = new System.Collections.Generic.List<PhysicsObject>();
+        public System.Collections.Generic.List<PhysicsObject> _collisionsDown = new System.Collections.Generic.List<PhysicsObject>();
+        public System.Collections.Generic.List<PhysicsObject> _collisionsLeft = new System.Collections.Generic.List<PhysicsObject>();
+        public System.Collections.Generic.List<PhysicsObject> _overlaps = new System.Collections.Generic.List<PhysicsObject>();
 
         private Rect[] _localColliderShapes = new Rect[0];
         private Rect[] _worldColliderShapes = new Rect[0];
@@ -201,7 +199,7 @@ namespace EpsilonEngine
         {
             if (physicsScene is null)
             {
-                throw new Exception("physicsScene cannot be null.");
+                throw new System.Exception("physicsScene cannot be null.");
             }
             PhysicsScene = physicsScene;
 
@@ -229,7 +227,7 @@ namespace EpsilonEngine
         {
             if (colliderShape is null)
             {
-                throw new Exception("colliderShape cannot be null.");
+                throw new System.Exception("colliderShape cannot be null.");
             }
 
             int shapesLength = colliderShape.Length;
@@ -341,7 +339,7 @@ namespace EpsilonEngine
         {
             if (moveDistance < 0)
             {
-                throw new Exception("moveDistance must be greater than or equal to 0.");
+                throw new System.Exception("moveDistance must be greater than or equal to 0.");
             }
             return PhysicsMoveUpUnsafe(moveDistance);
         }
@@ -349,7 +347,7 @@ namespace EpsilonEngine
         {
             if (moveDistance < 0)
             {
-                throw new Exception("moveDistance must be greater than or equal to 0.");
+                throw new System.Exception("moveDistance must be greater than or equal to 0.");
             }
             return PhysicsMoveDownUnsafe(moveDistance);
         }
@@ -357,7 +355,7 @@ namespace EpsilonEngine
         {
             if (moveDistance < 0)
             {
-                throw new Exception("moveDistance must be greater than or equal to 0.");
+                throw new System.Exception("moveDistance must be greater than or equal to 0.");
             }
             return PhysicsMoveRightUnsafe(moveDistance);
         }
@@ -365,7 +363,7 @@ namespace EpsilonEngine
         {
             if (moveDistance < 0)
             {
-                throw new Exception("moveDistance must be greater than or equal to 0.");
+                throw new System.Exception("moveDistance must be greater than or equal to 0.");
             }
             return PhysicsMoveLeftUnsafe(moveDistance);
         }
@@ -753,7 +751,7 @@ namespace EpsilonEngine
 
         private void CheckOverlaps()
         {
-            _overlaps = new List<PhysicsObject>();
+            _overlaps = new System.Collections.Generic.List<PhysicsObject>();
 
             if (CollisionPhysicsLayers is null || (PhaseThroughUp && PhaseThroughDown && PhaseThroughLeft && PhaseThroughRight))
             {
@@ -770,7 +768,7 @@ namespace EpsilonEngine
         }
         private void CheckCollisionsUp()
         {
-            _collisionsUp = new List<PhysicsObject>();
+            _collisionsUp = new System.Collections.Generic.List<PhysicsObject>();
 
             if (CollisionPhysicsLayers is null || PhaseThroughUp)
             {
@@ -787,7 +785,7 @@ namespace EpsilonEngine
         }
         private void CheckCollisionsRight()
         {
-            _collisionsRight = new List<PhysicsObject>();
+            _collisionsRight = new System.Collections.Generic.List<PhysicsObject>();
 
             if (CollisionPhysicsLayers is null || PhaseThroughRight)
             {
@@ -804,7 +802,7 @@ namespace EpsilonEngine
         }
         private void CheckCollisionsDown()
         {
-            _collisionsDown = new List<PhysicsObject>();
+            _collisionsDown = new System.Collections.Generic.List<PhysicsObject>();
 
             if (CollisionPhysicsLayers is null || PhaseThroughDown)
             {
@@ -821,7 +819,7 @@ namespace EpsilonEngine
         }
         private void CheckCollisionsLeft()
         {
-            _collisionsLeft = new List<PhysicsObject>();
+            _collisionsLeft = new System.Collections.Generic.List<PhysicsObject>();
 
             if (CollisionPhysicsLayers is null || PhaseThroughLeft)
             {

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Reflection;
-
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public sealed class HardwareInput
     {
         private InputManager _inputManager = null;
-        private MethodInfo _sourceMethod = null;
+        private System.Reflection.MethodInfo _sourceMethod = null;
         private RegisterHardwareInputAttribute _registerHardwareInputAttribute = null;
         private string _name = "Unnamed Hardware Input";
         private bool _pressed = false;
@@ -17,7 +14,7 @@ namespace EpsilonEngine
                 return _inputManager;
             }
         }
-        public MethodInfo SourceMethod
+        public System.Reflection.MethodInfo SourceMethod
         {
             get
             {
@@ -52,45 +49,45 @@ namespace EpsilonEngine
             _registerHardwareInputAttribute = null;
             _name = "Unnamed Hardware Input";
         }
-        public HardwareInput(InputManager inputManager, MethodInfo sourceMethod)
+        public HardwareInput(InputManager inputManager, System.Reflection.MethodInfo sourceMethod)
         {
             if (inputManager is null)
             {
-                throw new Exception("inputManager cannot be null.");
+                throw new System.Exception("inputManager cannot be null.");
             }
             _inputManager = inputManager;
 
             if (sourceMethod is null)
             {
-                throw new Exception("sourceMethod was null.");
+                throw new System.Exception("sourceMethod was null.");
             }
 
             if (!sourceMethod.IsStatic)
             {
-                throw new Exception("sourceMethod must be static.");
+                throw new System.Exception("sourceMethod must be static.");
             }
             if (!sourceMethod.IsPublic)
             {
-                throw new Exception("sourceMethod must be public.");
+                throw new System.Exception("sourceMethod must be public.");
             }
             if (sourceMethod.IsConstructor)
             {
-                throw new Exception("sourceMethod cannot be a constructor.");
+                throw new System.Exception("sourceMethod cannot be a constructor.");
             }
             if (sourceMethod.ReturnType != typeof(bool))
             {
-                throw new Exception("sourceMethod must return a bool.");
+                throw new System.Exception("sourceMethod must return a bool.");
             }
             if (sourceMethod.GetParameters().Length > 0)
             {
-                throw new Exception("sourceMethod cannot have input parameters.");
+                throw new System.Exception("sourceMethod cannot have input parameters.");
             }
             _sourceMethod = sourceMethod;
 
             RegisterHardwareInputAttribute registerHardwareInputAttribute = _sourceMethod.GetCustomAttribute<RegisterHardwareInputAttribute>();
             if (registerHardwareInputAttribute is null)
             {
-                throw new Exception("sourceMethod does not contain a RegisterHardwareInputAttribute");
+                throw new System.Exception("sourceMethod does not contain a RegisterHardwareInputAttribute");
             }
             _registerHardwareInputAttribute = registerHardwareInputAttribute;
 
@@ -104,7 +101,7 @@ namespace EpsilonEngine
         {
             return $"Epsilon.HardwareInput({_name})";
         }
-        public static bool MethodIsHardwareInput(MethodInfo sourceMethod)
+        public static bool MethodIsHardwareInput(System.Reflection.MethodInfo sourceMethod)
         {
             if (sourceMethod is null)
             {
@@ -134,7 +131,7 @@ namespace EpsilonEngine
 
             if (sourceMethod.GetCustomAttribute<RegisterHardwareInputAttribute>() is null)
             {
-                throw new Exception("sourceMethod does not contain a RegisterHardwareInputAttribute");
+                throw new System.Exception("sourceMethod does not contain a RegisterHardwareInputAttribute");
             }
 
             return true;

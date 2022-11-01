@@ -1,5 +1,4 @@
 ﻿using EpsilonEngine;
-using System.Reflection;
 namespace DMCCR
 {
     public sealed class Checkpoint : PhysicsObject
@@ -14,8 +13,8 @@ namespace DMCCR
         {
             _stagePlayer = stagePlayer;
 
-            _checkPointLockedTexture = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.Checkpoint Locked.png"));
-            _checkPointUnlockedTexture = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.Checkpoint Unlocked.png"));
+            _checkPointLockedTexture = new Texture(Game, System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.Checkpoint Locked.png"));
+            _checkPointUnlockedTexture = new Texture(Game, System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.Checkpoint Unlocked.png"));
 
             _textureRenderer = new TextureRenderer(this, 1);
 

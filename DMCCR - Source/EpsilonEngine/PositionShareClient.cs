@@ -1,9 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.IO;
-using System.IO.Pipes;
-
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public sealed class PositionShareClient
     {
@@ -15,11 +10,11 @@ namespace EpsilonEngine
         {
             if (pipeName is null)
             {
-                throw new Exception("pipeName cannot be null.");
+                throw new System.Exception("pipeName cannot be null.");
             }
             if (pipeName == string.Empty)
             {
-                throw new Exception("pipeName cannot be empty.");
+                throw new System.Exception("pipeName cannot be empty.");
             }
 
             _pipeClient = new NamedPipeClientStream(".", pipeName, PipeDirection.In);

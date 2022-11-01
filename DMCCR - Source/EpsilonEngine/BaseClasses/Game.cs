@@ -50,11 +50,11 @@
                 {
                     throw new System.Exception("TargetFPS must be greater than 0.");
                 }
-                if (value == double.NaN)
+                if (value is double.NaN)
                 {
                     throw new System.Exception("TargetFPS must be a real number or infinity.");
                 }
-                if (value == double.PositiveInfinity)
+                if (value is double.PositiveInfinity)
                 {
                     GameInterface.IsFixedTimeStep = false;
                     _targetTPF = 0;

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
-    //public enum VirtualInput { Jump, Right, Left, MenuUp, MenuDown, MenuRight, MenuLeft, MenuEnter, MenuBack };
+    public enum VirtualInput { Jump, Right, Left, MenuUp, MenuDown, MenuRight, MenuLeft, MenuEnter, MenuBack };
     public sealed class InputManager
     {
         private Game _epsilon = null;
-        private List<HardwareInput> _hardwareInputs = new List<HardwareInput>();
-        private List<VirtualInput> _virtualInputs = new List<VirtualInput>();
-        private List<InputBinding> _inputBindings = new List<InputBinding>();
+        private System.Collections.Generic.List<HardwareInput> _hardwareInputs = new System.Collections.Generic.List<HardwareInput>();
+        private System.Collections.Generic.List<VirtualInput> _virtualInputs = new System.Collections.Generic.List<VirtualInput>();
+        private System.Collections.Generic.List<InputBinding> _inputBindings = new System.Collections.Generic.List<InputBinding>();
         public Game Epsilon
         {
             get
@@ -21,7 +18,7 @@ namespace EpsilonEngine
         {
             if (epsilon is null)
             {
-                throw new Exception("epsilon cannot be null.");
+                throw new System.Exception("epsilon cannot be null.");
             }
             _epsilon = epsilon;
 
@@ -51,9 +48,9 @@ namespace EpsilonEngine
         }
         public void ReloadInputs()
         {
-            _hardwareInputs = new List<HardwareInput>();
-            _virtualInputs = new List<VirtualInput>();
-            _inputBindings = new List<InputBinding>();
+            _hardwareInputs = new System.Collections.Generic.List<HardwareInput>();
+            _virtualInputs = new System.Collections.Generic.List<VirtualInput>();
+            _inputBindings = new System.Collections.Generic.List<InputBinding>();
 
             Assembly assembly = Assembly.GetCallingAssembly();
 
@@ -82,24 +79,24 @@ namespace EpsilonEngine
         {
             if (hardwareInputName is null)
             {
-                throw new Exception("hardwareInputName cannot be null.");
+                throw new System.Exception("hardwareInputName cannot be null.");
             }
 
             if (virtualInputName is null)
             {
-                throw new Exception("virtualInputName cannot be null.");
+                throw new System.Exception("virtualInputName cannot be null.");
             }
 
             HardwareInput matchHardwareInput = GetHardwareInputFromName(hardwareInputName);
             if (matchHardwareInput is null)
             {
-                throw new Exception("HardwareInput with requested name could not be found.");
+                throw new System.Exception("HardwareInput with requested name could not be found.");
             }
 
             VirtualInput matchVirtualInput = GetVirtualInputFromName(virtualInputName);
             if (matchVirtualInput is null)
             {
-                throw new Exception("VirtualInput with requested name could not be found.");
+                throw new System.Exception("VirtualInput with requested name could not be found.");
             }
 
             return new InputBinding(this, matchHardwareInput, matchVirtualInput);
@@ -138,19 +135,19 @@ namespace EpsilonEngine
         {
             if (hardwareInput is null)
             {
-                throw new Exception("hardwareInput cannot be null.");
+                throw new System.Exception("hardwareInput cannot be null.");
             }
 
             if (hardwareInput.InputManager != this)
             {
-                throw new Exception("hardwareInput belongs to a different InputManager.");
+                throw new System.Exception("hardwareInput belongs to a different InputManager.");
             }
 
             foreach (HardwareInput potentialDuplicate in _hardwareInputs)
             {
                 if (potentialDuplicate.Name == hardwareInput.Name)
                 {
-                    throw new Exception("hardwareInput must have a unique name.");
+                    throw new System.Exception("hardwareInput must have a unique name.");
                 }
             }
 
@@ -160,19 +157,19 @@ namespace EpsilonEngine
         {
             if (virtualInput is null)
             {
-                throw new Exception("virtualInput cannot be null.");
+                throw new System.Exception("virtualInput cannot be null.");
             }
 
             if (virtualInput.InputManager != this)
             {
-                throw new Exception("virtualInput belongs to a different InputManager.");
+                throw new System.Exception("virtualInput belongs to a different InputManager.");
             }
 
             foreach (VirtualInput potentialDuplicate in _virtualInputs)
             {
                 if (potentialDuplicate.Name == virtualInput.Name)
                 {
-                    throw new Exception("virtualInput must have a unique name.");
+                    throw new System.Exception("virtualInput must have a unique name.");
                 }
             }
 
@@ -182,19 +179,19 @@ namespace EpsilonEngine
         {
             if (inputBinding is null)
             {
-                throw new Exception("inputBinding cannot be null.");
+                throw new System.Exception("inputBinding cannot be null.");
             }
 
             if (inputBinding.InputManager != this)
             {
-                throw new Exception("inputBinding belongs to a different InputManager.");
+                throw new System.Exception("inputBinding belongs to a different InputManager.");
             }
 
             foreach (InputBinding potentialDuplicate in _inputBindings)
             {
                 if (potentialDuplicate.HardwareInput == inputBinding.HardwareInput && potentialDuplicate.VirtualInput == inputBinding.VirtualInput)
                 {
-                    throw new Exception("inputBinding must have a unique hardwareInput or a unique VirtualInput.");
+                    throw new System.Exception("inputBinding must have a unique hardwareInput or a unique VirtualInput.");
                 }
             }
 

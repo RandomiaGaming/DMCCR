@@ -1,5 +1,4 @@
-﻿using System;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public sealed class InputBinding
     {
@@ -37,19 +36,19 @@ namespace EpsilonEngine
         {
             if (inputManager is null)
             {
-                throw new Exception("inputManager cannot be null.");
+                throw new System.Exception("inputManager cannot be null.");
             }
             _inputManager = inputManager;
 
             if (virtualInput is null)
             {
-                throw new Exception("virtualInput cannot be null.");
+                throw new System.Exception("virtualInput cannot be null.");
             }
             _virtualInput = virtualInput;
 
             if (hardwareInput is null)
             {
-                throw new Exception("hardwareInput cannot be null.");
+                throw new System.Exception("hardwareInput cannot be null.");
             }
             _hardwareInput = hardwareInput;
         }

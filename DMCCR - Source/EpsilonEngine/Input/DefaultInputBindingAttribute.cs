@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true, Inherited = false)]
     public sealed class DefaultInputBindingAttribute : Attribute
@@ -30,21 +28,21 @@ namespace EpsilonEngine
         {
             if (virtualInputName is null)
             {
-                throw new Exception("virtualInputName cannot be null.");
+                throw new System.Exception("virtualInputName cannot be null.");
             }
             if (virtualInputName == "")
             {
-                throw new Exception("virtualInputName cannot be empty.");
+                throw new System.Exception("virtualInputName cannot be empty.");
             }
             _virtualInputName = virtualInputName;
 
             if (hardwareInputName is null)
             {
-                throw new Exception("hardwareInputName cannot be null.");
+                throw new System.Exception("hardwareInputName cannot be null.");
             }
             if (hardwareInputName == "")
             {
-                throw new Exception("hardwareInputName cannot be empty.");
+                throw new System.Exception("hardwareInputName cannot be empty.");
             }
             _hardwareInputName = hardwareInputName;
         }

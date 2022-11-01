@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public class Image : Element
     {
@@ -15,7 +13,7 @@ namespace EpsilonEngine
             {
                 if (value is null)
                 {
-                    throw new Exception("texture cannot be null.");
+                    throw new System.Exception("texture cannot be null.");
                 }
                 _texture = value;
             }
@@ -42,7 +40,7 @@ namespace EpsilonEngine
         {
             if (texture is null)
             {
-                throw new Exception("texture cannot be null.");
+                throw new System.Exception("texture cannot be null.");
             }
             _texture = texture;
         }
@@ -50,7 +48,7 @@ namespace EpsilonEngine
         {
             if (texture is null)
             {
-                throw new Exception("texture cannot be null.");
+                throw new System.Exception("texture cannot be null.");
             }
             _texture = texture;
         }

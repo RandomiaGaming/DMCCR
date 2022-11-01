@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public class PhysicsScene : Scene
     {
         #region Variables
-        private List<PhysicsObject> _physicsObjects = new List<PhysicsObject>();
+        private System.Collections.Generic.List<PhysicsObject> _physicsObjects = new System.Collections.Generic.List<PhysicsObject>();
         private PhysicsObject[] _physicsObjectCache = new PhysicsObject[0];
         private bool _physicsObjectCacheValid = true;
 
-        private List<PhysicsLayer> _physicsLayers = new List<PhysicsLayer>();
+        private System.Collections.Generic.List<PhysicsLayer> _physicsLayers = new System.Collections.Generic.List<PhysicsLayer>();
         private PhysicsLayer[] _physicsLayerCache = new PhysicsLayer[0];
         private bool _physicsLayerCacheValid = true;
         #endregion
@@ -30,14 +28,14 @@ namespace EpsilonEngine
         {
             if (index < 0 || index >= _physicsLayerCache.Length)
             {
-                throw new Exception("index was out of range.");
+                throw new System.Exception("index was out of range.");
             }
 
             return _physicsLayerCache[index];
         }
-        public List<PhysicsLayer> GetPhysicsLayers()
+        public System.Collections.Generic.List<PhysicsLayer> GetPhysicsLayers()
         {
-            return new List<PhysicsLayer>(_physicsLayerCache);
+            return new System.Collections.Generic.List<PhysicsLayer>(_physicsLayerCache);
         }
         public int GetPhysicsLayerCount()
         {
@@ -52,7 +50,7 @@ namespace EpsilonEngine
         {
             if (index < 0 || index >= _physicsObjectCache.Length)
             {
-                throw new Exception("index was out of range.");
+                throw new System.Exception("index was out of range.");
             }
 
             return _physicsObjectCache[index];
@@ -61,12 +59,12 @@ namespace EpsilonEngine
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(PhysicsObject)))
             {
-                throw new Exception("type must be equal to PhysicsObject or be assignable from PhysicsObject.");
+                throw new System.Exception("type must be equal to PhysicsObject or be assignable from PhysicsObject.");
             }
 
             foreach (PhysicsObject physicsObject in _physicsObjectCache)
@@ -91,23 +89,23 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<PhysicsObject> GetPhysicsObjects()
+        public System.Collections.Generic.List<PhysicsObject> GetPhysicsObjects()
         {
-            return new List<PhysicsObject>(_physicsObjectCache);
+            return new System.Collections.Generic.List<PhysicsObject>(_physicsObjectCache);
         }
-        public List<PhysicsObject> GetPhysicsObjects(Type type)
+        public System.Collections.Generic.List<PhysicsObject> GetPhysicsObjects(Type type)
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(PhysicsObject)))
             {
-                throw new Exception("type must be equal to PhysicsObject or be assignable from PhysicsObject.");
+                throw new System.Exception("type must be equal to PhysicsObject or be assignable from PhysicsObject.");
             }
 
-            List<PhysicsObject> output = new List<PhysicsObject>();
+            System.Collections.Generic.List<PhysicsObject> output = new System.Collections.Generic.List<PhysicsObject>();
 
             foreach (PhysicsObject physicsObject in _physicsObjectCache)
             {
@@ -119,9 +117,9 @@ namespace EpsilonEngine
 
             return output;
         }
-        public List<T> GetPhysicsObjects<T>() where T : PhysicsObject
+        public System.Collections.Generic.List<T> GetPhysicsObjects<T>() where T : PhysicsObject
         {
-            List<T> output = new List<T>();
+            System.Collections.Generic.List<T> output = new System.Collections.Generic.List<T>();
 
             foreach (PhysicsObject physicsObject in _physicsObjectCache)
             {
@@ -153,9 +151,9 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<PhysicsObject> GetPhysicsObjectsUnsafe(Type type)
+        public System.Collections.Generic.List<PhysicsObject> GetPhysicsObjectsUnsafe(Type type)
         {
-            List<PhysicsObject> output = new List<PhysicsObject>();
+            System.Collections.Generic.List<PhysicsObject> output = new System.Collections.Generic.List<PhysicsObject>();
 
             foreach (PhysicsObject physicsObject in _physicsObjectCache)
             {

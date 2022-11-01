@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Collections.Generic;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public class GameObject
     {
@@ -65,7 +62,7 @@ namespace EpsilonEngine
         internal UnorderedPump MovePump = new UnorderedPump();
         #endregion
         #region Private Variables
-        private List<Component> _components = new List<Component>();
+        private System.Collections.Generic.List<Component> _components = new System.Collections.Generic.List<Component>();
         private Component[] _componentCache = new Component[0];
         private bool _componentValidateQued;
 
@@ -81,7 +78,7 @@ namespace EpsilonEngine
         {
             if (scene is null)
             {
-                throw new Exception("scene cannot be null.");
+                throw new System.Exception("scene cannot be null.");
             }
 
             Scene = scene;
@@ -111,12 +108,12 @@ namespace EpsilonEngine
         {
             if (!Scene.Rendering)
             {
-                throw new Exception("cannot draw texture because scene is not rendering.");
+                throw new System.Exception("cannot draw texture because scene is not rendering.");
             }
 
             if (texture is null)
             {
-                throw new Exception("texture cannot be null.");
+                throw new System.Exception("texture cannot be null.");
             }
 
             DrawTextureLocalSpaceUnsafe(texture._xnaTexture, position.X, position.Y, color.R, color.B, color.B, color.A);
@@ -144,7 +141,7 @@ namespace EpsilonEngine
         {
             if (index < 0 || index >= _componentCache.Length)
             {
-                throw new Exception("index was out of range.");
+                throw new System.Exception("index was out of range.");
             }
 
             return _componentCache[index];
@@ -153,12 +150,12 @@ namespace EpsilonEngine
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(Component)))
             {
-                throw new Exception("type must be equal to Component or be assignable from Component.");
+                throw new System.Exception("type must be equal to Component or be assignable from Component.");
             }
 
             foreach (Component component in _componentCache)
@@ -191,15 +188,15 @@ namespace EpsilonEngine
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(Component)))
             {
-                throw new Exception("type must be equal to Component or be assignable from Component.");
+                throw new System.Exception("type must be equal to Component or be assignable from Component.");
             }
 
-            List<Component> output = new List<Component>();
+            System.Collections.Generic.List<Component> output = new System.Collections.Generic.List<Component>();
 
             foreach (Component component in _componentCache)
             {
@@ -213,7 +210,7 @@ namespace EpsilonEngine
         }
         public T[] GetComponents<T>() where T : Component
         {
-            List<T> output = new List<T>();
+            System.Collections.Generic.List<T> output = new System.Collections.Generic.List<T>();
 
             foreach (Component component in _componentCache)
             {

@@ -1,5 +1,4 @@
 ﻿using EpsilonEngine;
-using System.Reflection;
 namespace DMCCR
 {
     public enum FacingDirection { Right, Left };
@@ -25,8 +24,8 @@ namespace DMCCR
         {
             this.stagePlayer = stagePlayer;
 
-            _playerTextureRight = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.PlayerRight.png"));
-            _playerTextureLeft = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.PlayerLeft.png"));
+            _playerTextureRight = new Texture(Game, System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.PlayerRight.png"));
+            _playerTextureLeft = new Texture(Game, System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.PlayerLeft.png"));
 
             _textureRenderer = new TextureRenderer(this, 2);
 

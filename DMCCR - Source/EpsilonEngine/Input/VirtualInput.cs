@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public sealed class VirtualInput
     {
@@ -37,17 +35,17 @@ namespace EpsilonEngine
         {
             if (inputManager is null)
             {
-                throw new Exception("inputManager cannot be null.");
+                throw new System.Exception("inputManager cannot be null.");
             }
             _inputManager = inputManager;
 
             if (name is null)
             {
-                throw new Exception("name cannot be null.");
+                throw new System.Exception("name cannot be null.");
             }
             if (name == "")
             {
-                throw new Exception("name cannot be empty.");
+                throw new System.Exception("name cannot be empty.");
             }
             _name = name;
         }

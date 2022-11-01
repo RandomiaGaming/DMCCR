@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public abstract class Component
     {
@@ -21,7 +19,7 @@ namespace EpsilonEngine
         {
             if (gameObject is null)
             {
-                throw new Exception("gameObject cannot be null.");
+                throw new System.Exception("gameObject cannot be null.");
             }
 
             GameObject = gameObject;

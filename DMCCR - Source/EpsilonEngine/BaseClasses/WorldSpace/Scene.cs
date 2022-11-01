@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Collections.Generic;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public class Scene
     {
@@ -90,9 +87,9 @@ namespace EpsilonEngine
         internal Microsoft.Xna.Framework.Graphics.RenderTarget2D XNARenderTarget = null;
         #endregion
         #region Private Variables
-        private List<GameObject> _gameObjects = new List<GameObject>();
+        private System.Collections.Generic.List<GameObject> _gameObjects = new System.Collections.Generic.List<GameObject>();
 
-        private List<SceneManager> _sceneManagers = new List<SceneManager>();
+        private System.Collections.Generic.List<SceneManager> _sceneManagers = new System.Collections.Generic.List<SceneManager>();
 
         private int _cameraPositionX = 0;
         private int _cameraPositionY = 0;
@@ -109,20 +106,20 @@ namespace EpsilonEngine
         {
             if (game is null)
             {
-                throw new Exception("game cannot be null.");
+                throw new System.Exception("game cannot be null.");
             }
 
             Game = game;
 
             if (renderWidth <= 0)
             {
-                throw new Exception("renderWidth must be greater than 0.");
+                throw new System.Exception("renderWidth must be greater than 0.");
             }
             RenderWidth = renderWidth;
 
             if (renderHeight <= 0)
             {
-                throw new Exception("renderHeight must be greater than 0.");
+                throw new System.Exception("renderHeight must be greater than 0.");
             }
             RenderHeight = renderHeight;
 
@@ -162,12 +159,12 @@ namespace EpsilonEngine
         {
             if (!Rendering)
             {
-                throw new Exception("cannot draw texture because scene is not rendering.");
+                throw new System.Exception("cannot draw texture because scene is not rendering.");
             }
 
             if (texture is null)
             {
-                throw new Exception("texture cannot be null.");
+                throw new System.Exception("texture cannot be null.");
             }
             
             DrawTextureWorldSpaceUnsafe(texture._xnaTexture, position.X, position.Y, color.R, color.B, color.B, color.A);
@@ -176,12 +173,12 @@ namespace EpsilonEngine
         {
             if (!Rendering)
             {
-                throw new Exception("cannot draw texture because scene is not rendering.");
+                throw new System.Exception("cannot draw texture because scene is not rendering.");
             }
 
             if (texture is null)
             {
-                throw new Exception("texture cannot be null.");
+                throw new System.Exception("texture cannot be null.");
             }
             
             DrawTextureScreenSpaceUnsafe(texture._xnaTexture, new Microsoft.Xna.Framework.Vector2(position.X, position.Y), new Microsoft.Xna.Framework.Color(color.R, color.B, color.B, color.A));
@@ -191,12 +188,12 @@ namespace EpsilonEngine
         {
             if (MarkedForDestruction)
             {
-                throw new Exception("scene has already been marked for destruction.");
+                throw new System.Exception("scene has already been marked for destruction.");
             }
 
             if (Destroyed)
             {
-                throw new Exception("scene has already been destroyed.");
+                throw new System.Exception("scene has already been destroyed.");
             }
 
             int sceneManagerCount = _sceneManagers.Count;
@@ -222,7 +219,7 @@ namespace EpsilonEngine
         {
             if (index < 0 || index >= _sceneManagers.Count)
             {
-                throw new Exception("index was out of range.");
+                throw new System.Exception("index was out of range.");
             }
 
             return _sceneManagers[index];
@@ -231,12 +228,12 @@ namespace EpsilonEngine
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(SceneManager)))
             {
-                throw new Exception("type must be equal to SceneManager or be assignable from SceneManager.");
+                throw new System.Exception("type must be equal to SceneManager or be assignable from SceneManager.");
             }
 
             foreach (SceneManager sceneManager in _sceneManagers)
@@ -261,23 +258,23 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<SceneManager> GetSceneManagers()
+        public System.Collections.Generic.List<SceneManager> GetSceneManagers()
         {
-            return new List<SceneManager>(_sceneManagers);
+            return new System.Collections.Generic.List<SceneManager>(_sceneManagers);
         }
         public SceneManager[] GetSceneManagers(Type type)
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(SceneManager)))
             {
-                throw new Exception("type must be equal to SceneManager or be assignable from SceneManager.");
+                throw new System.Exception("type must be equal to SceneManager or be assignable from SceneManager.");
             }
 
-            List<SceneManager> output = new List<SceneManager>();
+            System.Collections.Generic.List<SceneManager> output = new System.Collections.Generic.List<SceneManager>();
 
             foreach (SceneManager sceneManager in _sceneManagers)
             {
@@ -291,7 +288,7 @@ namespace EpsilonEngine
         }
         public T[] GetSceneManagers<T>() where T : SceneManager
         {
-            List<T> output = new List<T>();
+            System.Collections.Generic.List<T> output = new System.Collections.Generic.List<T>();
 
             foreach (SceneManager sceneManager in _sceneManagers)
             {
@@ -312,7 +309,7 @@ namespace EpsilonEngine
         {
             if (index < 0 || index >= _gameObjects.Count)
             {
-                throw new Exception("index was out of range.");
+                throw new System.Exception("index was out of range.");
             }
 
             return _gameObjects[index];
@@ -321,12 +318,12 @@ namespace EpsilonEngine
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(GameObject)))
             {
-                throw new Exception("type must be equal to GameObject or be assignable from GameObject.");
+                throw new System.Exception("type must be equal to GameObject or be assignable from GameObject.");
             }
 
             foreach (GameObject gameObject in _gameObjects)
@@ -351,23 +348,23 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<GameObject> GetGameObjects()
+        public System.Collections.Generic.List<GameObject> GetGameObjects()
         {
-            return new List<GameObject>(_gameObjects);
+            return new System.Collections.Generic.List<GameObject>(_gameObjects);
         }
-        public List<GameObject> GetGameObjects(Type type)
+        public System.Collections.Generic.List<GameObject> GetGameObjects(Type type)
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(GameObject)))
             {
-                throw new Exception("type must be equal to GameObject or be assignable from GameObject.");
+                throw new System.Exception("type must be equal to GameObject or be assignable from GameObject.");
             }
 
-            List<GameObject> output = new List<GameObject>();
+            System.Collections.Generic.List<GameObject> output = new System.Collections.Generic.List<GameObject>();
 
             foreach (GameObject gameObject in _gameObjects)
             {
@@ -379,9 +376,9 @@ namespace EpsilonEngine
 
             return output;
         }
-        public List<T> GetGameObjects<T>() where T : GameObject
+        public System.Collections.Generic.List<T> GetGameObjects<T>() where T : GameObject
         {
-            List<T> output = new List<T>();
+            System.Collections.Generic.List<T> output = new System.Collections.Generic.List<T>();
 
             foreach (GameObject gameObject in _gameObjects)
             {

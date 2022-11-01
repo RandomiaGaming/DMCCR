@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public abstract class SceneManager
     {
@@ -20,7 +18,7 @@ namespace EpsilonEngine
         {
             if (scene is null)
             {
-                throw new Exception("scene cannot be null.");
+                throw new System.Exception("scene cannot be null.");
             }
 
             Scene = scene;

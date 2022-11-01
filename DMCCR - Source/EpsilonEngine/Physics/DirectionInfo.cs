@@ -1,5 +1,4 @@
-﻿using System;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public struct DirectionInfo
     {
@@ -58,7 +57,7 @@ namespace EpsilonEngine
             }
             else
             {
-                throw new Exception("direction must be a valid Direction.");
+                throw new System.Exception("direction must be a valid Direction.");
             }
         }
         public DirectionInfo(Point normal)

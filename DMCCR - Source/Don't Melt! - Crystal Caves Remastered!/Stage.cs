@@ -1,10 +1,4 @@
-﻿using System.Reflection;
-using EpsilonEngine;
-using System.IO;
-using System.Text;
-using System;
-using System.Collections.Generic;
-
+﻿using EpsilonEngine;
 namespace DMCCR
 {
     public sealed class Stage : PhysicsScene
@@ -19,7 +13,7 @@ namespace DMCCR
         {
             _dontmelt = dontmelt;
 
-            Assembly assembly = typeof(DMCCR).Assembly;
+            System.Reflection.Assembly assembly = typeof(DMCCR).Assembly;
 
             Texture levelRender = new Texture(dontmelt, assembly.GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.MapData.LevelRender.png"));
 

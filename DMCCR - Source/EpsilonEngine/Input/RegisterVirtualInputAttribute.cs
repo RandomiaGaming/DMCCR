@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true, Inherited = false)]
     public sealed class RegisterVirtualInputAttribute : Attribute
@@ -21,11 +19,11 @@ namespace EpsilonEngine
         {
             if (name is null)
             {
-                throw new Exception("name cannot be null.");
+                throw new System.Exception("name cannot be null.");
             }
             if (name == "")
             {
-                throw new Exception("name cannot be empty.");
+                throw new System.Exception("name cannot be empty.");
             }
             _name = name;
         }

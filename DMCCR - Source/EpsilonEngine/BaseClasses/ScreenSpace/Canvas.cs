@@ -1,16 +1,13 @@
-﻿using System;
-using System.Reflection;
-using System.Collections.Generic;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public class Canvas
     {
         #region Variables
-        private List<Element> _elements = new List<Element>();
+        private System.Collections.Generic.List<Element> _elements = new System.Collections.Generic.List<Element>();
         private Element[] _elementCache = new Element[0];
         private bool _elementCacheValid = true;
 
-        private List<CanvasBehavior> _canvasBehaviors = new List<CanvasBehavior>();
+        private System.Collections.Generic.List<CanvasBehavior> _canvasBehaviors = new System.Collections.Generic.List<CanvasBehavior>();
         private CanvasBehavior[] _canvasBehaviorCache = new CanvasBehavior[0];
         private bool _canvasBehaviorCacheValid = true;
         #endregion
@@ -24,22 +21,22 @@ namespace EpsilonEngine
         {
             if (game is null)
             {
-                throw new Exception("game cannot be null.");
+                throw new System.Exception("game cannot be null.");
             }
 
             Game = game;
 
             Game.AddCanvas(this);
 
-            Type thisType = GetType();
+            System.Type thisType = GetType();
 
-            MethodInfo updateMethod = thisType.GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance);
+            System.Reflection.MethodInfo updateMethod = thisType.GetMethod("Update", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             if (updateMethod.DeclaringType != typeof(Scene))
             {
                 Game.UpdatePump.RegisterPumpEventUnsafe(Update, 0);
             }
 
-            MethodInfo renderMethod = thisType.GetMethod("Render", BindingFlags.NonPublic | BindingFlags.Instance);
+            System.Reflection.MethodInfo renderMethod = thisType.GetMethod("Render", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             if (renderMethod.DeclaringType != typeof(Scene))
             {
                 Game.RenderPump.RegisterPumpEventUnsafe(Render);
@@ -79,7 +76,7 @@ namespace EpsilonEngine
         {
             if (index < 0 || index >= _canvasBehaviorCache.Length)
             {
-                throw new Exception("index was out of range.");
+                throw new System.Exception("index was out of range.");
             }
 
             return _canvasBehaviorCache[index];
@@ -88,12 +85,12 @@ namespace EpsilonEngine
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(CanvasBehavior)))
             {
-                throw new Exception("type must be equal to CanvasBehavior or be assignable from CanvasBehavior.");
+                throw new System.Exception("type must be equal to CanvasBehavior or be assignable from CanvasBehavior.");
             }
 
             foreach (CanvasBehavior canvasBehavior in _canvasBehaviorCache)
@@ -118,23 +115,23 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<CanvasBehavior> GetCanvasBehaviors()
+        public System.Collections.Generic.List<CanvasBehavior> GetCanvasBehaviors()
         {
-            return new List<CanvasBehavior>(_canvasBehaviorCache);
+            return new System.Collections.Generic.List<CanvasBehavior>(_canvasBehaviorCache);
         }
-        public List<CanvasBehavior> GetCanvasBehaviors(Type type)
+        public System.Collections.Generic.List<CanvasBehavior> GetCanvasBehaviors(Type type)
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(CanvasBehavior)))
             {
-                throw new Exception("type must be equal to CanvasBehavior or be assignable from CanvasBehavior.");
+                throw new System.Exception("type must be equal to CanvasBehavior or be assignable from CanvasBehavior.");
             }
 
-            List<CanvasBehavior> output = new List<CanvasBehavior>();
+            System.Collections.Generic.List<CanvasBehavior> output = new System.Collections.Generic.List<CanvasBehavior>();
 
             foreach (CanvasBehavior canvasBehavior in _canvasBehaviorCache)
             {
@@ -146,9 +143,9 @@ namespace EpsilonEngine
 
             return output;
         }
-        public List<T> GetCanvasBehaviors<T>() where T : CanvasBehavior
+        public System.Collections.Generic.List<T> GetCanvasBehaviors<T>() where T : CanvasBehavior
         {
-            List<T> output = new List<T>();
+            System.Collections.Generic.List<T> output = new System.Collections.Generic.List<T>();
 
             foreach (CanvasBehavior canvasBehavior in _canvasBehaviorCache)
             {
@@ -180,9 +177,9 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<CanvasBehavior> GetCanvasBehaviorsUnsafe(Type type)
+        public System.Collections.Generic.List<CanvasBehavior> GetCanvasBehaviorsUnsafe(Type type)
         {
-            List<CanvasBehavior> output = new List<CanvasBehavior>();
+            System.Collections.Generic.List<CanvasBehavior> output = new System.Collections.Generic.List<CanvasBehavior>();
 
             foreach (CanvasBehavior canvasBehavior in _canvasBehaviorCache)
             {
@@ -198,7 +195,7 @@ namespace EpsilonEngine
         {
             if (index < 0 || index >= _elementCache.Length)
             {
-                throw new Exception("index was out of range.");
+                throw new System.Exception("index was out of range.");
             }
 
             return _elementCache[index];
@@ -207,12 +204,12 @@ namespace EpsilonEngine
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(Element)))
             {
-                throw new Exception("type must be equal to Element or be assignable from Element.");
+                throw new System.Exception("type must be equal to Element or be assignable from Element.");
             }
 
             foreach (Element element in _elementCache)
@@ -237,23 +234,23 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<Element> GetElements()
+        public System.Collections.Generic.List<Element> GetElements()
         {
-            return new List<Element>(_elementCache);
+            return new System.Collections.Generic.List<Element>(_elementCache);
         }
-        public List<Element> GetElements(Type type)
+        public System.Collections.Generic.List<Element> GetElements(Type type)
         {
             if (type is null)
             {
-                throw new Exception("type cannot be null.");
+                throw new System.Exception("type cannot be null.");
             }
 
             if (!type.IsAssignableFrom(typeof(Element)))
             {
-                throw new Exception("type must be equal to Element or be assignable from Element.");
+                throw new System.Exception("type must be equal to Element or be assignable from Element.");
             }
 
-            List<Element> output = new List<Element>();
+            System.Collections.Generic.List<Element> output = new System.Collections.Generic.List<Element>();
 
             foreach (Element element in _elementCache)
             {
@@ -265,9 +262,9 @@ namespace EpsilonEngine
 
             return output;
         }
-        public List<T> GetElements<T>() where T : Element
+        public System.Collections.Generic.List<T> GetElements<T>() where T : Element
         {
-            List<T> output = new List<T>();
+            System.Collections.Generic.List<T> output = new System.Collections.Generic.List<T>();
 
             foreach (Element element in _elementCache)
             {
@@ -299,9 +296,9 @@ namespace EpsilonEngine
 
             return null;
         }
-        public List<Element> GetElementsUnsafe(Type type)
+        public System.Collections.Generic.List<Element> GetElementsUnsafe(Type type)
         {
-            List<Element> output = new List<Element>();
+            System.Collections.Generic.List<Element> output = new System.Collections.Generic.List<Element>();
 
             foreach (Element element in _elementCache)
             {

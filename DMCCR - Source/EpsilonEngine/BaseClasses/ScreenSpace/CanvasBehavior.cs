@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-namespace EpsilonEngine
+﻿namespace EpsilonEngine
 {
     public abstract class CanvasBehavior
     {
@@ -15,7 +13,7 @@ namespace EpsilonEngine
         {
             if (canvas is null)
             {
-                throw new Exception("canvas cannot be null.");
+                throw new System.Exception("canvas cannot be null.");
             }
 
             Canvas = canvas;

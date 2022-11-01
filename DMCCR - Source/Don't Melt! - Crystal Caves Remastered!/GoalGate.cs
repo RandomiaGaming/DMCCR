@@ -1,5 +1,4 @@
 ﻿using EpsilonEngine;
-using System.Reflection;
 namespace DMCCR
 {
     public sealed class GoalGate : PhysicsObject
@@ -10,7 +9,7 @@ namespace DMCCR
         {
             _stagePlayer = stagePlayer;
 
-            Texture goalGateTexture = new Texture(Game, Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.GoalGate.png"));
+            Texture goalGateTexture = new Texture(Game, System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("DMCCR.Don_t_Melt____Crystal_Caves_Remastered_.Textures.GoalGate.png"));
 
             TextureRenderer textureRenderer = new TextureRenderer(this, 1);
 
