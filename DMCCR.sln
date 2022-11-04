@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpsilonEngine", "EpsilonEngine\EpsilonEngine.csproj", "{A7631502-6532-4628-8F71-5B91FE701C26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMCCR", "DMCCR\DMCCR.csproj", "{3DB0F3BD-8157-4FA1-A7DA-85AC0F53FA2E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7631502-6532-4628-8F71-5B91FE701C26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7631502-6532-4628-8F71-5B91FE701C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7631502-6532-4628-8F71-5B91FE701C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7631502-6532-4628-8F71-5B91FE701C26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DB0F3BD-8157-4FA1-A7DA-85AC0F53FA2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DB0F3BD-8157-4FA1-A7DA-85AC0F53FA2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DB0F3BD-8157-4FA1-A7DA-85AC0F53FA2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DB0F3BD-8157-4FA1-A7DA-85AC0F53FA2E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

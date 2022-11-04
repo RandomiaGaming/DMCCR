@@ -1,7 +1,9 @@
 EpsilonEngine/bin/
 EpsilonEngine/obj/
+DMCCR/bin/
+DMCCR/obj/
 .git/
 .vs/
+.idea/
 *.user
 *.suo
-packages/

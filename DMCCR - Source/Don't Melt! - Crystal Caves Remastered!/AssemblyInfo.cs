@@ -1,8 +1,0 @@
-﻿[assembly: System.Reflection.AssemblyTitle("Don't Melt! - Crystal Caves Remastered! - 1.0!")]
-[assembly: System.Reflection.AssemblyProduct("Don't Melt! - Crystal Caves Remastered! - 1.0!")]
-[assembly: System.Reflection.AssemblyDescription("Don't Melt! - Crystal Caves Remastered! - 1.0!")]
-[assembly: System.Reflection.AssemblyVersion("1.0.0.0")]
-[assembly: System.Reflection.AssemblyFileVersion("1.0.0.0")]
-[assembly: System.Reflection.AssemblyCompany("RandomiaGaming")]
-[assembly: System.Reflection.AssemblyCopyright("Copyright RandomiaGaming 2021")]
-[assembly: System.Reflection.AssemblyTrademark("Trademark RandomiaGaming 2021")]
