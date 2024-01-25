@@ -4,7 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
-        <OutputType>WinExe</OutputType>
+        <OutputType>Exe</OutputType>
         <IsPackable>false</IsPackable>
         <PackageId></PackageId>
         <PackageVersion>1.0.0.0</PackageVersion>
